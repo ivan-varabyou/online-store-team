@@ -1,18 +1,20 @@
 import React from 'react';
+import { Route, Routes } from 'react-router-dom';
+import { ProductPage } from './pages/ProductPage';
+import { CatalogPage } from './pages/CatalogPage';
+import { NotFoundPage } from './pages/NotFoundPage';
+import { CardPage } from './pages/CartPage';
 
 function App() {
   return (
-    <div className='App'>
-      <header className='App-header'>
-        <a
-          className='App-link'
-          href='https://reactjs.org'
-          target='_blank'
-          rel='noopener noreferrer'>
-          Test
-        </a>
-      </header>
-    </div>
+    <>
+      <Routes>
+        <Route path='/' element={<CatalogPage />}></Route>
+        <Route path='/cart' element={<CardPage />}></Route>
+        <Route path='/product/:productId' element={<ProductPage />}></Route>
+        <Route path='*' element={<NotFoundPage />}></Route>
+      </Routes>
+    </>
   );
 }
 

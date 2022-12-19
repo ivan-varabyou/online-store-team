@@ -39,7 +39,7 @@ export const Header = () => {
             <Link className={styles.logo} to='/'>
               <i className='bi bi-lightning-charge-fill'></i> RSSHOP
             </Link>
-            <nav className={styles.nav}>
+            {/*<nav className={styles.nav}>
               <ul className='navbar-nav me-auto'>
                 <li className='nav-item'>
                   <Link className='nav-link' to='/'>
@@ -48,6 +48,7 @@ export const Header = () => {
                 </li>
               </ul>
             </nav>
+            */}
 
             <div className={styles.widget}>
               <div className={styles.widget_item}>

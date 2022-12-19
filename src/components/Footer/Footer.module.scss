@@ -15,23 +15,23 @@
 
   background-color: #0d6efd;
 
-  .footer__section {
+  &__section {
     margin-bottom: 20px;
   }
 
-  .footer__logo {
+  &__logo {
     font-size: 24px;
     font-weight: 700;
     text-decoration: none;
   }
 
-  .footer__ul {
+  &__ul {
     margin: 0;
     padding: 0;
     list-style: none;
   }
 
-  .footer__rs {
+  &__rs {
     max-height: 35px;
     opacity: 0.75;
     transition: all 0.25s ease;
@@ -40,7 +40,13 @@
     }
   }
 
-  .footer__rslogo {
+  &__rslogo {
     text-align: right;
+  }
+
+  &__payments {
+    display: flex;
+    gap: 5px;
+    align-items: center;
   }
 }

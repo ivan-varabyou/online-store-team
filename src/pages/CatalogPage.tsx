@@ -4,11 +4,11 @@ import React from 'react';
 export function CatalogPage() {
   return (
     <>
-      <header>
+      <main>
         <div className='container'>
           <h1>Catalog</h1>
         </div>
-      </header>
+      </main>
     </>
   );
 }

@@ -7,11 +7,11 @@ console.log(styles);
 export const Footer = () => {
   return (
     <>
-      <header>
+      <footer>
         <div className='container'>
           <h1>Footer</h1>
         </div>
-      </header>
+      </footer>
     </>
   );
 };

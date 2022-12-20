@@ -4,10 +4,9 @@
     display: grid;
     grid-template-areas:
       'title title'
-      'img info'
-      'buttons buttons';
+      'img info';
     grid-template-columns: 3fr 7fr;
-    grid-template-rows: auto 2fr auto;
+    grid-template-rows: 100px auto;
     width: 100vw;
     height: 100vh;
 
@@ -15,11 +14,14 @@
         background-repeat: no-repeat;
         background-size: contain;
         background-position: center;
-        height: 200px;;
+        height: 200px;
+        margin-right: 20px;
+        
     }
 
     &__title {
         grid-area: title;
+        margin-left: 20px;
     }
 
     &__imageBlock {
@@ -28,23 +30,35 @@
 
     &__infoBlock {
         grid-area: info;
+        margin-left: 50px;
+    }
+    
+    &__infoText {
+      font-weight: bold;
+    }
+
+    &__infoText span {
+      font-weight:normal ;
+      margin-left: 10px;
+    }
+
+    &__buttonGroup {
+      display: flex;
+      flex-direction: row;
     }
 
     &__buttons {
-        grid-area: buttons;
+      margin-right: 10px;
     }
   }
 
-  
-
-  @media (max-width: 740px) {
-    .main {
+  @media (max-width: 980px) {
+    .productPage {
       grid-template-areas:
-        'header'
-        'menu'
-        'content'
-        'footer';
+      'title'
+      'img' 
+      'info';
       grid-template-columns: 1fr;
-      grid-template-rows: 120px auto auto 150px;
+      grid-template-rows:auto auto auto;
     }
 }

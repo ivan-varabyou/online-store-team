@@ -2,6 +2,7 @@ import React from 'react';
 import { useParams } from 'react-router-dom';
 import { getProducts } from '../hooks/products';
 import { IProduct } from '../models';
+import { Link } from 'react-router-dom';
 import styles from './../scss/page/ProductPage.module.scss';
 
 export function ProductPage() {
@@ -13,7 +14,7 @@ export function ProductPage() {
   console.log(result, error, loading);
   return (
     <>
-      <main className='container '>
+      <main className='container'>
         <div className={styles.productPage}>
           <div className={styles.ProductPage__title}>
             <h1>{result.title}</h1>
@@ -25,42 +26,60 @@ export function ProductPage() {
           </div>
           <div className={styles.productPage__infoBlock}>
             <div className={styles.productPage__infoItem}>
-              <p className={styles.productPage__infoText}>description:</p>
-              {result.description}
+              <p className={styles.productPage__infoText}>
+                Description:
+                <span>{result.description}</span>
+              </p>
             </div>
-            <div>
+            <div className={styles.productPage__infoItem}>
               <p className={styles.productPage__infoText}>
                 Discount Percentage:
+                <span>{result.discountPercentage}</span>
               </p>
-              {result.discountPercentage}
             </div>
-            <div>
-              <p className={styles.productPage__infoText}>Rating:</p>
-              {result.rating}
+            <div className={styles.productPage__infoItem}>
+              <p className={styles.productPage__infoText}>
+                Rating:
+                <span>{result.rating}</span>
+              </p>
             </div>
-            <div>
-              <p className={styles.productPage__infoText}>Stock:</p>
-              {result.stock}
+            <div className={styles.productPage__infoItem}>
+              <p className={styles.productPage__infoText}>
+                Stock:
+                <span>{result.stock}</span>
+              </p>
             </div>
-            <div>
-              <p className={styles.productPage__infoText}>Brand:</p>
-              {result.brand}
+            <div className={styles.productPage__infoItem}>
+              <p className={styles.productPage__infoText}>
+                Brand:
+                <span>{result.brand}</span>
+              </p>
             </div>
-            <div>
-              <p className={styles.productPage__infoText}>Category:</p>
-              {result.category}
+            <div className={styles.productPage__infoItem}>
+              <p className={styles.productPage__infoText}>
+                Category:
+                <span>{result.category}</span>
+              </p>
+              <div className={styles.productPage__buttonGroup}>
+                <div className={styles.productPage__buttons}>
+                  <Link to='/'>
+                    <button
+                      type='button'
+                      className='btn btn-secondary '
+                      data-bs-dismiss='container'>
+                      back
+                    </button>
+                  </Link>
+                </div>
+                <div className={styles.productPage__buttons}>
+                  <button
+                    type='button'
+                    className='btn btn-primary productPage__buttons'>
+                    add to cart
+                  </button>
+                </div>
+              </div>
             </div>
-          </div>
-          <div className={styles.productPage__buttons}>
-            <button
-              type='button'
-              className='btn btn-secondary'
-              data-bs-dismiss='container'>
-              Close
-            </button>
-            <button type='button' className='btn btn-primary'>
-              add to cart
-            </button>
           </div>
         </div>
       </main>

@@ -1,0 +1,13 @@
+.products {
+  margin-top: 15px;
+
+  &__title {
+    font-size: 1.5rem;
+    color: #383838;
+  }
+
+  &__list {
+    display: flex;
+    flex-wrap: wrap;
+  }
+}

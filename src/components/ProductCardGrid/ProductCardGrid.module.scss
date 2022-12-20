@@ -4,19 +4,12 @@
   flex-direction: row;
   flex-wrap: wrap;
 
-  @media (max-width: 768px) {
-    width: 50%;
-  }
-
-  @media (max-width: 499px) {
-    width: 100%;
-  }
-
   &__wrapper {
     background-repeat: no-repeat;
     background-size: contain;
     background-position: center;
     height: 200px;
+    display: grid;
   }
 
   &__card {
@@ -41,7 +34,7 @@
     --bs-card-group-margin: 0.75rem;
     position: relative;
     display: grid;
-    flex-direction: column;
+
     min-width: 0;
     height: var(--bs-card-height);
     word-wrap: break-word;
@@ -53,18 +46,16 @@
 
   &__button {
     display: grid;
-    gap: 5px;
+    gap: 8px;
     grid-auto-flow: column;
   }
 
   &__price {
-    margin-top: 15px;
-    padding-top: 15px;
-    border-top: 1px solid #efefef;
+    margin-top: 8px;
   }
 
   &__description {
-    margin-top: 7px;
+    margin-top: 8px;
   }
 
   &__title {
@@ -72,6 +63,7 @@
     color: #000;
     font-weight: 600;
     font-size: 1rem;
-    margin-top: 5px;
+    margin-bottom: 16px;
+    display: grid;
   }
 }

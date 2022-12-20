@@ -1,14 +1,14 @@
-import React from 'react';
+import React, { useState, useEffect, EventHandler, FormEvent } from 'react';
 
 // import { useSearchParams } from 'react-router-dom';
-
-import { CardProductGrid } from '../components/CardProductGrid/';
 import { getProducts } from '../hooks/products';
 import { IResult } from '../models';
+import { ProductCardGrid } from '../components/ProductCardGrid';
 import { ScaletonCatalog } from '../components/ScaletonCatalog/';
 import { ErrorMessage } from '../components/ErrorMessage/';
 
 import styles from '../scss/page/CategoryPage.module.scss';
+
 export function CatalogPage() {
   const { result, error, loading } = getProducts<IResult>(
     'https://dummyjson.com/products?limit=100',
@@ -19,7 +19,36 @@ export function CatalogPage() {
       limit: 0,
     },
   );
-  console.log(error, loading);
+
+  /* --------selected----------*/
+  type ISelectList = { value: string; text: string };
+  const [selected, setSelected] = useState('');
+  const handleChange = (event: React.ChangeEvent<HTMLSelectElement>): void => {
+    setSelected(event.target.value);
+  };
+  const selectList: ISelectList[] = [
+    { value: 'sort-title', text: 'Sort options:' },
+    { value: 'price-ASC', text: 'Sort by price ASC' },
+    { value: 'price-DESC', text: 'Sort by price DESC' },
+    { value: 'rating-ASC', text: 'Sort by rating ASC' },
+    { value: 'rating-DESC', text: 'Sort by rating DESC' },
+    { value: 'discount-ASC', text: 'Sort by discount ASC' },
+    { value: 'discount-DESC', text: 'Sort by discount DESC' },
+  ];
+  /* ------------------*/
+
+  /* ------GRID---------- */
+
+  const [cardGrid, setCardGrid] = useState('grid');
+  const listActive = cardGrid === 'list' && 'active';
+  const gridActive = cardGrid === 'grid' && 'active';
+
+  /* ------------------*/
+
+  useEffect(() => {
+    console.log(selected);
+  }, [selected]);
+
   return (
     <>
       <main>
@@ -121,22 +150,16 @@ export function CatalogPage() {
                         Price
                       </div>
                     </header>
-                    <div
-                      className='collapse show range-filter'
-                      id='filter-price'>
+                    <div className='collapse show' id='filter-stock'>
                       <div className='card-body'>
                         <input
                           type='range'
-                          className='form-range form-range-min'
+                          className='form-range'
                           min='0'
-                          max='100'
+                          max='1000'
+                          multiple
                         />
-                        <input
-                          type='range'
-                          className='form-range form-range-max'
-                          min='0'
-                          max='100'
-                        />
+
                         <div className='row mb-3'>
                           <div className='col-6'>
                             <label className='form-label'>Min</label>
@@ -146,7 +169,7 @@ export function CatalogPage() {
                               placeholder='$0'
                               type='number'
                               min='0'
-                              max='10000'
+                              max='150'
                             />
                           </div>
 
@@ -155,7 +178,7 @@ export function CatalogPage() {
                             <input
                               className='form-control'
                               id='max'
-                              placeholder='$1,0000'
+                              placeholder='$150'
                               type='number'
                               min='0'
                               max='10000'
@@ -170,7 +193,7 @@ export function CatalogPage() {
                     <header className='card-header'>
                       <div className='title'>
                         <i className='icon-control fa fa-chevron-down'></i>
-                        Price
+                        Stock
                       </div>
                     </header>
                     <div className='collapse show' id='filter-stock'>
@@ -212,40 +235,48 @@ export function CatalogPage() {
                       </div>
                     </div>
                   </article>
+                  <div className='btn-group col-12'>
+                    <button className='btn btn-light btn-icon'>
+                      Copy link
+                    </button>
+                    <button className='btn btn-light btn-icon'>Reset</button>
+                  </div>
                 </div>
               </aside>
               <div className='col-lg-9'>
                 <div className='row'>
                   <div className={styles.products__options}>
-                    <select className='form-select d-inline-block w-auto'>
-                      <option value='sort-title' disabled selected>
-                        Sort options:
-                      </option>
-                      <option value='price-ASC'>Sort by price ASC</option>
-                      <option value='price-DESC'>Sort by price DESC</option>
-                      <option value='rating-ASC'>Sort by rating ASC</option>
-                      <option value='rating-DESC'>Sort by rating DESC</option>
-                      <option value='discount-ASC'>Sort by discount ASC</option>
-                      <option value='discount-DESC'>
-                        Sort by discount DESC
-                      </option>
+                    <select
+                      value={selected}
+                      onChange={handleChange}
+                      className='form-select d-inline-block w-auto'
+                      id='optionSort'>
+                      {selectList.map((opt: ISelectList, id: number) => (
+                        <option value={opt?.value} key={id}>
+                          {opt?.text}
+                        </option>
+                      ))}
                     </select>
 
                     <div className='btn-group'>
-                      <span className='btn btn-light'>
+                      <span
+                        onClick={() => setCardGrid('list')}
+                        className={listActive + ' btn btn-light'}>
                         <i className='bi bi-list'></i>
                       </span>
-                      <span className='btn btn-light active'>
+                      <span
+                        onClick={() => setCardGrid('grid')}
+                        className={gridActive + ' btn btn-light'}>
                         <i className='bi bi-grid-3x3-gap-fill'></i>
                       </span>
                     </div>
                   </div>
                 </div>
-                <div className='product-grid '>
+                <div className={'product-' + cardGrid}>
                   {loading && <ScaletonCatalog />}
                   {error && <ErrorMessage error={error} />}
                   {result.products.map((product) => (
-                    <CardProductGrid product={product} key={product.id} />
+                    <ProductCardGrid product={product} key={product.id} />
                   ))}
                 </div>
               </div>

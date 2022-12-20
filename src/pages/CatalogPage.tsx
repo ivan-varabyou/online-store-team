@@ -4,10 +4,19 @@ import React from 'react';
 
 import { CardProductGrid } from '../components/CardProductGrid/';
 import { getProducts } from '../hooks/products';
+import { IResult } from '../models';
 
 import styles from '../scss/page/CategoryPage.module.scss';
 export function CatalogPage() {
-  const { result, error, loading } = getProducts();
+  const { result, error, loading } = getProducts<IResult>(
+    'https://dummyjson.com/products?limit=100',
+    {
+      products: [],
+      total: 0,
+      skip: 0,
+      limit: 0,
+    },
+  );
   console.log(error, loading);
   return (
     <>

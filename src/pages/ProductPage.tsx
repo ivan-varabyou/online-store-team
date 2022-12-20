@@ -1,10 +1,14 @@
 import React from 'react';
 import { useParams } from 'react-router-dom';
-import { getProduct } from '../hooks/products';
+import { getProducts } from '../hooks/products';
+import { IProduct } from '../models';
 
 export function ProductPage() {
   const { productId } = useParams();
-  const { result, error, loading } = getProduct(Number(productId));
+  const { result, error, loading } = getProducts<IProduct>(
+    'https://dummyjson.com/products/' + Number(productId),
+    {},
+  );
   console.log(result, error, loading);
   return (
     <>

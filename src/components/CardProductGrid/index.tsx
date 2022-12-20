@@ -11,7 +11,7 @@ interface IProductProp {
 export const CardProductGrid = ({ product }: IProductProp) => {
   return (
     <>
-      <div className={styles.product}>
+      <div className={styles.product + ' card-product'}>
         <figure className={styles.product__card}>
           <Link
             className={styles.product__wrapper}
@@ -22,10 +22,11 @@ export const CardProductGrid = ({ product }: IProductProp) => {
             {/* <del className='price-old'>$170.00</del> */}
           </div>
           <Link to={'/product/' + product.id} className={styles.product__title}>
-            {product.title}
+            {product.title?.slice(0, 25) + '...'}
           </Link>
+
           <p className={styles.product__description}>
-            {product.description?.slice(0, 70) + '...'}
+            {product.description?.slice(0, 25) + '...'}
           </p>
 
           <div className={styles.product__button}>

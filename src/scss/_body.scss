@@ -29,3 +29,56 @@ header {
 footer {
   grid-area: footer;
 }
+
+.product-grid {
+  display: flex;
+  flex-direction: row;
+  flex-wrap: wrap;
+
+  .card-product {
+    width: 33.33333%;
+  }
+
+  .product__description {
+    display: none;
+  }
+}
+
+.product-list {
+  display: flex;
+  flex-direction: column;
+  flex-wrap: wrap;
+
+  .card-product {
+    width: 100%;
+  }
+
+  .product__description {
+    display: block;
+  }
+}
+.filter {
+  .card-body {
+    position: relative;
+  }
+  .form-range {
+    position: absolute;
+  }
+
+  .range-filter {
+    input[type='range'] {
+      -webkit-appearance: none;
+      appearance: none;
+      width: 96%;
+      margin: 2%;
+      overflow: hidden;
+      outline: none;
+      background: linear-gradient(orange, orange) no-repeat center;
+      background-size: 100% 2px;
+      pointer-events: none;
+    }
+    .card-body:nth-child(2) {
+      background: none;
+    }
+  }
+}

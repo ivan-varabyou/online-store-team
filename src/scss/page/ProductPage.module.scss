@@ -1,0 +1,50 @@
+
+.productPage {
+    padding: 10px;
+    display: grid;
+    grid-template-areas:
+      'title title'
+      'img info'
+      'buttons buttons';
+    grid-template-columns: 3fr 7fr;
+    grid-template-rows: auto 2fr auto;
+    width: 100vw;
+    height: 100vh;
+
+    &__imgContainer {
+        background-repeat: no-repeat;
+        background-size: contain;
+        background-position: center;
+        height: 200px;;
+    }
+
+    &__title {
+        grid-area: title;
+    }
+
+    &__imageBlock {
+        grid-area: img;
+    }
+
+    &__infoBlock {
+        grid-area: info;
+    }
+
+    &__buttons {
+        grid-area: buttons;
+    }
+  }
+
+  
+
+  @media (max-width: 740px) {
+    .main {
+      grid-template-areas:
+        'header'
+        'menu'
+        'content'
+        'footer';
+      grid-template-columns: 1fr;
+      grid-template-rows: 120px auto auto 150px;
+    }
+}

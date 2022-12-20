@@ -29,7 +29,7 @@ export const CardProductGrid = ({ product }: IProductProp) => {
           </p>
 
           <div className={styles.product__button}>
-            <button className='btn btn-primary'>Add to cart</button>
+            <button className='btn btn-primary '>Add to cart</button>
             <Link
               to={'/product/' + product.id}
               className='btn btn-light btn-icon'>

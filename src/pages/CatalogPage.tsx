@@ -1,33 +1,46 @@
 import React, { useState, useEffect, EventHandler, FormEvent } from 'react';
+import qs from 'qs';
 
-// import { useSearchParams } from 'react-router-dom';
-import { getProducts } from '../hooks/products';
-import { IResult } from '../models';
+import { useSearchParams, useNavigate } from 'react-router-dom';
+import { getCatalogProducts } from '../hooks/products';
+import { IResultProduct } from '../models';
 import { ProductCardGrid } from '../components/ProductCardGrid';
 import { ScaletonCatalog } from '../components/ScaletonCatalog/';
 import { ErrorMessage } from '../components/ErrorMessage/';
+import { CatalogFilter } from '../components/CatalogFilter/';
 
 import styles from '../scss/page/CategoryPage.module.scss';
 
 export function CatalogPage() {
-  const { result, error, loading } = getProducts<IResult>(
+  const navigate = useNavigate();
+  const { result, error, loading, setResult } = getCatalogProducts(
     'https://dummyjson.com/products?limit=100',
-    {
-      products: [],
-      total: 0,
-      skip: 0,
-      limit: 0,
-    },
+    [
+      {
+        id: 0,
+        title: '',
+        price: 0,
+        discountPercentage: 0,
+        rating: 0,
+      },
+    ],
   );
+
+  useEffect(() => {
+    if (window.location.search) {
+      const params = qs.parse(window.location.search.substring(1));
+      console.log(params);
+    }
+  }, []);
 
   /* --------selected----------*/
   type ISelectList = { value: string; text: string };
-  const [selected, setSelected] = useState('');
+  const [selected, setSelected] = useState('default');
   const handleChange = (event: React.ChangeEvent<HTMLSelectElement>): void => {
     setSelected(event.target.value);
   };
   const selectList: ISelectList[] = [
-    { value: 'sort-title', text: 'Sort options:' },
+    { value: 'default', text: 'Sort default' },
     { value: 'price-ASC', text: 'Sort by price ASC' },
     { value: 'price-DESC', text: 'Sort by price DESC' },
     { value: 'rating-ASC', text: 'Sort by rating ASC' },
@@ -45,9 +58,60 @@ export function CatalogPage() {
 
   /* ------------------*/
 
+  const filterParametr = {
+    category: [
+      { name: 'category name', status: false },
+      { name: 'category name2', status: true },
+    ],
+    brand: [
+      { name: 'brand name', status: false },
+      { name: 'brand name2', status: true },
+    ],
+    price: {
+      min: 0,
+      max: 100,
+      value: 50,
+    },
+    stock: {
+      min: 0,
+      max: 100,
+      value: 50,
+    },
+  };
+
+  const [filterData, setfilterData] = useState(filterParametr);
+
   useEffect(() => {
-    console.log(selected);
-  }, [selected]);
+    console.log(filterData);
+    const newResults = [...result];
+    newResults.sort((a, b) => a.id - b.id);
+    if (selected === 'price-ASC') newResults.sort((a, b) => a.price - b.price);
+    if (selected === 'price-DESC') newResults.sort((a, b) => b.price - a.price);
+    if (selected === 'rating-ASC')
+      newResults.sort((a, b) => a.rating - b.rating);
+    if (selected === 'rating-DESC')
+      newResults.sort((a, b) => b.rating - a.rating);
+    if (selected === 'discount-ASC')
+      newResults.sort(
+        (a, b) =>
+          Math.ceil(b.discountPercentage) - Math.ceil(a.discountPercentage),
+      );
+    if (selected === 'discount-DESC')
+      newResults.sort(
+        (a, b) =>
+          Math.ceil(a.discountPercentage) - Math.ceil(b.discountPercentage),
+      );
+    console.log(selected, newResults);
+    setResult(newResults);
+  }, [selected, filterData]);
+
+  useEffect(() => {
+    const queryString = qs.stringify({
+      sort: selected,
+    });
+    navigate(`?${queryString}`);
+    console.log(queryString);
+  }, [selected, filterData]);
 
   return (
     <>
@@ -56,7 +120,7 @@ export function CatalogPage() {
           <div className='container'>
             <h1 className={styles.products__title}>Category name</h1>
             <p className={styles.products__items}>
-              {result.products.length} Items found
+              {result.length} Items found
             </p>
           </div>
         </section>
@@ -64,184 +128,10 @@ export function CatalogPage() {
           <div className={styles.products}>
             <div className='row'>
               <aside className='col-lg-3'>
-                <button
-                  className='btn btn-outline-secondary mb-3 w-100  d-lg-none'
-                  data-bs-toggle='collapse'
-                  data-bs-target='#aside_filter'>
-                  Show filter
-                </button>
-
-                <div className='collapse card d-lg-block mb-5 filter'>
-                  <article className='filter-group'>
-                    <header className='card-header'>
-                      <div className='title'>
-                        <i className='icon-control fa fa-chevron-down'></i>{' '}
-                        Category
-                      </div>
-                    </header>
-                    <div className='collapse show' id='filter-category'>
-                      <div className='card-body'>
-                        <label className='form-check mb-2'>
-                          <input className='form-check-input' type='checkbox' />
-                          <span className='form-check-label'>Honda accord</span>
-                        </label>
-                        <label className='form-check mb-2'>
-                          <input className='form-check-input' type='checkbox' />
-                          <span className='form-check-label'>Honda accord</span>
-                        </label>
-                      </div>
-                    </div>
-                  </article>
-
-                  <article className='filter-group'>
-                    <header className='card-header'>
-                      <div className='title'>
-                        <i className='icon-control fa fa-chevron-down'></i>
-                        Brands
-                      </div>
-                    </header>
-                    <div className='collapse show' id='filter-brand'>
-                      <div className='card-body'>
-                        <label className='form-check mb-2'>
-                          <input className='form-check-input' type='checkbox' />
-                          <span className='form-check-label'>Honda accord</span>
-                        </label>
-                        <label className='form-check mb-2'>
-                          <input className='form-check-input' type='checkbox' />
-                          <span className='form-check-label'>Honda accord</span>
-                        </label>
-                        <label className='form-check mb-2'>
-                          <input className='form-check-input' type='checkbox' />
-                          <span className='form-check-label'>Honda accord</span>
-                        </label>
-                        <label className='form-check mb-2'>
-                          <input className='form-check-input' type='checkbox' />
-                          <span className='form-check-label'>Honda accord</span>
-                        </label>
-                      </div>
-                    </div>
-                  </article>
-
-                  <article className='filter-group'>
-                    <header className='card-header'>
-                      <div className='title'>
-                        <i className='icon-control fa fa-chevron-down'></i>{' '}
-                        Category
-                      </div>
-                    </header>
-                    <div className='collapse show' id='filter-category'>
-                      <div className='card-body'>
-                        <label className='form-check mb-2'>
-                          <input className='form-check-input' type='checkbox' />
-                          <span className='form-check-label'>Honda accord</span>
-                        </label>
-                        <label className='form-check mb-2'>
-                          <input className='form-check-input' type='checkbox' />
-                          <span className='form-check-label'>Honda accord</span>
-                        </label>
-                      </div>
-                    </div>
-                  </article>
-
-                  <article className='filter-group'>
-                    <header className='card-header'>
-                      <div className='title'>
-                        <i className='icon-control fa fa-chevron-down'></i>
-                        Price
-                      </div>
-                    </header>
-                    <div className='collapse show' id='filter-stock'>
-                      <div className='card-body'>
-                        <input
-                          type='range'
-                          className='form-range'
-                          min='0'
-                          max='1000'
-                          multiple
-                        />
-
-                        <div className='row mb-3'>
-                          <div className='col-6'>
-                            <label className='form-label'>Min</label>
-                            <input
-                              className='form-control'
-                              id='min'
-                              placeholder='$0'
-                              type='number'
-                              min='0'
-                              max='150'
-                            />
-                          </div>
-
-                          <div className='col-6'>
-                            <label className='form-label'>Max</label>
-                            <input
-                              className='form-control'
-                              id='max'
-                              placeholder='$150'
-                              type='number'
-                              min='0'
-                              max='10000'
-                            />
-                          </div>
-                        </div>
-                      </div>
-                    </div>
-                  </article>
-
-                  <article className='filter-group'>
-                    <header className='card-header'>
-                      <div className='title'>
-                        <i className='icon-control fa fa-chevron-down'></i>
-                        Stock
-                      </div>
-                    </header>
-                    <div className='collapse show' id='filter-stock'>
-                      <div className='card-body'>
-                        <input
-                          type='range'
-                          className='form-range'
-                          min='0'
-                          max='100'
-                          multiple
-                          step='1'
-                        />
-
-                        <div className='row mb-3'>
-                          <div className='col-6'>
-                            <label className='form-label'>Min</label>
-                            <input
-                              className='form-control'
-                              id='min'
-                              placeholder='0'
-                              type='number'
-                              min='0'
-                              max='150'
-                            />
-                          </div>
-
-                          <div className='col-6'>
-                            <label className='form-label'>Max</label>
-                            <input
-                              className='form-control'
-                              id='max'
-                              placeholder='150'
-                              type='number'
-                              min='0'
-                              max='150'
-                            />
-                          </div>
-                        </div>
-                      </div>
-                    </div>
-                  </article>
-                  <div className='btn-group col-12'>
-                    <button className='btn btn-light btn-icon'>
-                      Copy link
-                    </button>
-                    <button className='btn btn-light btn-icon'>Reset</button>
-                  </div>
-                </div>
+                <CatalogFilter
+                  data={filterData}
+                  onChangeFilter={setfilterData}
+                />
               </aside>
               <div className='col-lg-9'>
                 <div className='row'>
@@ -275,9 +165,10 @@ export function CatalogPage() {
                 <div className={'product-' + cardGrid}>
                   {loading && <ScaletonCatalog />}
                   {error && <ErrorMessage error={error} />}
-                  {result.products.map((product) => (
-                    <ProductCardGrid product={product} key={product.id} />
-                  ))}
+                  {!loading &&
+                    result.map((product) => (
+                      <ProductCardGrid product={product} key={product.id} />
+                    ))}
                 </div>
               </div>
             </div>

@@ -13,7 +13,6 @@
   background-color: #ff2748;
   position: absolute;
   top: -5px;
-  right: -11px;
 }
 
 .logo {
@@ -41,6 +40,35 @@
   justify-content: space-between;
   margin-bottom: 12px;
   margin-top: 12px;
+  grid-template-areas: 'logoblock search widget';
+  grid-template-columns: 150px 0.8fr 40px;
+  gap: 8px;
+  @media (max-width: 576px) {
+    justify-content: space-between;
+    grid-template-columns: 1fr 1fr;
+    gap: 8px;
+    grid-template-areas:
+      'logoblock  widget'
+      'search search';
+  }
+}
+
+.logoblock {
+  grid-area: logoblock;
+}
+
+.search {
+  grid-area: search;
+  input[type='search']::-webkit-search-decoration,
+  input[type='search']::-webkit-search-cancel-button,
+  input[type='search']::-webkit-search-results-button,
+  input[type='search']::-webkit-search-results-decoration {
+    display: none;
+  }
+}
+
+.widget {
+  grid-area: widget;
 }
 
 .nav {
@@ -60,4 +88,10 @@
       color: #0d6efd;
     }
   }
+}
+
+.left {
+  display: grid;
+  grid-auto-flow: column;
+  gap: 25px;
 }

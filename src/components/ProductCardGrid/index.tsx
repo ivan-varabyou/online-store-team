@@ -16,13 +16,13 @@ export const ProductCardGrid = ({ product }: IProductProp) => {
     <>
       <div className={styles.product + ' card-product'}>
         <div className={styles.product__card + ' product__grid'}>
-          <div className='product__image'>
+          <div className={styles.product__image + ' product__image'}>
             <Link
-              className={styles.product__wrapper}
+              className={styles.product__wrapper + ' product__wrapper'}
               to={'/product/' + product.id}
               style={{ backgroundImage: `url(${product.thumbnail})` }}></Link>
           </div>
-          <div className='product__detail'>
+          <div className={styles.product__detail + ' product__detail'}>
             <div className={styles.product__price}>
               <strong>${product.price}</strong>
               {/* <del className='price-old'>$170.00</del> */}

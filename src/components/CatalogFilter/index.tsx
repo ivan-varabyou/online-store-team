@@ -2,8 +2,6 @@ import React from 'react';
 
 import styles from './CatalogFilter.module.scss';
 
-import { CatalogFilterCheckbox } from './CatalogFilterCheckbox/';
-
 type TypeFilterCheckbox = { name: string; status: boolean };
 type TypeFilterRange = {
   min: number;
@@ -177,10 +175,6 @@ export const CatalogFilter = (
             </div>
           </div>
         </article>
-        <div className='btn-group col-12'>
-          <button className='btn btn-light btn-icon'>Copy link</button>
-          <button className='btn btn-light btn-icon'>Reset</button>
-        </div>
       </div>
     </>
   );

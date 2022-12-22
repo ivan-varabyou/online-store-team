@@ -35,7 +35,7 @@ export function getCatalogProducts(
   search: string,
   sort: string,
 ): TypeUseProduct<IResultProduct[]> {
-  const urlFetch = search.length > 0 ? `search?q=${search}` : '?limit=100';
+  const urlFetch = search.length > 0 ? `search?q=${search}` : '?limit=60';
   const resultObject = [
     {
       id: 0,

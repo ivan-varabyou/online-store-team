@@ -1,16 +1,46 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useContext } from 'react';
 import { Link } from 'react-router-dom';
-import { IProduct } from '../../models';
+import { IProduct, IResultProduct } from '../../models';
+
+import { CartContext } from '../../App';
 
 import styles from './ProductCardGrid.module.scss';
 
 interface IProductProp {
-  product: IProduct;
+  product: IResultProduct;
 }
 
 export const ProductCardGrid = ({ product }: IProductProp) => {
-  const [statusAddToCart, setStatusAddToCart] = useState(false);
+  const addProductsCart = useContext(CartContext).addProductsCart;
+  const removeProductCart = useContext(CartContext).removeProductCart;
+  const isAddCart = useContext(CartContext).isAddCart;
+
+  const dafaultStatusAddToCart =
+    isAddCart && product.id && isAddCart(product.id);
+  const [statusAddToCart, setStatusAddToCart] = useState(
+    dafaultStatusAddToCart,
+  );
+
   const buttonAddToCartText = statusAddToCart ? 'Remove' : 'Add to cart';
+
+  const handleButtonCart = (): void => {
+    if (statusAddToCart) {
+      product.id && removeProductCart && removeProductCart(product.id, 1);
+      setStatusAddToCart(false);
+    } else {
+      product && addProductsCart && addProductsCart(product, 1);
+
+      setStatusAddToCart(true);
+    }
+
+    // const dataProductForCard = {
+    //   id: product.id,
+    //   count: 1,
+    //   data: JSON.stringify(product),
+    // };
+
+    // if (addProductsCart) addProductsCart(dataProductForCard);
+  };
 
   return (
     <>
@@ -39,11 +69,7 @@ export const ProductCardGrid = ({ product }: IProductProp) => {
             </p>
 
             <div className={styles.product__button}>
-              <button
-                className='btn btn-primary'
-                onClick={() => {
-                  setStatusAddToCart(!statusAddToCart);
-                }}>
+              <button className='btn btn-primary' onClick={handleButtonCart}>
                 {buttonAddToCartText}
               </button>
               <Link

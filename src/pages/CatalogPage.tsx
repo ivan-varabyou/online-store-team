@@ -1,6 +1,14 @@
-import React, { useState, useEffect, EventHandler, FormEvent } from 'react';
+import React, {
+  useState,
+  useEffect,
+  EventHandler,
+  FormEvent,
+  useContext,
+  useRef,
+} from 'react';
 import qs from 'qs';
 
+import copy from 'copy-to-clipboard';
 import { useSearchParams, useNavigate } from 'react-router-dom';
 import { getCatalogProducts } from '../hooks/products';
 import { IResultProduct } from '../models';
@@ -8,34 +16,58 @@ import { ProductCardGrid } from '../components/ProductCardGrid';
 import { ScaletonCatalog } from '../components/ScaletonCatalog/';
 import { ErrorMessage } from '../components/ErrorMessage/';
 import { CatalogFilter } from '../components/CatalogFilter/';
+import { SearchContext } from '../App';
 
 import styles from '../scss/page/CategoryPage.module.scss';
 
 export function CatalogPage() {
+  const searchValueContext = useContext(SearchContext).searchValue;
+  const setSearchValueContext = useContext(SearchContext).setSerachValue;
+
   const navigate = useNavigate();
+
+  /* --------GET QUERY URL ----------*/
+
+  const [search, setSearch] = useSearchParams();
+
+  const defaultSelect = search.get('sort')
+    ? String(search.get('sort'))
+    : 'default';
+
+  const [selected, setSelected] = useState(defaultSelect);
+
+  let searchValue: string;
+  if (search.get('search')) {
+    searchValue = String(search.get('search'));
+  } else {
+    searchValue = String(searchValueContext);
+  }
+
+  /* --------FETCH ----------*/
+
   const { result, error, loading, setResult } = getCatalogProducts(
-    'https://dummyjson.com/products?limit=100',
-    [
-      {
-        id: 0,
-        title: '',
-        price: 0,
-        discountPercentage: 0,
-        rating: 0,
-      },
-    ],
+    String(searchValue),
+    String(selected),
   );
 
+  /* --------SET QUERY URL ----------*/
   useEffect(() => {
-    if (window.location.search) {
-      const params = qs.parse(window.location.search.substring(1));
-      console.log(params);
-    }
-  }, []);
+    type TypeQuery = {
+      sort?: string;
+      search?: string;
+    };
+    const query: TypeQuery = {};
+    if (searchValue !== undefined && searchValue.length > 0)
+      query.search = searchValue;
+    if (searchValueContext !== undefined && searchValueContext.length > 0)
+      query.search = searchValueContext;
+    if (selected !== 'default') query.sort = selected;
+    const queryString = qs.stringify(query);
+    navigate(`?${queryString}`);
+  }, [selected, searchValueContext]);
 
   /* --------selected----------*/
   type ISelectList = { value: string; text: string };
-  const [selected, setSelected] = useState('default');
   const handleChange = (event: React.ChangeEvent<HTMLSelectElement>): void => {
     setSelected(event.target.value);
   };
@@ -48,7 +80,6 @@ export function CatalogPage() {
     { value: 'discount-ASC', text: 'Sort by discount ASC' },
     { value: 'discount-DESC', text: 'Sort by discount DESC' },
   ];
-  /* ------------------*/
 
   /* ------GRID---------- */
 
@@ -56,7 +87,7 @@ export function CatalogPage() {
   const listActive = cardGrid === 'list' && 'active';
   const gridActive = cardGrid === 'grid' && 'active';
 
-  /* ------------------*/
+  /* ---------filterParametr---------*/
 
   const filterParametr = {
     category: [
@@ -81,37 +112,16 @@ export function CatalogPage() {
 
   const [filterData, setfilterData] = useState(filterParametr);
 
-  useEffect(() => {
-    console.log(filterData);
-    const newResults = [...result];
-    newResults.sort((a, b) => a.id - b.id);
-    if (selected === 'price-ASC') newResults.sort((a, b) => a.price - b.price);
-    if (selected === 'price-DESC') newResults.sort((a, b) => b.price - a.price);
-    if (selected === 'rating-ASC')
-      newResults.sort((a, b) => a.rating - b.rating);
-    if (selected === 'rating-DESC')
-      newResults.sort((a, b) => b.rating - a.rating);
-    if (selected === 'discount-ASC')
-      newResults.sort(
-        (a, b) =>
-          Math.ceil(b.discountPercentage) - Math.ceil(a.discountPercentage),
-      );
-    if (selected === 'discount-DESC')
-      newResults.sort(
-        (a, b) =>
-          Math.ceil(a.discountPercentage) - Math.ceil(b.discountPercentage),
-      );
-    console.log(selected, newResults);
-    setResult(newResults);
-  }, [selected, filterData]);
+  /*---RESET BUTTON----*/
+  const hendleResetUrl = () => {
+    navigate('/');
+    setSelected('default');
+    if (setSearchValueContext) setSearchValueContext('');
+  };
 
-  useEffect(() => {
-    const queryString = qs.stringify({
-      sort: selected,
-    });
-    navigate(`?${queryString}`);
-    console.log(queryString);
-  }, [selected, filterData]);
+  const hendleCopyUrl = () => {
+    copy(window.location.href);
+  };
 
   return (
     <>
@@ -128,9 +138,23 @@ export function CatalogPage() {
           <div className={styles.products}>
             <div className='row'>
               <aside className='col-lg-3'>
+                <div className='btn-group col-12'>
+                  <button
+                    className='btn btn-light btn-icon'
+                    onClick={hendleCopyUrl}>
+                    Copy
+                  </button>
+
+                  <button
+                    onClick={hendleResetUrl}
+                    className='btn btn-light btn-icon'>
+                    Reset
+                  </button>
+                </div>
                 <CatalogFilter
                   data={filterData}
-                  onChangeFilter={setfilterData}
+
+                  // onChangeFilter={setfilterData}
                 />
               </aside>
               <div className='col-lg-9'>

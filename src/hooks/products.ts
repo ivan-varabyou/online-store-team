@@ -9,27 +9,64 @@ type TypeUseProduct<T> = {
   setResult: (result: T) => void;
 };
 
-export function getCatalogProducts<T>(
-  urlFetch: string,
-  resultObject: IResultProduct[],
+function sortProduct(result: IResultProduct[], sort: string) {
+  const newResults = result;
+
+  newResults.sort((a, b) => a.id - b.id);
+  if (sort === 'price-ASC') newResults.sort((a, b) => a.price - b.price);
+  if (sort === 'price-DESC') newResults.sort((a, b) => b.price - a.price);
+  if (sort === 'rating-ASC') newResults.sort((a, b) => a.rating - b.rating);
+  if (sort === 'rating-DESC') newResults.sort((a, b) => b.rating - a.rating);
+  if (sort === 'discount-ASC')
+    newResults.sort(
+      (a, b) =>
+        Math.ceil(b.discountPercentage) - Math.ceil(a.discountPercentage),
+    );
+  if (sort === 'discount-DESC')
+    newResults.sort(
+      (a, b) =>
+        Math.ceil(a.discountPercentage) - Math.ceil(b.discountPercentage),
+    );
+
+  return newResults;
+}
+
+export function getCatalogProducts(
+  search: string,
+  sort: string,
 ): TypeUseProduct<IResultProduct[]> {
+  const urlFetch = search.length > 0 ? `search?q=${search}` : '?limit=100';
+  const resultObject = [
+    {
+      id: 0,
+      title: '',
+      price: 0,
+      discountPercentage: 0,
+      rating: 0,
+    },
+  ];
+
   const [result, setResult] = useState<IResultProduct[]>(resultObject);
 
   const [error, setError] = useState('');
   const [loading, setLoading] = useState(true);
 
   async function fetchProduct() {
+    setError('');
     try {
-      setError('');
-      const response = await axios.get(urlFetch);
-      const products: IResultProduct[] = response.data.products;
-      const productsTwo: IResultProduct[] = products.sort(
-        (a, b) => a.id - b.id,
+      const response = await axios.get(
+        `https://dummyjson.com/products/${urlFetch}`,
       );
-
-      setResult(productsTwo);
-
-      if (response.data.products[0]['id'] > 0) setLoading(false);
+      if (response.data.total !== 0) {
+        const products: IResultProduct[] = response.data.products;
+        const productsSort = sortProduct(products, sort);
+        setResult(productsSort);
+        if (response.data.products[0]['id'] > 0) setLoading(false);
+      } else {
+        setResult([]);
+        setLoading(false);
+        setError('Not Results');
+      }
     } catch (e: unknown) {
       const error = e as AxiosError;
       setError(error.message);
@@ -37,8 +74,9 @@ export function getCatalogProducts<T>(
   }
 
   useEffect(() => {
+    console.log('fetchProduct');
     fetchProduct();
-  }, []);
+  }, [search, sort]);
 
   return { result, error, loading, setResult };
 }

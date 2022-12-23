@@ -1,10 +1,4 @@
-import React, {
-  createContext,
-  Dispatch,
-  SetStateAction,
-  useState,
-  useEffect,
-} from 'react';
+import React, { createContext, useState, useEffect } from 'react';
 import { Route, Routes } from 'react-router-dom';
 import { ProductPage } from './pages/ProductPage';
 import { CatalogPage } from './pages/CatalogPage';
@@ -41,6 +35,11 @@ function App() {
   const [searchValue, setSerachValue] = useState('');
   // const [currentProductCart, addProductsCart] = useState(null);
 
+  function updateCartCountAndSumm() {
+    setCartTotal(getCartTotal());
+    setCartCount(getLocalStorage('cart').length);
+  }
+
   return (
     <>
       <SearchContext.Provider
@@ -50,13 +49,15 @@ function App() {
         }}>
         <CartContext.Provider
           value={{
+            getLocalStorage,
+            setLocalStorage,
+            getCartTotal,
             addProductsCart,
             removeProductCart,
             isAddCart,
             cartCount,
             cartTotal,
-            setCartCount,
-            setCartTotal,
+            updateCartCountAndSumm,
           }}>
           <Header />
           <Routes>

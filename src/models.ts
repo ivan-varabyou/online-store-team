@@ -39,11 +39,13 @@ export interface ISearchContext {
 }
 
 export interface ICartContext {
+  getLocalStorage: (value: string) => [] | TypeCartItem[];
+  setLocalStorage: <T>(key: string, value: T) => void;
+  getCartTotal: () => number;
   addProductsCart: (data: IResultProduct, count: number) => boolean;
   removeProductCart: (id: number, count: number) => boolean;
   isAddCart: (id: number) => boolean;
-  setCartCount: React.Dispatch<number>;
-  setCartTotal: React.Dispatch<number>;
+  updateCartCountAndSumm: () => void;
   cartCount: number;
   cartTotal: number;
 }

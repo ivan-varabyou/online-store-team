@@ -1,8 +1,6 @@
 import React, { useState, useEffect, useContext } from 'react';
 import { Link } from 'react-router-dom';
-import { IProduct, IResultProduct } from '../../models';
-import { getCartTotal } from '../../hooks/cart';
-import { getLocalStorage } from '../../hooks/storage';
+import { IResultProduct } from '../../models';
 
 import { CartContext } from '../../App';
 
@@ -16,8 +14,7 @@ export const ProductCardGrid = ({ product }: IProductProp) => {
   const addProductsCart = useContext(CartContext).addProductsCart;
   const removeProductCart = useContext(CartContext).removeProductCart;
   const isAddCart = useContext(CartContext).isAddCart;
-  const setCartCount = useContext(CartContext).setCartCount;
-  const setCartTotal = useContext(CartContext).setCartTotal;
+  const updateCartCountAndSumm = useContext(CartContext).updateCartCountAndSumm;
 
   const dafaultStatusAddToCart =
     isAddCart && product.id && isAddCart(product.id);
@@ -33,11 +30,9 @@ export const ProductCardGrid = ({ product }: IProductProp) => {
       setStatusAddToCart(false);
     } else {
       product && addProductsCart && addProductsCart(product, 1);
-
       setStatusAddToCart(true);
     }
-    setCartCount && setCartCount(Number(getLocalStorage('cart').length));
-    setCartTotal && setCartTotal(getCartTotal());
+    updateCartCountAndSumm && updateCartCountAndSumm();
   };
 
   return (

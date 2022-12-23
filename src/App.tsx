@@ -1,5 +1,5 @@
 import React, { createContext, useState, useEffect } from 'react';
-import { Route, Routes } from 'react-router-dom';
+import { Route, Routes, useSearchParams } from 'react-router-dom';
 import { ProductPage } from './pages/ProductPage';
 import { CatalogPage } from './pages/CatalogPage';
 import { NotFoundPage } from './pages/NotFoundPage';
@@ -11,20 +11,24 @@ import { ISearchContext, ICartContext } from './models';
 import { getLocalStorage, setLocalStorage } from './hooks/storage';
 
 import {
+  getCartCount,
   getCartTotal,
   addProductsCart,
   removeProductCart,
   isAddCart,
 } from './hooks/cart';
 
+import { redirectingNonExistentPages } from './hooks/redirecting';
+
 export const SearchContext = createContext<Partial<ISearchContext>>({});
 export const CartContext = createContext<Partial<ICartContext>>({});
 
 function App() {
-  const [cartCount, setCartCount] = useState(
-    Number(getLocalStorage('cart').length || 0),
-  );
-  const [cartTotal, setCartTotal] = useState(Number(getCartTotal() || 0));
+  const [searchUrl] = useSearchParams();
+  redirectingNonExistentPages(searchUrl);
+
+  const [cartCount, setCartCount] = useState(getCartCount() || 0);
+  const [cartTotal, setCartTotal] = useState(getCartTotal() || 0);
 
   useEffect(() => {
     if (!getLocalStorage('cart')) {
@@ -37,7 +41,7 @@ function App() {
 
   function updateCartCountAndSumm() {
     setCartTotal(getCartTotal());
-    setCartCount(getLocalStorage('cart').length);
+    setCartCount(getCartCount());
   }
 
   return (
@@ -52,6 +56,7 @@ function App() {
             getLocalStorage,
             setLocalStorage,
             getCartTotal,
+            getCartCount,
             addProductsCart,
             removeProductCart,
             isAddCart,

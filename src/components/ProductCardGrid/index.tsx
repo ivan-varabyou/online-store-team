@@ -69,7 +69,7 @@ export const ProductCardGrid = ({ product }: IProductProp) => {
             <Link
               to={'/product/' + product.id}
               className={styles.product__title + ' product__title'}>
-              {product.title}
+              {String(product.title).slice(0, 30)}
             </Link>
 
             <p className={styles.product__stock + ' product__stock'}>

@@ -21,10 +21,8 @@
   }
 
   .product__grid {
-    display: grid;
-    grid-template-areas:
-      'image '
-      'detail ';
+    display: flex;
+    flex-direction: column;
   }
 
   .product__image {
@@ -57,16 +55,12 @@
   }
 
   .product__grid {
-    display: grid;
-    grid-template-areas: 'image detail';
-    grid-template-columns: 1fr 1fr;
+    display: flex;
+    flex-direction: row;
     gap: 10px;
 
     @media (max-width: 576px) {
-      grid-template-areas:
-        'image'
-        'detail';
-      grid-template-columns: 1fr;
+      flex-direction: row;
     }
   }
 

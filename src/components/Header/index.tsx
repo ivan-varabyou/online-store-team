@@ -1,20 +1,19 @@
-import React, {
-  useState,
-  useEffect,
-  useContext,
-  useRef,
-  useCallback,
-} from 'react';
+import React, { useState, useContext, useRef, useCallback } from 'react';
 
 import { Link } from 'react-router-dom';
 import { SearchContext } from '../../App';
 import debounce from 'lodash.debounce';
 
+import { CartContext } from '../../App';
+
 import { useSearchParams } from 'react-router-dom';
 
 import styles from './Header.module.scss';
 
-export const Header = (cartCount: { cartCount: number }): JSX.Element => {
+export const Header = (): JSX.Element => {
+  const cartCount = Number(useContext(CartContext).cartCount);
+  const cartTotal = Number(useContext(CartContext).cartTotal);
+
   const [search] = useSearchParams();
   const [value, setValue] = useState(search.get('search') || '');
 
@@ -68,9 +67,14 @@ export const Header = (cartCount: { cartCount: number }): JSX.Element => {
               <div className={styles.widget_item}>
                 <Link to='/cart' className={styles.widget_link}>
                   <i className='bi bi-cart-fill'></i>
-                  <span className={styles.notify}>
-                    {cartCount.cartCount || 0}
-                  </span>
+
+                  {cartCount > 0 && (
+                    <span className={styles.notify}>{cartCount}</span>
+                  )}
+
+                  {cartTotal > 0 && (
+                    <span className={styles.total}>{'$' + cartTotal}</span>
+                  )}
                 </Link>
               </div>
             </div>

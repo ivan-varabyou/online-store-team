@@ -14,13 +14,13 @@
     background-size: cover;
     background-position: center;
     height: 200px;
-    display: grid;
+    display: flex;
   }
 
   &__card {
     width: 100%;
     position: relative;
-    display: grid;
+    display: flex;
     min-width: 0;
     background-color: #fff;
     background-clip: border-box;
@@ -30,9 +30,8 @@
   }
 
   &__button {
-    display: grid;
-    gap: 8px;
-    grid-auto-flow: column;
+    display: flex;
+    flex-direction: row;
 
     .btn {
       font-size: 1em;
@@ -42,10 +41,10 @@
   &__price {
     font-size: 1.1em;
     margin-top: 8px;
-    display: grid;
-    grid-auto-flow: column;
+    display: flex;
+    flex-direction: row;
     gap: 7px;
-    grid-template-columns: 0.25fr 1.75fr;
+
     strong {
       color: #ce3333;
     }
@@ -61,7 +60,7 @@
     font-weight: 600;
     font-size: 1.1em;
     margin-bottom: 14px;
-    display: grid;
+    display: flex;
     overflow: hidden;
     text-overflow: ellipsis;
     white-space: nowrap;

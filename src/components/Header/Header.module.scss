@@ -5,14 +5,29 @@
 .notify {
   display: inline-block;
   padding: 3px 6px;
-  font-size: 12px;
+  font-size: 11px;
   line-height: 1;
   text-align: center;
   border-radius: 3rem;
   color: #fff;
   background-color: #ff2748;
   position: absolute;
-  top: -5px;
+  top: 5px;
+  left: 5px;
+}
+
+.total {
+  display: inline-block;
+  padding: 3px 6px;
+  font-size: 10px;
+  line-height: 1;
+  text-align: center;
+  border-radius: 3rem;
+  color: #fff;
+  background-color: #0d6efd;
+  position: absolute;
+  left: -37px;
+  bottom: 10px;
 }
 
 .logo {
@@ -75,7 +90,7 @@
   position: relative;
 
   i {
-    font-size: 22px;
+    font-size: 25px;
     color: #6c757d;
     transition: all 0.25s ease;
     &:hover {

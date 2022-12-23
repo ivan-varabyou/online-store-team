@@ -1,15 +1,7 @@
-import React, {
-  useState,
-  useEffect,
-  EventHandler,
-  FormEvent,
-  useContext,
-  useRef,
-} from 'react';
-import qs from 'qs';
+import React, { useState, useEffect, useContext } from 'react';
 
 import copy from 'copy-to-clipboard';
-import { useSearchParams, useNavigate } from 'react-router-dom';
+import { useSearchParams } from 'react-router-dom';
 import { getCatalogProducts } from '../hooks/products';
 import { IResultProduct } from '../models';
 import { ProductCardGrid } from '../components/ProductCardGrid';
@@ -21,50 +13,76 @@ import { SearchContext } from '../App';
 import styles from '../scss/page/CategoryPage.module.scss';
 
 export function CatalogPage() {
-  const searchValueContext = useContext(SearchContext).searchValue;
-  const setSearchValueContext = useContext(SearchContext).setSerachValue;
-
-  const navigate = useNavigate();
+  const searchValue = String(useContext(SearchContext).searchValue);
+  const setSearchValue = useContext(SearchContext).setSerachValue;
 
   /* --------GET QUERY URL ----------*/
 
-  const [search, setSearch] = useSearchParams();
+  const [searchUrl, setSearchUrl] = useSearchParams();
 
-  const defaultSelect = search.get('sort')
-    ? String(search.get('sort'))
+  const defaultSelect = searchUrl.get('sort')
+    ? String(searchUrl.get('sort'))
     : 'default';
-
   const [selected, setSelected] = useState(defaultSelect);
 
-  let searchValue: string;
-  if (search.get('search')) {
-    searchValue = String(search.get('search'));
-  } else {
-    searchValue = String(searchValueContext);
-  }
+  const searchValueDefault: string = searchUrl.get('search')
+    ? String(searchUrl.get('search'))
+    : String(searchValue);
+
+  /* ------GRID---------- */
+
+  const gridDefault: string = searchUrl.get('grid')
+    ? String(searchUrl.get('search'))
+    : 'grid';
+
+  const [cardGrid, setCardGrid] = useState(gridDefault);
+  const listActive = cardGrid === 'list' && 'active';
+  const gridActive = cardGrid === 'grid' && 'active';
 
   /* --------FETCH ----------*/
 
   const { result, error, loading, setResult } = getCatalogProducts(
-    String(searchValue),
+    String(searchValueDefault),
     String(selected),
   );
 
   /* --------SET QUERY URL ----------*/
-  useEffect(() => {
-    type TypeQuery = {
-      sort?: string;
-      search?: string;
-    };
+  type TypeQuery = {
+    sort?: string;
+    search?: string;
+    grid?: string;
+  };
+
+  function updateQueryUrl(value: string) {
     const query: TypeQuery = {};
-    if (searchValue !== undefined && searchValue.length > 0)
-      query.search = searchValue;
-    if (searchValueContext !== undefined && searchValueContext.length > 0)
-      query.search = searchValueContext;
-    if (selected !== 'default') query.sort = selected;
-    const queryString = qs.stringify(query);
-    navigate(`?${queryString}`);
-  }, [selected, searchValueContext]);
+
+    if (value && value?.length > 0) {
+      query.search = String(value);
+    }
+    if (value?.length === 0) {
+      delete query.search;
+    }
+    if (selected && selected?.length > 0) {
+      query.sort = String(selected);
+    }
+    if (selected?.length === 0 || selected === 'default') {
+      delete query.sort;
+    }
+
+    if (cardGrid === 'list') {
+      query.grid = String(cardGrid);
+    }
+
+    setSearchUrl(query);
+  }
+
+  useEffect(() => {
+    updateQueryUrl(searchValue);
+  }, [selected, searchValue, cardGrid]);
+
+  useEffect(() => {
+    updateQueryUrl(searchValueDefault);
+  }, []);
 
   /* --------selected----------*/
   type ISelectList = { value: string; text: string };
@@ -80,12 +98,6 @@ export function CatalogPage() {
     { value: 'discount-ASC', text: 'Sort by discount ASC' },
     { value: 'discount-DESC', text: 'Sort by discount DESC' },
   ];
-
-  /* ------GRID---------- */
-
-  const [cardGrid, setCardGrid] = useState('grid');
-  const listActive = cardGrid === 'list' && 'active';
-  const gridActive = cardGrid === 'grid' && 'active';
 
   /* ---------filterParametr---------*/
 
@@ -114,9 +126,9 @@ export function CatalogPage() {
 
   /*---RESET BUTTON----*/
   const hendleResetUrl = () => {
-    navigate('/');
+    setSearchUrl({});
     setSelected('default');
-    if (setSearchValueContext) setSearchValueContext('');
+    if (setSearchValue) setSearchValue('');
   };
 
   const hendleCopyUrl = () => {
@@ -130,7 +142,7 @@ export function CatalogPage() {
           <div className='container'>
             <h1 className={styles.products__title}>Category name</h1>
             <p className={styles.products__items}>
-              {result.length} Items found
+              {result && result.length} Items found
             </p>
           </div>
         </section>
@@ -189,7 +201,8 @@ export function CatalogPage() {
                 <div className={'product-' + cardGrid}>
                   {loading && <ScaletonCatalog />}
                   {error && <ErrorMessage error={error} />}
-                  {!loading &&
+                  {result &&
+                    !loading &&
                     result.map((product) => (
                       <ProductCardGrid product={product} key={product.id} />
                     ))}

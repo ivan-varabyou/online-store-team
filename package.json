@@ -14,6 +14,7 @@
     "bootstrap": "^5.2.3",
     "bootstrap-icons": "^1.10.2",
     "copy-to-clipboard": "^3.3.3",
+    "lodash.debounce": "^4.0.8",
     "qs": "^6.11.0",
     "react": "^18.2.0",
     "react-dom": "^18.2.0",
@@ -52,6 +53,7 @@
     ]
   },
   "devDependencies": {
+    "@types/lodash.debounce": "^4.0.7",
     "autoprefixer": "^10.4.13",
     "css-loader": "^6.7.3",
     "eslint": "^7.32.0",

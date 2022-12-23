@@ -32,14 +32,6 @@ export const ProductCardGrid = ({ product }: IProductProp) => {
 
       setStatusAddToCart(true);
     }
-
-    // const dataProductForCard = {
-    //   id: product.id,
-    //   count: 1,
-    //   data: JSON.stringify(product),
-    // };
-
-    // if (addProductsCart) addProductsCart(dataProductForCard);
   };
 
   return (
@@ -51,11 +43,27 @@ export const ProductCardGrid = ({ product }: IProductProp) => {
               className={styles.product__wrapper + ' product__wrapper'}
               to={'/product/' + product.id}
               style={{ backgroundImage: `url(${product.thumbnail})` }}></Link>
+            <div
+              className={`${styles.product__label} ${styles.product__sales}`}>
+              {product.discountPercentage}%
+            </div>
+            <div
+              className={`${styles.product__label} ${styles.product__brand}`}>
+              {product.brand}
+            </div>
           </div>
           <div className={styles.product__detail + ' product__detail'}>
             <div className={styles.product__price}>
+              {product.discountPercentage && (
+                <del className={styles.product__priceold}>
+                  $
+                  {Math.ceil(
+                    product.price +
+                      (product.price / 100) * product.discountPercentage,
+                  )}
+                </del>
+              )}
               <strong>${product.price}</strong>
-              {/* <del className='price-old'>$170.00</del> */}
             </div>
             <Link
               to={'/product/' + product.id}
@@ -63,9 +71,13 @@ export const ProductCardGrid = ({ product }: IProductProp) => {
               {product.title}
             </Link>
 
+            <p className={styles.product__stock + ' product__stock'}>
+              <strong>Stock:</strong> {product.stock}
+            </p>
+
             <p
               className={styles.product__description + ' product__description'}>
-              {product.description?.slice(0, 25) + '...'}
+              {product.description}
             </p>
 
             <div className={styles.product__button}>

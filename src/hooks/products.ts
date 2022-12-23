@@ -9,9 +9,31 @@ type TypeUseProduct<T> = {
   setResult: (result: T) => void;
 };
 
+function searchProduct(result: IResultProduct[], search: string) {
+  const searchText = search.toLowerCase();
+  return result.filter((product: IResultProduct) => {
+    if (
+      product.title &&
+      product.description &&
+      product.brand &&
+      product.price &&
+      product.stock
+    ) {
+      if (
+        product.title.toLowerCase().includes(searchText) ||
+        product.description.toLowerCase().includes(searchText) ||
+        product.brand.toLowerCase().includes(searchText) ||
+        String(product.price).includes(searchText) ||
+        String(product.stock).includes(searchText)
+      )
+        return true;
+    }
+    return false;
+  });
+}
+
 function sortProduct(result: IResultProduct[], sort: string) {
   const newResults = result;
-
   newResults.sort((a, b) => a.id - b.id);
   if (sort === 'price-ASC') newResults.sort((a, b) => a.price - b.price);
   if (sort === 'price-DESC') newResults.sort((a, b) => b.price - a.price);
@@ -27,26 +49,16 @@ function sortProduct(result: IResultProduct[], sort: string) {
       (a, b) =>
         Math.ceil(a.discountPercentage) - Math.ceil(b.discountPercentage),
     );
-
   return newResults;
 }
 
 export function getCatalogProducts(
   search: string,
   sort: string,
-): TypeUseProduct<IResultProduct[]> {
-  const urlFetch = search.length > 0 ? `search?q=${search}` : '?limit=60';
-  const resultObject = [
-    {
-      id: 0,
-      title: '',
-      price: 0,
-      discountPercentage: 0,
-      rating: 0,
-    },
-  ];
+): TypeUseProduct<IResultProduct[] | null> {
+  const [fetchResult, setFetchResult] = useState<IResultProduct[] | null>(null);
 
-  const [result, setResult] = useState<IResultProduct[]>(resultObject);
+  const [result, setResult] = useState<IResultProduct[] | null>(null);
 
   const [error, setError] = useState('');
   const [loading, setLoading] = useState(true);
@@ -55,17 +67,10 @@ export function getCatalogProducts(
     setError('');
     try {
       const response = await axios.get(
-        `https://dummyjson.com/products/${urlFetch}`,
+        `https://dummyjson.com/products/?limit=120`,
       );
-      if (response.data.total !== 0) {
-        const products: IResultProduct[] = response.data.products;
-        const productsSort = sortProduct(products, sort);
-        setResult(productsSort);
-        if (response.data.products[0]['id'] > 0) setLoading(false);
-      } else {
-        setResult([]);
-        setLoading(false);
-        setError('Not Results');
+      if (response.data.total > 0) {
+        setFetchResult(response.data.products);
       }
     } catch (e: unknown) {
       const error = e as AxiosError;
@@ -73,10 +78,22 @@ export function getCatalogProducts(
     }
   }
 
+  //  return [];
+  // setLoading(false);
+  // setError('Not Results');
+
   useEffect(() => {
-    console.log('fetchProduct');
-    fetchProduct();
-  }, [search, sort]);
+    setLoading(true);
+    if (fetchResult === null) {
+      fetchProduct();
+    } else {
+      let products = JSON.parse(JSON.stringify(fetchResult));
+      products = searchProduct(products, search);
+      products = sortProduct(products, sort);
+      setResult(products);
+    }
+    setLoading(false);
+  }, [fetchResult, search, sort]);
 
   return { result, error, loading, setResult };
 }

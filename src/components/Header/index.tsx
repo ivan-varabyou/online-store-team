@@ -1,21 +1,44 @@
-import React, { useState, useEffect, useContext } from 'react';
+import React, {
+  useState,
+  useEffect,
+  useContext,
+  useRef,
+  useCallback,
+} from 'react';
 
 import { Link } from 'react-router-dom';
 import { SearchContext } from '../../App';
+import debounce from 'lodash.debounce';
+
+import { useSearchParams } from 'react-router-dom';
 
 import styles from './Header.module.scss';
 
 export const Header = (cartCount: { cartCount: number }): JSX.Element => {
-  const searchValue = useContext(SearchContext).searchValue;
-  const setSerachValue = useContext(SearchContext).setSerachValue;
+  const [search] = useSearchParams();
+  const [value, setValue] = useState(search.get('search') || '');
 
-  const handleChangeSearch = (
-    event: React.ChangeEvent<HTMLInputElement>,
-  ): void => {
-    event.preventDefault();
-    if (setSerachValue !== undefined) {
-      setSerachValue(event.target.value);
+  const setSearchValue = useContext(SearchContext).setSerachValue;
+
+  const inputRef = useRef<HTMLInputElement>(null);
+
+  const onClickClear = () => {
+    setSearchValue && setSearchValue('');
+    if (inputRef && inputRef.current) {
+      inputRef.current.focus();
     }
+  };
+
+  const updateSearchValue = useCallback(
+    debounce((value) => {
+      setSearchValue && setSearchValue(value);
+    }, 1000),
+    [],
+  );
+
+  const onChangeInput = (event: React.ChangeEvent<HTMLInputElement>): void => {
+    setValue(event.target.value);
+    updateSearchValue(event.target.value);
   };
 
   return (
@@ -30,19 +53,15 @@ export const Header = (cartCount: { cartCount: number }): JSX.Element => {
             </div>
 
             <div className={styles.search}>
-              <div className='input-group'>
-                <input
-                  value={searchValue}
-                  onInput={handleChangeSearch}
-                  type='search'
-                  className='form-control'
-                  placeholder='Search'
-                />
-
-                <button className='btn btn-primary'>
-                  <i className='bi bi-search'></i>
-                </button>
-              </div>
+              <input
+                ref={inputRef}
+                onClick={onClickClear}
+                onInput={onChangeInput}
+                type='search'
+                className='form-control'
+                placeholder='Search'
+                value={value}
+              />
             </div>
 
             <div className={styles.widget}>

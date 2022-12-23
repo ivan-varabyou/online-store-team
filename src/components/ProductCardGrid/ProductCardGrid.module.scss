@@ -1,16 +1,17 @@
 .product {
+  font-size: 0.8em;
   padding: 5px;
   display: flex;
   flex-direction: row;
   flex-wrap: wrap;
 
   &__detail {
-    padding: 0 11px 14px 11px;
+    padding: 0 8px 8px;
   }
 
   &__wrapper {
     background-repeat: no-repeat;
-    background-size: contain;
+    background-size: cover;
     background-position: center;
     height: 200px;
     display: grid;
@@ -32,23 +33,58 @@
     display: grid;
     gap: 8px;
     grid-auto-flow: column;
+
+    .btn {
+      font-size: 1em;
+    }
   }
 
   &__price {
+    font-size: 1.1em;
     margin-top: 8px;
+    display: grid;
+    grid-auto-flow: column;
+    gap: 7px;
+    grid-template-columns: 0.25fr 1.75fr;
+    strong {
+      color: #ce3333;
+    }
   }
 
-  &__description {
-    padding: 15px;
-    margin-top: 8px;
+  &__stock {
+    margin-bottom: 0;
   }
 
   &__title {
     text-decoration: none;
     color: #000;
     font-weight: 600;
-    font-size: 1rem;
-    margin-bottom: 16px;
+    font-size: 1.1em;
+    margin-bottom: 14px;
     display: grid;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+  }
+
+  &__image {
+    position: relative;
+  }
+
+  &__label {
+    position: absolute;
+    padding: 2px 6px;
+  }
+
+  &__sales {
+    background-color: #ce3333;
+    color: #fff;
+    top: 0;
+  }
+
+  &__brand {
+    background-color: #000000;
+    color: #ffffff;
+    bottom: 0;
   }
 }

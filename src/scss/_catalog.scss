@@ -45,9 +45,17 @@
   .product__wrapper {
     background-size: cover;
     width: 300px;
+
+    width: 350px;
+
     @media (max-width: 768px) {
+      min-height: 200px;
       width: 100%;
-      display: block;
+    }
+
+    @media (max-width: 499px) {
+      min-height: 200px;
+      width: 100%;
     }
   }
 
@@ -68,10 +76,16 @@
   .product__image {
     border-right: 1px solid rgba(81, 88, 94, 0.12);
 
-    width: 300px;
+    width: 350px;
+
     @media (max-width: 768px) {
+      min-height: 200px;
       width: 100%;
-      display: block;
+    }
+
+    @media (max-width: 499px) {
+      min-height: 200px;
+      width: 100%;
     }
   }
 }

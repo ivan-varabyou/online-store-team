@@ -31,7 +31,7 @@ export const Header = (): JSX.Element => {
   const updateSearchValue = useCallback(
     debounce((value) => {
       setSearchValue && setSearchValue(value);
-    }, 1000),
+    }, 500),
     [],
   );
 

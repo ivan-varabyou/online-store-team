@@ -1,7 +1,7 @@
 import { getLocalStorage, setLocalStorage } from './storage';
 import { IResultProduct, TypeCartItem } from '../models';
 
-export function getCartTotal() {
+export function getCartTotal(): number {
   if (getLocalStorage('cart').length > 0) {
     const products = getLocalStorage('cart');
     return products
@@ -9,6 +9,10 @@ export function getCartTotal() {
       .reduce((acc, cur) => acc + cur);
   }
   return 0;
+}
+
+export function getCartCount(): number {
+  return getLocalStorage('cart').length;
 }
 
 export function addProductsCart(

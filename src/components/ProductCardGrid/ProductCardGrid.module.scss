@@ -14,7 +14,7 @@
     background-size: cover;
     background-position: center;
     height: 200px;
-    display: flex;
+    display: grid;
   }
 
   &__card {
@@ -60,7 +60,7 @@
     font-weight: 600;
     font-size: 1.1em;
     margin-bottom: 14px;
-    display: flex;
+    display: grid;
     overflow: hidden;
     text-overflow: ellipsis;
     white-space: nowrap;
@@ -68,6 +68,8 @@
 
   &__image {
     position: relative;
+    min-width: 200px;
+    min-height: 200px;
   }
 
   &__label {

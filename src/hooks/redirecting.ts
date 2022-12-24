@@ -1,4 +1,6 @@
-export function redirectingNonExistentPages(searchUrl: URLSearchParams) {
+export default function redirectingNonExistentPages(
+  searchUrl: URLSearchParams,
+) {
   const patch = window.location.pathname;
   const search = window.location.search;
   if (patch === '/cart' && search !== '') window.location.href = '/404';

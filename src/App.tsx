@@ -5,7 +5,9 @@ import { CatalogPage } from './pages/CatalogPage';
 import { NotFoundPage } from './pages/NotFoundPage';
 import { CardPage } from './pages/CartPage';
 
+import { Modal } from './components/Modal';
 import { Header } from './components/Header';
+import { Footer } from './components/Footer';
 import { ISearchContext, ICartContext } from './models';
 
 import { getLocalStorage, setLocalStorage } from './hooks/storage';
@@ -18,7 +20,7 @@ import {
   isAddCart,
 } from './hooks/cart';
 
-import { redirectingNonExistentPages } from './hooks/redirecting';
+import redirectingNonExistentPages from './hooks/redirecting';
 
 export const SearchContext = createContext<Partial<ISearchContext>>({});
 export const CartContext = createContext<Partial<ICartContext>>({});
@@ -44,6 +46,11 @@ function App() {
     setCartCount(getCartCount());
   }
 
+  const [modalStatus, setModalStatus] = useState(false);
+  const handleModalStatus = () => {
+    setModalStatus(!modalStatus);
+  };
+
   return (
     <>
       <SearchContext.Provider
@@ -63,6 +70,7 @@ function App() {
             cartCount,
             cartTotal,
             updateCartCountAndSumm,
+            handleModalStatus,
           }}>
           <Header />
           <Routes>
@@ -71,6 +79,8 @@ function App() {
             <Route path='/product/:productId' element={<ProductPage />}></Route>
             <Route path='*' element={<NotFoundPage />}></Route>
           </Routes>
+          <Modal status={{ modalStatus, setModalStatus }} />
+          <Footer />
         </CartContext.Provider>
       </SearchContext.Provider>
     </>

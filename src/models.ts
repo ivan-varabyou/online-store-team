@@ -49,6 +49,7 @@ export interface ICartContext {
   updateCartCountAndSumm: () => void;
   cartCount: number;
   cartTotal: number;
+  handleModalStatus: () => void;
 }
 
 type TypeItem = Omit<

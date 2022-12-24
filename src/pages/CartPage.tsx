@@ -46,8 +46,7 @@ export function CardPage() {
                             />
                           </div>
                           <div className='info'>
-                            <p className='title'>{product.title}</p>
-                            <span className='text-muted'>Clothes</span>
+                            <h6 className='title'>{product.title}</h6>
                           </div>
                         </Link>
                       </div>

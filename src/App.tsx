@@ -18,6 +18,7 @@ import {
   addProductsCart,
   removeProductCart,
   isAddCart,
+  getCartDiscountTotal,
 } from './hooks/cart';
 
 import redirectingNonExistentPages from './hooks/redirecting';
@@ -64,6 +65,7 @@ function App() {
             setLocalStorage,
             getCartTotal,
             getCartCount,
+            getCartDiscountTotal,
             addProductsCart,
             removeProductCart,
             isAddCart,

@@ -1,6 +1,6 @@
 import { IResultProduct } from '../models';
 
-export function sortProduct(
+export default function sortProduct(
   result: IResultProduct[],
   sort: string,
 ): IResultProduct[] {

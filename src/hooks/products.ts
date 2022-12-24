@@ -2,8 +2,8 @@ import { useEffect, useState } from 'react';
 import { IProduct, IResultProduct, TypeReturnProducts } from '../models';
 import axios, { AxiosError } from 'axios';
 
-import { sortProduct } from '../hooks/filter';
-import { searchProduct } from '../hooks/search';
+import sortProduct from './filter';
+import searchProduct from './search';
 
 export function getCatalogProducts(
   search: string,

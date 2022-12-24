@@ -1,6 +1,6 @@
 import { IResultProduct } from '../models';
 
-export function searchProduct(
+export default function searchProduct(
   result: IResultProduct[],
   search: string,
 ): IResultProduct[] {

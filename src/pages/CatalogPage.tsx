@@ -3,11 +3,11 @@ import React, { useState, useEffect, useContext } from 'react';
 import copy from 'copy-to-clipboard';
 import { useSearchParams } from 'react-router-dom';
 import { getCatalogProducts } from '../hooks/products';
-import { IResultProduct } from '../models';
 import { ProductCardGrid } from '../components/ProductCardGrid';
 import { ScaletonCatalog } from '../components/ScaletonCatalog/';
 import { ErrorMessage } from '../components/ErrorMessage/';
 import { CatalogFilter } from '../components/CatalogFilter/';
+
 import { SearchContext } from '../App';
 
 import styles from '../scss/page/CategoryPage.module.scss';
@@ -41,7 +41,7 @@ export function CatalogPage() {
 
   /* --------FETCH ----------*/
 
-  const { result, error, loading, setResult } = getCatalogProducts(
+  const { result, error, loading } = getCatalogProducts(
     String(searchValueDefault),
     String(selected),
   );

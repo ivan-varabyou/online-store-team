@@ -74,18 +74,21 @@
   }
 
   .product__image {
+    flex: 0 0 350px;
     border-right: 1px solid rgba(81, 88, 94, 0.12);
 
-    width: 350px;
-
     @media (max-width: 768px) {
+      flex: 1 1 100%;
       min-height: 200px;
-      width: 100%;
     }
 
     @media (max-width: 499px) {
       min-height: 200px;
-      width: 100%;
+      flex: 1 1 100%;
     }
+  }
+
+  .product__details {
+    flex: 1 1 auto;
   }
 }

@@ -27,75 +27,46 @@ export function CardPage() {
         <div className='container'>
           <div className='row mt-4'>
             <div className='col-md-9'>
-              <div className='card card-body mb-3'>
-                {productsCart &&
-                  productsCart.map((product) => (
-                    <div
-                      className='row gy-3 align-items-center'
-                      key={product.id}>
-                      <div className='col-md-6'>
-                        <Link
-                          to={'/product/' + product.id}
-                          className='itemside align-items-center'>
-                          <div className='aside'>
+              {productsCart &&
+                productsCart.map((product) => (
+                  <div className='card card-body mb-1' key={product.id}>
+                    <div className='row gy-3'>
+                      <div className='row mt-4'>
+                        <div className='col-lg-1'>
+                          <Link to={'/product/' + product.id}>
                             <img
                               src={product.thumbnail}
-                              height='72'
-                              width='72'
-                              className='img-thumbnail img-sm'
+                              className='img-thumbnail'
                             />
-                          </div>
-                          <div className='info'>
-                            <h6 className='title'>{product.title}</h6>
-                          </div>
-                        </Link>
-                      </div>
+                          </Link>
+                        </div>
 
-                      <div className='col-auto'>
-                        <div className='input-group input-spinner'>
-                          <button
-                            className='btn btn-light  text-back'
-                            type='button'>
-                            <svg
-                              xmlns='http://www.w3.org/2000/svg'
-                              width='24'
-                              height='24'
-                              fill='#999'
-                              viewBox='0 0 24 24'>
-                              <path d='M19 13H5v-2h14v2z'></path>
-                            </svg>
-                          </button>
+                        <div className='col-lg-8'>
+                          <Link to={'/product/' + product.id}>
+                            <h6 className='title'>{product.title}</h6>
+                          </Link>
+                          <strong>
+                            ${product.price} x {product.count}
+                          </strong>
+                        </div>
+
+                        <div className='col-lg-2'>
                           <input
                             type='text'
                             className='form-control'
                             value={product.count}
                           />
-                          <button
-                            className='btn btn-light text-back'
-                            type='button'>
-                            <svg
-                              xmlns='http://www.w3.org/2000/svg'
-                              width='24'
-                              height='24'
-                              fill='#999'
-                              viewBox='0 0 24 24'>
-                              <path d='M19 13h-6v6h-2v-6H5v-2h6V5h2v6h6v2z'></path>
-                            </svg>
+                        </div>
+
+                        <div className='col-lg-1'>
+                          <button className='btn btn-icon btn-danger'>
+                            <i className='bi bi-trash'></i>
                           </button>
                         </div>
                       </div>
-
-                      <div className='col'>
-                        <strong className='price'> $180.00 </strong>
-                      </div>
-                      <div className='col text-end'>
-                        <a href='#' className='btn btn-icon btn-danger'>
-                          <i className='bi bi-trash'></i>
-                        </a>
-                      </div>
                     </div>
-                  ))}
-              </div>
+                  </div>
+                ))}
             </div>
 
             <div className='col-md-3'>

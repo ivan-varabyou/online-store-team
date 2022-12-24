@@ -65,5 +65,5 @@ export type TypeReturnProducts<T> = {
   result: T;
   error: string;
   loading: boolean;
-  setResult: (result: T) => void;
+  setResult?: (result: T) => void;
 };

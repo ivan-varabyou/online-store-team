@@ -1,7 +1,6 @@
 import React, { useContext, useState, useEffect, useRef } from 'react';
 import { useHref, useParams } from 'react-router-dom';
 import { useProduct } from '../hooks/useProduct';
-import { IResultProduct } from '../models';
 import { Link } from 'react-router-dom';
 import styles from './../scss/page/ProductPage.module.scss';
 import { CartContext } from '../App';
@@ -16,9 +15,6 @@ export function ProductPage() {
   const addProductsCart = useContext(CartContext).addProductsCart;
   const removeProductCart = useContext(CartContext).removeProductCart;
   const isAddCart = useContext(CartContext).isAddCart;
-  const getCartCount = useContext(CartContext).getCartCount;
-  const getCartTotal = useContext(CartContext).getCartTotal;
-  const getLocalStorage = useContext(CartContext).getLocalStorage;
   const updateCartCountAndSumm = useContext(CartContext).updateCartCountAndSumm;
 
   const dafaultStatusAddToCart =

@@ -57,6 +57,7 @@ type TypeItem = Omit<
   IResultProduct,
   'brand' | 'stock' | 'rating' | 'description' | 'images' | 'category'
 >;
+
 type TypeCount = {
   count: number;
 };
@@ -69,3 +70,54 @@ export type TypeReturnProducts<T> = {
   loading: boolean;
   setResult?: (result: T) => void;
 };
+
+export interface ICatalogSort {
+  value: string;
+  text: string;
+}
+
+export interface ICatalogSortProps {
+  catalogSortSelect: string;
+  setCatalogSortSelect: (sort: string) => void;
+}
+
+export interface ICatalogDisplayProps {
+  catalogProductDisplay: string;
+  setCatalogProductDisplay: (display: string) => void;
+}
+
+export type TypeQuery = {
+  sort?: string;
+  search?: string;
+  grid?: string;
+};
+
+type TypeFilterCheckbox = { name: string; status: boolean };
+
+export interface ICatalogFilterData {
+  result: IResultProduct[] | null;
+}
+
+export type TypeFilterMap = {
+  name: string;
+  count: number;
+  available: number;
+  key: string;
+  status: boolean;
+};
+
+export type TypeFilterRange = {
+  min: number;
+  max: number;
+  value: number;
+  count: number;
+  available: number;
+  key: string;
+};
+
+export interface IFilterData {
+  categories: TypeFilterMap[] | null;
+  brands: TypeFilterMap[] | null;
+  price: TypeFilterRange | null;
+  stock: TypeFilterRange | null;
+}

@@ -9,6 +9,7 @@ export default function redirectingNonExistentPages(
     if (
       !(
         search === '' ||
+        String(searchUrl.get('search'))?.length > 0 ||
         searchUrl.get('grid') === 'list' ||
         searchUrl.get('sort') === 'price-ASC' ||
         searchUrl.get('sort') === 'price-DESC' ||

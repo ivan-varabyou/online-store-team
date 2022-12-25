@@ -1,13 +1,26 @@
 import { useEffect, useState } from 'react';
-import { IProduct, IResultProduct, TypeReturnProducts } from '../models';
+import {
+  IProduct,
+  IResultProduct,
+  TypeReturnProducts,
+  IFilterData,
+} from '../models';
 import axios, { AxiosError } from 'axios';
 
-import sortProduct from './filter';
-import searchProduct from './search';
+import { sortCatalogProducts } from '../utils/Catalog/sortCatalogProducts';
+import { searchCatalogProducts } from '../utils/Catalog/searchCatalogProducts';
+import { filterCatalogProducts } from '../utils/Catalog/filterCatalogProducts';
+import { getFilterData } from '../utils/Catalog/getFilterData';
 
 export function getCatalogProducts(
   search: string,
   sort: string,
+
+  startFilterData: IFilterData,
+  setStartFilterData: (filterData: IFilterData) => void,
+
+  activeFilterData: IFilterData,
+  setActiveFilterData: (filterData: IFilterData) => void,
 ): TypeReturnProducts<IResultProduct[] | null> {
   const [fetchResult, setFetchResult] = useState<IResultProduct[] | null>(null);
 
@@ -21,6 +34,7 @@ export function getCatalogProducts(
       const response = await axios.get(
         `https://dummyjson.com/products/?limit=120`,
       );
+
       if (response.data.total > 0) {
         setFetchResult(response.data.products);
       }
@@ -36,44 +50,37 @@ export function getCatalogProducts(
     if (fetchResult === null) {
       fetchProduct();
     } else {
-      let products = JSON.parse(JSON.stringify(fetchResult));
-      products = searchProduct(products, search);
-      if (products.length === 0) {
-        setResult(products);
-        setError('No results found');
-      } else {
-        products = sortProduct(products, sort);
-        setResult(products);
+      let products: IResultProduct[] = JSON.parse(JSON.stringify(fetchResult));
+      products = searchCatalogProducts(products, search);
+
+      if (startFilterData.categories === null) {
+        getFilterData(products, setStartFilterData, setActiveFilterData);
       }
+
+      if (activeFilterData.categories) {
+        // console.log('filterCatalogProducts RERENDERING', activeFilterData);
+        products = filterCatalogProducts(
+          products,
+          activeFilterData,
+          setActiveFilterData,
+        );
+      }
+
+      products = sortCatalogProducts(products, sort);
+
+      if (products.length === 0) {
+        setError('No results found');
+      }
+
+      setResult(products);
     }
     setLoading(false);
-  }, [fetchResult, search, sort]);
+  }, [fetchResult, search, sort, activeFilterData]);
+
+  // result &&
+  //   useEffect(() => {
+  //     getFilterData(result, setActiveFilterData);
+  //   }, [activeFilterData]);
 
   return { result, error, loading, setResult };
-}
-
-export function getProducts(urlFetch: string, resultObject: IProduct[]) {
-  const [result, setResult] = useState(resultObject);
-
-  const [error, setError] = useState('');
-  const [loading, setLoading] = useState(false);
-
-  async function fetchProduct() {
-    try {
-      setError('');
-      setLoading(true);
-      const response = await axios.get(urlFetch);
-      setResult(response.data);
-      setLoading(false);
-    } catch (e: unknown) {
-      const error = e as AxiosError;
-      setError(error.message);
-    }
-  }
-
-  useEffect(() => {
-    fetchProduct();
-  }, []);
-
-  return { result, error, loading };
 }

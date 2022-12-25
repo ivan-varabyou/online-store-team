@@ -12,7 +12,7 @@ export function CartEmpty() {
             Корзина пустая <span>😕</span>
           </h2>
           <p>Вероятней всего, вы ничего не заказали</p>
-          <img className={styles.img} src={cartEmptyImg} alt='Empty cart' />
+          <img className={styles.cartEmptyImage} src={cartEmptyImg} alt='Empty cart' />
         </div>
         <Link to='/' className='button button--black'>
           <button type='button' className='btn btn-secondary'>

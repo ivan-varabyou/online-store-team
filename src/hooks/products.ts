@@ -1,16 +1,18 @@
 import { useEffect, useState } from 'react';
 import {
-  IProduct,
   IResultProduct,
   TypeReturnProducts,
   IFilterData,
+  IActiveFilterData,
 } from '../models';
 import axios, { AxiosError } from 'axios';
 
 import { sortCatalogProducts } from '../utils/Catalog/sortCatalogProducts';
 import { searchCatalogProducts } from '../utils/Catalog/searchCatalogProducts';
 import { filterCatalogProducts } from '../utils/Catalog/filterCatalogProducts';
-import { getFilterData } from '../utils/Catalog/getFilterData';
+import { updateActiveFilterData } from '../utils/Catalog/updateActiveFilterData';
+import { getFilterDataStart } from '../utils/Catalog/getFilterData';
+import { getFilterDataEnd } from '../utils/Catalog/getFilterData';
 
 export function getCatalogProducts(
   search: string,
@@ -19,8 +21,14 @@ export function getCatalogProducts(
   startFilterData: IFilterData,
   setStartFilterData: (filterData: IFilterData) => void,
 
-  activeFilterData: IFilterData,
-  setActiveFilterData: (filterData: IFilterData) => void,
+  endFilterData: IFilterData,
+  setEndFilterData: (filterData: IFilterData) => void,
+
+  statusFilter: boolean,
+  setStatusFilter: (status: boolean) => void,
+
+  activeFilterDataUrl: IActiveFilterData,
+  setActiveFilterDataUrl: (data: IActiveFilterData) => void,
 ): TypeReturnProducts<IResultProduct[] | null> {
   const [fetchResult, setFetchResult] = useState<IResultProduct[] | null>(null);
 
@@ -47,26 +55,30 @@ export function getCatalogProducts(
   useEffect(() => {
     setError('');
     setLoading(true);
-    if (fetchResult === null) {
+    if (!fetchResult) {
       fetchProduct();
     } else {
       let products: IResultProduct[] = JSON.parse(JSON.stringify(fetchResult));
+
       products = searchCatalogProducts(products, search);
 
-      if (startFilterData.categories === null) {
-        getFilterData(products, setStartFilterData, setActiveFilterData);
-      }
-
-      if (activeFilterData.categories) {
-        // console.log('filterCatalogProducts RERENDERING', activeFilterData);
+      if (endFilterData.categories) {
         products = filterCatalogProducts(
           products,
-          activeFilterData,
-          setActiveFilterData,
+          endFilterData,
+          activeFilterDataUrl,
+          setActiveFilterDataUrl,
         );
       }
 
       products = sortCatalogProducts(products, sort);
+
+      updateActiveFilterData(
+        products,
+        startFilterData,
+        endFilterData,
+        setEndFilterData,
+      );
 
       if (products.length === 0) {
         setError('No results found');
@@ -75,12 +87,32 @@ export function getCatalogProducts(
       setResult(products);
     }
     setLoading(false);
-  }, [fetchResult, search, sort, activeFilterData]);
+  }, [fetchResult, search, sort, statusFilter]);
 
-  // result &&
-  //   useEffect(() => {
-  //     getFilterData(result, setActiveFilterData);
-  //   }, [activeFilterData]);
+  useEffect(() => {
+    if (fetchResult) {
+      const newFilterDataStart = getFilterDataStart(fetchResult);
+      setStartFilterData(newFilterDataStart);
+      let newFilterDataEnd;
 
-  return { result, error, loading, setResult };
+      if (
+        activeFilterDataUrl.brands?.length ||
+        activeFilterDataUrl.categories?.length ||
+        activeFilterDataUrl.price ||
+        activeFilterDataUrl.stock
+      ) {
+        newFilterDataEnd = getFilterDataEnd(
+          newFilterDataStart,
+          activeFilterDataUrl,
+        );
+      } else {
+        newFilterDataEnd = newFilterDataStart;
+      }
+
+      setEndFilterData(newFilterDataEnd);
+      setStatusFilter(!statusFilter);
+    }
+  }, [fetchResult]);
+
+  return { result, error, loading };
 }

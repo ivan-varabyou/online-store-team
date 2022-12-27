@@ -5,37 +5,48 @@ import {
   ICatalogFilterData,
 } from '../../../models';
 
+import { CatalogFilterCheckbox } from './CatalogFilterCheckbox/';
+
 import styles from './CatalogFilter.module.scss';
 
 export const CatalogFilter = ({
-  activeFilterData,
-  setActiveFilterData,
+  endFilterData,
+  statusFilter,
+  setStatusFilter,
+  setEndFilterData,
 }: {
-  activeFilterData: IFilterData;
-  setActiveFilterData: (newData: IFilterData) => void;
+  endFilterData: IFilterData;
+  statusFilter: boolean;
+  setStatusFilter: (status: boolean) => void;
+  setEndFilterData: (data: IFilterData) => void;
 }) => {
-  const handleInput = (event: React.ChangeEvent<HTMLInputElement>): void => {
+  const handleCatalogFilterCheckbox = (
+    event: React.ChangeEvent<HTMLInputElement>,
+  ): void => {
     const value = event.target.value;
     const index = Number(event.target.dataset.index);
     const type = event.target.dataset.type;
-    const newData: IFilterData = JSON.parse(JSON.stringify(activeFilterData));
+    const newData: IFilterData = JSON.parse(JSON.stringify(endFilterData));
 
     if (type === 'categories' && newData['categories']) {
-      // console.log('test 1', type, newData['categories']);
-      newData['categories'][index].status = newData['categories'][index].status
-        ? false
-        : true;
+      if (event.target.classList.contains('active')) {
+        newData['categories'][index].status = false;
+      } else {
+        newData['categories'][index].status = true;
+      }
     }
 
     if (type === 'brands' && newData['brands']) {
-      newData['brands'][index].status = newData['brands'][index].status
-        ? false
-        : true;
+      if (event.target.classList.contains('active')) {
+        newData['brands'][index].status = false;
+      } else {
+        newData['brands'][index].status = true;
+      }
     }
 
-    setActiveFilterData(newData);
-
-    // console.log('setActiveFilterData START', index, type, newData);
+    setEndFilterData(newData);
+    setStatusFilter(!statusFilter);
+    // console.log('setEndFilterData START', index, type, newData);
   };
 
   return (
@@ -57,30 +68,15 @@ export const CatalogFilter = ({
           </header>
           <div className='collapse show' id='filter-category'>
             <div className='card-body'>
-              {activeFilterData &&
-                activeFilterData.categories?.map((category, index) => (
-                  <label className='form-check mb-2' key={category.key}>
-                    <input
-                      data-index={index}
-                      data-type='categories'
-                      className={
-                        category.status
-                          ? 'form-check-input active'
-                          : 'form-check-input pasive'
-                      }
-                      type='checkbox'
-                      onChange={handleInput}
-                      value={category.name}
-                    />
-                    <span className='form-check-label'>{category.name}</span>
-                    <b
-                      className={
-                        'badge rounded-pill float-end  bg-' +
-                        (category.count == 0 ? 'dark' : 'primary')
-                      }>
-                      {category.count}
-                    </b>
-                  </label>
+              {endFilterData &&
+                endFilterData.categories?.map((category, index) => (
+                  <CatalogFilterCheckbox
+                    key={category.key}
+                    category={category}
+                    index={index}
+                    handleCatalogFilterCheckbox={handleCatalogFilterCheckbox}
+                    type='categories'
+                  />
                 ))}
             </div>
           </div>
@@ -94,30 +90,15 @@ export const CatalogFilter = ({
           </header>
           <div className='collapse show' id='filter-category'>
             <div className='card-body'>
-              {activeFilterData &&
-                activeFilterData.brands?.map((brand, index) => (
-                  <label className='form-check mb-2' key={brand.key}>
-                    <input
-                      data-index={index}
-                      data-type='brands'
-                      className={
-                        brand.status
-                          ? 'form-check-input active'
-                          : 'form-check-input pasive'
-                      }
-                      type='checkbox'
-                      onChange={handleInput}
-                      value={brand.name}
-                    />
-                    <span className='form-check-label'>{brand.name}</span>
-                    <b
-                      className={
-                        'badge rounded-pill float-end  bg-' +
-                        (brand.available == 0 ? 'dark' : 'primary')
-                      }>
-                      {brand.available}
-                    </b>
-                  </label>
+              {endFilterData &&
+                endFilterData.brands?.map((brand, index) => (
+                  <CatalogFilterCheckbox
+                    key={brand.key}
+                    category={brand}
+                    index={index}
+                    handleCatalogFilterCheckbox={handleCatalogFilterCheckbox}
+                    type='brands'
+                  />
                 ))}
             </div>
           </div>
@@ -132,10 +113,29 @@ export const CatalogFilter = ({
           <div className='collapse show' id='filter-stock'>
             <div className='card-body'>
               <input
+                name='priceMin'
                 type='range'
                 className='form-range'
-                min={activeFilterData && activeFilterData.price?.min}
-                max={activeFilterData && activeFilterData.price?.max}
+                min={endFilterData && endFilterData.price?.min}
+                max={endFilterData && endFilterData.price?.max}
+                value={
+                  endFilterData.price?.valueMin === -1
+                    ? endFilterData.price?.min
+                    : endFilterData.price?.valueMin
+                }
+              />
+
+              <input
+                name='priceMax'
+                type='range'
+                className='form-range'
+                min={endFilterData && endFilterData.price?.min}
+                max={endFilterData && endFilterData.price?.max}
+                value={
+                  endFilterData.price?.valueMax === -1
+                    ? endFilterData.price?.max
+                    : endFilterData.price?.valueMax
+                }
               />
               <div className='row mb-3'>
                 <div className='col-6'>
@@ -144,8 +144,8 @@ export const CatalogFilter = ({
                     className='form-control'
                     id='min'
                     placeholder={
-                      activeFilterData.price && activeFilterData.price.min
-                        ? String(activeFilterData.price.min)
+                      endFilterData.price && endFilterData.price.min
+                        ? String(endFilterData.price.min)
                         : '0'
                     }
                     type='number'
@@ -159,8 +159,8 @@ export const CatalogFilter = ({
                     className='form-control'
                     id='max'
                     placeholder={
-                      activeFilterData.price && activeFilterData.price.max
-                        ? String(activeFilterData.price.max)
+                      endFilterData.price && endFilterData.price.max
+                        ? String(endFilterData.price.max)
                         : '0'
                     }
                     type='number'
@@ -172,7 +172,7 @@ export const CatalogFilter = ({
             </div>
           </div>
         </article>
-        <article className='filter-group'>
+        {/* <article className='filter-group'>
           <header className='card-header'>
             <div className='title'>
               <i className='icon-control fa fa-chevron-down'></i>
@@ -184,8 +184,8 @@ export const CatalogFilter = ({
               <input
                 type='range'
                 className='form-range'
-                min={activeFilterData && activeFilterData.stock?.min}
-                max={activeFilterData && activeFilterData.stock?.max}
+                min={endFilterData && endFilterData.stock?.min}
+                max={endFilterData && endFilterData.stock?.max}
               />
               <div className='row mb-3'>
                 <div className='col-6'>
@@ -194,8 +194,8 @@ export const CatalogFilter = ({
                     className='form-control'
                     id='min'
                     placeholder={
-                      activeFilterData.stock && activeFilterData.stock.min
-                        ? String(activeFilterData.stock.min)
+                      endFilterData.stock && endFilterData.stock.min
+                        ? String(endFilterData.stock.min)
                         : '0'
                     }
                     type='number'
@@ -209,8 +209,8 @@ export const CatalogFilter = ({
                     className='form-control'
                     id='max'
                     placeholder={
-                      activeFilterData.stock && activeFilterData.stock.max
-                        ? String(activeFilterData.stock.max)
+                      endFilterData.stock && endFilterData.stock.max
+                        ? String(endFilterData.stock.max)
                         : '0'
                     }
                     type='number'
@@ -221,7 +221,7 @@ export const CatalogFilter = ({
               </div>
             </div>
           </div>
-        </article>
+        </article> */}
       </div>
     </>
   );

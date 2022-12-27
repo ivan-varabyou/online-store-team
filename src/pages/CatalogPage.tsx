@@ -3,10 +3,11 @@ import React, { useState, useEffect, useContext } from 'react';
 import copy from 'copy-to-clipboard';
 import { useSearchParams } from 'react-router-dom';
 import { getCatalogProducts } from '../hooks/products';
-import { IFilterData } from '../models';
+import { IFilterData, IActiveFilterData } from '../models';
 
 // utils
 import { updateUrlCatalogPage } from '../utils/Catalog/updateUrlCatalogPage';
+import { updateActiveFilterData } from '../utils/Catalog/updateActiveFilterData';
 
 // components
 import { ErrorMessage } from '../components/ErrorMessage/';
@@ -40,7 +41,7 @@ export function CatalogPage() {
 
   // catalogProductDisplay
   const catalogProductDisplayDefault: string = searchUrl.get('grid')
-    ? String(searchUrl.get('search'))
+    ? String(searchUrl.get('grid'))
     : 'grid';
 
   const [catalogProductDisplay, setCatalogProductDisplay] = useState(
@@ -58,50 +59,92 @@ export function CatalogPage() {
   const [startFilterData, setStartFilterData] = useState(
     firstFilterDataDefault,
   );
+  const [endFilterData, setEndFilterData] = useState(firstFilterDataDefault);
 
-  const [activeFilterData, setActiveFilterData] = useState(
-    firstFilterDataDefault,
+  const activeFilterDataUrlDefault = () => {
+    return {
+      brands: searchUrl.get('brands')
+        ? String(searchUrl.get('brands')).split(';')
+        : null,
+      categories: searchUrl.get('categories')
+        ? String(searchUrl.get('categories')).split(';')
+        : null,
+
+      price: searchUrl.get('price')
+        ? String(searchUrl.get('price')).split(';')
+        : null,
+      stock: searchUrl.get('stock')
+        ? String(searchUrl.get('stock')).split(';')
+        : null,
+    };
+  };
+
+  const activeFilterDataUrlDefaultNull: IActiveFilterData = {
+    brands: null,
+    categories: null,
+    price: null,
+    stock: null,
+  };
+
+  const dataUrlDefault = JSON.parse(
+    JSON.stringify(activeFilterDataUrlDefault()),
   );
 
-  // getCatalogProducts
+  const [activeFilterDataUrl, setActiveFilterDataUrl] =
+    useState(dataUrlDefault);
+
+  console.log('activeFilterDataUrl', activeFilterDataUrl);
+
+  const [statusFilter, setStatusFilter] = useState(false);
+
+  // get products for catalog
   const { result, error, loading } = getCatalogProducts(
     String(searchValueDefault),
     String(catalogSortSelect),
 
     startFilterData,
     setStartFilterData,
-    activeFilterData,
-    setActiveFilterData,
+    endFilterData,
+    setEndFilterData,
+    statusFilter,
+    setStatusFilter,
+    activeFilterDataUrl,
+    setActiveFilterDataUrl,
   );
 
-  // updateUrlCatalogPage
+  // Change url when changing properties
   useEffect(() => {
     updateUrlCatalogPage(
       searchValue,
       catalogSortSelect,
       catalogProductDisplay,
       setSearchUrl,
+      activeFilterDataUrl,
     );
-  }, [catalogSortSelect, searchValue, catalogProductDisplay]);
+  }, [catalogSortSelect, searchValue, catalogProductDisplay, statusFilter]);
 
+  // Change url when start page
   useEffect(() => {
     updateUrlCatalogPage(
       searchValueDefault,
       catalogSortSelect,
       catalogProductDisplay,
       setSearchUrl,
+      activeFilterDataUrl,
     );
   }, []);
-  console.log(startFilterData);
-  // hendleResetFilterButton
+
+  // Reset data button
   const hendleResetFilterButton = () => {
     setSearchUrl({});
     setCatalogSortSelect('default');
     if (setSearchValue) setSearchValue('');
-    setActiveFilterData(startFilterData);
+    setEndFilterData(startFilterData);
+    setActiveFilterDataUrl(activeFilterDataUrlDefaultNull);
+    setStatusFilter(!statusFilter);
   };
 
-  // hendleCopyFilterUrlButton
+  // Copy URL button
   const hendleCopyFilterUrlButton = () => {
     copy(window.location.href);
   };
@@ -136,8 +179,10 @@ export function CatalogPage() {
                 </div>
                 {
                   <CatalogFilter
-                    activeFilterData={activeFilterData}
-                    setActiveFilterData={setActiveFilterData}
+                    endFilterData={endFilterData}
+                    statusFilter={statusFilter}
+                    setStatusFilter={setStatusFilter}
+                    setEndFilterData={setEndFilterData}
                   />
                 }
               </aside>

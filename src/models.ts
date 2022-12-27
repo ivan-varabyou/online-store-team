@@ -19,20 +19,6 @@ export interface IResultProduct {
   images: string[];
 }
 
-export interface IProduct {
-  id?: number;
-  title?: string;
-  description?: string;
-  price?: number;
-  discountPercentage?: number;
-  rating?: number;
-  stock?: number;
-  brand?: string;
-  category?: string;
-  thumbnail?: string;
-  images?: string[];
-}
-
 export interface ISearchContext {
   searchValue: string;
   setSerachValue: React.Dispatch<string>;
@@ -68,7 +54,6 @@ export type TypeReturnProducts<T> = {
   result: T;
   error: string;
   loading: boolean;
-  setResult?: (result: T) => void;
 };
 
 export interface ICatalogSort {
@@ -90,6 +75,10 @@ export type TypeQuery = {
   sort?: string;
   search?: string;
   grid?: string;
+  categories?: string;
+  brands?: string;
+  price?: string;
+  stock?: string;
 };
 
 type TypeFilterCheckbox = { name: string; status: boolean };
@@ -109,7 +98,8 @@ export type TypeFilterMap = {
 export type TypeFilterRange = {
   min: number;
   max: number;
-  value: number;
+  valueMin: number;
+  valueMax: number;
   count: number;
   available: number;
   key: string;
@@ -120,4 +110,11 @@ export interface IFilterData {
   brands: TypeFilterMap[] | null;
   price: TypeFilterRange | null;
   stock: TypeFilterRange | null;
+}
+
+export interface IActiveFilterData {
+  categories: null | string[];
+  brands: null | string[];
+  price: null | string[];
+  stock: null | string[];
 }

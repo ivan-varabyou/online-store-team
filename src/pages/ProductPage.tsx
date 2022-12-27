@@ -38,6 +38,8 @@ export function ProductPage() {
     updateCartCountAndSumm && updateCartCountAndSumm();
   };
 
+  
+
   return (
     <>
       {result !== null && (
@@ -62,9 +64,9 @@ export function ProductPage() {
           <div className='row mt-2 mb-8'>
             <div className='col-lg-6'>
               <div className='gallery-wrap gallery-vertical'>
-                <div className={styles.productPage__wrapperImage + ' mb-2'}>
+                <div className={styles.productPage__wrapperImage + ' mb-2'} >
                   <img
-                    src={result.thumbnail}
+                    src={result.images[0]}
                     className={styles.productPage__image}
                   />
                 </div>
@@ -72,34 +74,29 @@ export function ProductPage() {
                 <div className={styles.productPage__imagesList + '  mb-3'}>
                   <div className={styles.productPage__imageItem}>
                     <img
-                      src={result.thumbnail}
+                      src={result.images[0]}
                       className={styles.productPage__imageItemImg}
                     />
                   </div>
                   <div className={styles.productPage__imageItem}>
                     <img
-                      src={result.thumbnail}
+                      src={result.images[1]}
                       className={styles.productPage__imageItemImg}
                     />
                   </div>
                   <div className={styles.productPage__imageItem}>
                     <img
-                      src={result.thumbnail}
+                      src={result.images[2]}
                       className={styles.productPage__imageItemImg}
                     />
                   </div>
                   <div className={styles.productPage__imageItem}>
                     <img
-                      src={result.thumbnail}
+                      src={result.images[3]}
                       className={styles.productPage__imageItemImg}
                     />
                   </div>
-                  <div className={styles.productPage__imageItem}>
-                    <img
-                      src={result.thumbnail}
-                      className={styles.productPage__imageItemImg}
-                    />
-                  </div>
+
                 </div>
               </div>
             </div>

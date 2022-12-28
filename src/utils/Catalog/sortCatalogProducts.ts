@@ -1,6 +1,6 @@
-import { IResultProduct } from '../models';
+import { IResultProduct } from '../../models';
 
-export default function sortProduct(
+export function sortCatalogProducts(
   result: IResultProduct[],
   sort: string,
 ): IResultProduct[] {

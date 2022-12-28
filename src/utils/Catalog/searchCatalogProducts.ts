@@ -1,6 +1,6 @@
-import { IResultProduct } from '../models';
+import { IResultProduct } from '../../models';
 
-export default function searchProduct(
+export function searchCatalogProducts(
   result: IResultProduct[],
   search: string,
 ): IResultProduct[] {

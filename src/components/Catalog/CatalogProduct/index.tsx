@@ -1,20 +1,22 @@
-import React, { useState, useEffect, useContext } from 'react';
+import React, { useState, useContext } from 'react';
 import { Link } from 'react-router-dom';
-import { IResultProduct } from '../../models';
+import { IResultProduct } from '../../../models';
 
-import { CartContext } from '../../App';
+import { CartContext } from '../../../App';
 
-import styles from './ProductCardGrid.module.scss';
+import styles from './CatalogProduct.module.scss';
 
 interface IProductProp {
   product: IResultProduct;
 }
 
-export const ProductCardGrid = ({ product }: IProductProp) => {
-  const addProductsCart = useContext(CartContext).addProductsCart;
-  const removeProductCart = useContext(CartContext).removeProductCart;
-  const isAddCart = useContext(CartContext).isAddCart;
-  const updateCartCountAndSumm = useContext(CartContext).updateCartCountAndSumm;
+export const CatalogProduct = ({ product }: IProductProp) => {
+  const {
+    addProductsCart,
+    removeProductCart,
+    isAddCart,
+    updateCartCountAndSumm,
+  } = useContext(CartContext);
 
   const dafaultStatusAddToCart =
     isAddCart && product.id && isAddCart(product.id);

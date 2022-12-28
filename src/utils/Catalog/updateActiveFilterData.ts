@@ -1,5 +1,10 @@
 import { includes } from 'lodash';
-import { IResultProduct, IFilterData, TypeFilterMap } from '../../models';
+import {
+  IResultProduct,
+  IFilterData,
+  TypeFilterMap,
+  TypeFilterRangeOrNull,
+} from '../../models';
 
 export function updateActiveFilterData(
   products: IResultProduct[],
@@ -7,14 +12,12 @@ export function updateActiveFilterData(
   endFilterData: IFilterData,
   setEndFilterData: (data: IFilterData) => void,
 ): void {
+  console.log('Доделать фильрацию');
   const newActiveFilterData: IFilterData = JSON.parse(
     JSON.stringify(
       (endFilterData.categories && endFilterData) || startFilterData,
     ),
   );
-
-  console.log('startFilterData', startFilterData);
-  console.log('endFilterData', endFilterData);
 
   if (startFilterData.categories && endFilterData.categories)
     newActiveFilterData.categories = updateInputCheckout(
@@ -32,10 +35,27 @@ export function updateActiveFilterData(
       endFilterData.brands,
     );
 
+  newActiveFilterData.price = updateInputRange(
+    endFilterData.price,
+    startFilterData.price,
+  );
+
+  newActiveFilterData.stock = updateInputRange(
+    endFilterData.stock,
+    startFilterData.stock,
+  );
+
   setEndFilterData(newActiveFilterData);
 }
 
-export function updateInputCheckout(
+const updateInputRange = (
+  dataEnd: TypeFilterRangeOrNull,
+  dataStart: TypeFilterRangeOrNull,
+) => {
+  return dataEnd ? dataEnd : dataStart;
+};
+
+function updateInputCheckout(
   products: IResultProduct[],
   productProperty: string,
   dataStart: TypeFilterMap[],

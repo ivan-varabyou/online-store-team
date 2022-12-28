@@ -10,18 +10,16 @@ import { Header } from './components/Header';
 import { Footer } from './components/Footer';
 import { ISearchContext, ICartContext } from './models';
 
-import { getLocalStorage, setLocalStorage } from './hooks/storage';
+import { getLocalStorage, setLocalStorage } from './utils/localStorage';
 
-import {
-  getCartCount,
-  getCartTotal,
-  addProductsCart,
-  removeProductCart,
-  isAddCart,
-  getCartDiscountTotal,
-} from './hooks/cart';
+import { getCartCount } from './utils/cart/getCartCount';
+import { getCartTotal } from './utils/cart/getCartTotal';
+import { addProductsCart } from './utils/cart/addProductsCart';
+import { removeProductCart } from './utils/cart/removeProductCart';
+import { isAddCart } from './utils/cart/isAddCart';
+import { getCartDiscountTotal } from './utils/cart/getCartDiscountTotal';
 
-import redirectingNonExistentPages from './hooks/redirecting';
+import redirectingNonExistentPages from './utils/redirectingNonExistentPages';
 
 export const SearchContext = createContext<Partial<ISearchContext>>({});
 export const CartContext = createContext<Partial<ICartContext>>({});

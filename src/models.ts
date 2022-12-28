@@ -100,16 +100,17 @@ export type TypeFilterRange = {
   max: number;
   valueMin: number;
   valueMax: number;
-  count: number;
-  available: number;
   key: string;
 };
 
+export type TypeFilterRangeOrNull = TypeFilterRange | null;
+export type TypeFilterMapArrayOrNull = TypeFilterMap[] | null;
+
 export interface IFilterData {
-  categories: TypeFilterMap[] | null;
-  brands: TypeFilterMap[] | null;
-  price: TypeFilterRange | null;
-  stock: TypeFilterRange | null;
+  categories: TypeFilterMapArrayOrNull;
+  brands: TypeFilterMapArrayOrNull;
+  price: TypeFilterRangeOrNull;
+  stock: TypeFilterRangeOrNull;
 }
 
 export interface IActiveFilterData {
@@ -117,4 +118,33 @@ export interface IActiveFilterData {
   brands: null | string[];
   price: null | string[];
   stock: null | string[];
+}
+
+export interface ICatalogFilter {
+  endFilterData: IFilterData;
+  statusFilter: boolean;
+  setStatusFilter: (status: boolean) => void;
+  setEndFilterData: (data: IFilterData) => void;
+}
+
+export interface ICatalogFilterRange {
+  data: TypeFilterRange;
+  updateInputRange: (data: TypeFilterRange, name: string) => void;
+  name: string;
+}
+
+export interface ICatalogFilterCheckbox {
+  data: TypeFilterMap;
+  index: number;
+  updateInputCheckbox: (
+    data: TypeFilterMap,
+    name: string,
+    index: number,
+  ) => void;
+  name: string;
+}
+
+export interface IUpdateFilterCheckbox {
+  type: string;
+  list: Map<string, TypeFilterMap>;
 }

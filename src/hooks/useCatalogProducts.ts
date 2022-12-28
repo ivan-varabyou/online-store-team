@@ -7,14 +7,14 @@ import {
 } from '../models';
 import axios, { AxiosError } from 'axios';
 
-import { sortCatalogProducts } from '../utils/Catalog/sortCatalogProducts';
-import { searchCatalogProducts } from '../utils/Catalog/searchCatalogProducts';
-import { filterCatalogProducts } from '../utils/Catalog/filterCatalogProducts';
-import { updateActiveFilterData } from '../utils/Catalog/updateActiveFilterData';
-import { getFilterDataStart } from '../utils/Catalog/getFilterData';
-import { getFilterDataEnd } from '../utils/Catalog/getFilterData';
+import { sortCatalogProducts } from '../utils/catalog/sortCatalogProducts';
+import { searchCatalogProducts } from '../utils/catalog/searchCatalogProducts';
+import { filterCatalogProducts } from '../utils/catalog/filterCatalogProducts';
+import { updateActiveFilterData } from '../utils/catalog/updateActiveFilterData';
+import { getFilterDataStart } from '../utils/catalog/getFilterDataStart';
+import { getFilterDataEnd } from '../utils/catalog/getFilterDataEnd';
 
-export function getCatalogProducts(
+export function useCatalogProducts(
   search: string,
   sort: string,
 
@@ -35,6 +35,7 @@ export function getCatalogProducts(
   const [result, setResult] = useState<IResultProduct[] | null>(null);
 
   const [error, setError] = useState('');
+
   const [loading, setLoading] = useState(true);
 
   async function fetchProduct() {
@@ -98,8 +99,8 @@ export function getCatalogProducts(
       if (
         activeFilterDataUrl.brands?.length ||
         activeFilterDataUrl.categories?.length ||
-        activeFilterDataUrl.price ||
-        activeFilterDataUrl.stock
+        activeFilterDataUrl.price?.length ||
+        activeFilterDataUrl.stock?.length
       ) {
         newFilterDataEnd = getFilterDataEnd(
           newFilterDataStart,

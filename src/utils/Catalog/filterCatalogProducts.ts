@@ -8,23 +8,57 @@ import {
 
 export function filterCatalogProducts(
   products: IResultProduct[],
-  startFilterData: IFilterData,
+  endFilterData: IFilterData,
   activeFilterData: IActiveFilterData,
   setActiveFilterDataUrl: (data: IActiveFilterData) => void,
 ) {
+  console.log('rafactor');
   activeFilterData.categories = [];
   activeFilterData.brands = [];
+  activeFilterData.price = [];
+  activeFilterData.stock = [];
 
-  // useEffect(() => {
-  //   activeFilterData.categories = activeFilterData.categories;
-  //   activeFilterData.brands = activeFilterData.brands;
-  // }, []);
+  if (
+    endFilterData.price &&
+    (endFilterData.price.valueMin !== -1 || endFilterData.price.valueMax !== -1)
+  ) {
+    const priceValueMin =
+      endFilterData.price.valueMin !== -1
+        ? endFilterData.price.valueMin
+        : endFilterData.price.min;
+    !activeFilterData.price.includes(String(priceValueMin)) &&
+      activeFilterData.price.push(String(priceValueMin));
 
-  // if (!(activeFilterData.brands || activeFilterData.categories)) {
+    const priceValueMax =
+      endFilterData.price.valueMax !== -1
+        ? endFilterData.price.valueMax
+        : endFilterData.price.max;
+    !activeFilterData.price.includes(String(priceValueMax)) &&
+      activeFilterData.price.push(String(priceValueMax));
+  }
 
-  if (startFilterData) {
-    startFilterData.categories &&
-      startFilterData.categories.forEach((category: TypeFilterMap) => {
+  if (
+    endFilterData.stock &&
+    (endFilterData.stock.valueMin !== -1 || endFilterData.stock.valueMax !== -1)
+  ) {
+    const stockValueMin =
+      endFilterData.stock.valueMin !== -1
+        ? endFilterData.stock.valueMin
+        : endFilterData.stock.min;
+    !activeFilterData.stock.includes(String(stockValueMin)) &&
+      activeFilterData.stock.push(String(stockValueMin));
+    const stockValueMax =
+      endFilterData.stock.valueMax !== -1
+        ? endFilterData.stock.valueMax
+        : endFilterData.stock.max;
+    !activeFilterData.stock.includes(String(stockValueMax)) &&
+      activeFilterData.stock.push(String(stockValueMax));
+  }
+
+  // Set Start Data
+  if (endFilterData) {
+    endFilterData.categories &&
+      endFilterData.categories.forEach((category: TypeFilterMap) => {
         if (category.status) {
           activeFilterData.categories &&
             !activeFilterData.categories.includes(category.key) &&
@@ -32,8 +66,8 @@ export function filterCatalogProducts(
         }
       });
 
-    startFilterData.brands &&
-      startFilterData.brands.forEach((brand: TypeFilterMap) => {
+    endFilterData.brands &&
+      endFilterData.brands.forEach((brand: TypeFilterMap) => {
         if (brand.status) {
           activeFilterData.brands &&
             !activeFilterData.brands.includes(brand.key) &&
@@ -41,8 +75,8 @@ export function filterCatalogProducts(
         }
       });
   }
-  // }
 
+  // Set Active Data
   let filterProducts = products;
   if (
     (activeFilterData.categories && activeFilterData.categories.length > 0) ||
@@ -57,7 +91,24 @@ export function filterCatalogProducts(
     );
   }
 
-  setActiveFilterDataUrl(activeFilterData);
+  if (activeFilterData.price && activeFilterData.price.length > 0) {
+    const priceMin = activeFilterData.price[0];
+    const priceMax = activeFilterData.price[1];
+    filterProducts = filterProducts.filter(
+      (product) =>
+        product.price >= Number(priceMin) && product.price <= Number(priceMax),
+    );
+  }
 
+  if (activeFilterData.stock && activeFilterData.stock.length > 0) {
+    const stockMin = activeFilterData.stock[0];
+    const stockMax = activeFilterData.stock[1];
+    filterProducts = filterProducts.filter(
+      (product) =>
+        product.stock >= Number(stockMin) && product.stock <= Number(stockMax),
+    );
+  }
+
+  setActiveFilterDataUrl(activeFilterData);
   return filterProducts;
 }

@@ -5,7 +5,7 @@ export const updateUrlCatalogPage = (
   catalogSortSelect: string,
   catalogProductDisplay: string,
   setSearchUrl: (query: TypeQuery) => void,
-  activeFilterData: IActiveFilterData,
+  activeFilterDataUrl: IActiveFilterData,
 ) => {
   const query: TypeQuery = {
     brands: '',
@@ -17,56 +17,37 @@ export const updateUrlCatalogPage = (
     grid: '',
   };
 
-  const copyActiveFilterData = JSON.parse(JSON.stringify(activeFilterData));
+  const copyActiveFilterDataUrl: IActiveFilterData = JSON.parse(
+    JSON.stringify(activeFilterDataUrl),
+  );
 
-  if (copyActiveFilterData.categories) {
-    query.categories = copyActiveFilterData.categories.join(';');
-  }
-  if (query.categories?.length === 0) {
-    delete query.categories;
-  }
+  if (copyActiveFilterDataUrl.categories)
+    copyActiveFilterDataUrl.categories.join(';');
+  if (query.categories?.length === 0) delete query.categories;
 
-  if (copyActiveFilterData.brands) {
-    query.brands = copyActiveFilterData.brands.join(';');
-  }
-  if (query.brands?.length === 0) {
-    delete query.brands;
-  }
+  if (copyActiveFilterDataUrl.brands)
+    query.brands = copyActiveFilterDataUrl.brands.join(';');
+  if (query.brands?.length === 0) delete query.brands;
 
-  if (copyActiveFilterData.price) {
-    query.price = copyActiveFilterData.price.join(';');
-  }
-  if (query.price?.length === 0) {
-    delete query.price;
-  }
+  if (copyActiveFilterDataUrl.price)
+    query.price = copyActiveFilterDataUrl.price.join(';');
+  if (query.price?.length === 0) delete query.price;
 
-  if (copyActiveFilterData.stock) {
-    query.stock = copyActiveFilterData.stock.join(';');
-  }
-  if (query.stock?.length === 0) {
-    delete query.stock;
-  }
+  if (copyActiveFilterDataUrl.stock)
+    query.stock = copyActiveFilterDataUrl.stock.join(';');
+  if (query.stock?.length === 0) delete query.stock;
 
-  if (value && value?.length > 0) {
-    query.search = String(value);
-  }
-  if (query.search?.length === 0) {
-    delete query.search;
-  }
-  if (catalogSortSelect && catalogSortSelect?.length > 0) {
+  if (value && value?.length > 0) query.search = String(value);
+  if (query.search?.length === 0) delete query.search;
+
+  if (catalogSortSelect && catalogSortSelect?.length > 0)
     query.sort = String(catalogSortSelect);
-  }
-  if (query.sort?.length === 0 || query.sort === 'default') {
-    delete query.sort;
-  }
+  if (query.sort?.length === 0 || query.sort === 'default') delete query.sort;
 
-  if (catalogProductDisplay === 'list') {
+  if (catalogProductDisplay === 'list')
     query.grid = String(catalogProductDisplay);
-  }
 
-  if (query.grid?.length === 0) {
-    delete query.grid;
-  }
+  if (query.grid?.length === 0) delete query.grid;
 
   setSearchUrl(query);
 };

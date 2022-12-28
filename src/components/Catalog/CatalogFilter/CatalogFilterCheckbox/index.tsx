@@ -1,54 +1,58 @@
 import React, { useState } from 'react';
-import { TypeFilterMap } from '../../../../models';
+import { ICatalogFilterCheckbox } from '../../../../models';
 import styles from './CatalogFilterCheckbox.module.scss';
 
 export const CatalogFilterCheckbox = ({
-  category,
+  data,
   index,
-  handleCatalogFilterCheckbox,
-  type,
-}: {
-  category: TypeFilterMap;
-  index: number;
-  handleCatalogFilterCheckbox: (
-    event: React.ChangeEvent<HTMLInputElement>,
-  ) => void;
-  type: string;
-}) => {
+  updateInputCheckbox,
+  name,
+}: ICatalogFilterCheckbox) => {
+  const [checkboxStatus, setCheckboxStatus] = useState(data.status);
+
+  const handleChange = (event: React.ChangeEvent<HTMLInputElement>) => {
+    if (event.target.classList.contains('active')) {
+      data.status = false;
+    } else {
+      data.status = true;
+    }
+    setCheckboxStatus(!checkboxStatus);
+    updateInputCheckbox(data, name, index);
+  };
+
   return (
     <>
-      <label
-        className={`${styles.checkbox} form-check mb-2`}
-        key={category.key}>
+      <label className={`${styles.checkbox} form-check mb-2`} key={data.key}>
         <input
-          data-index={index}
-          data-type={type}
+          data-type={name}
+          name={name}
           type='checkbox'
-          onChange={handleCatalogFilterCheckbox}
-          value={category.name}
+          onChange={handleChange}
+          data-index={index}
+          value={data.name}
           className={
-            category.status
+            checkboxStatus
               ? `${styles.checkboxActive} ${styles.checkboxHide} active`
               : `${styles.checkboxPasive} ${styles.checkboxHide} pasive`
           }
-          defaultChecked={category.status}
+          defaultChecked={checkboxStatus}
         />
         <span
           className={
-            category.status
+            checkboxStatus
               ? `${styles.checkboxActive}`
               : `${styles.checkboxPasive}`
           }>
-          {category.name}
+          {data.name}
         </span>
 
         <b
           className={`${
             styles.checkboxCount
           } badge rounded-pill float-end  bg-${
-            category.available == 0 ? 'secondary' : 'primary'
+            data.available == 0 ? 'secondary' : 'primary'
           }`}>
-          {category.available} / {category.count}
+          {data.available} / {data.count}
         </b>
       </label>
     </>

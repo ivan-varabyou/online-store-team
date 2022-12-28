@@ -2,12 +2,11 @@ import React, { useState, useEffect, useContext } from 'react';
 
 import copy from 'copy-to-clipboard';
 import { useSearchParams } from 'react-router-dom';
-import { getCatalogProducts } from '../hooks/products';
+import { useCatalogProducts } from '../hooks/useCatalogProducts';
 import { IFilterData, IActiveFilterData } from '../models';
 
 // utils
-import { updateUrlCatalogPage } from '../utils/Catalog/updateUrlCatalogPage';
-import { updateActiveFilterData } from '../utils/Catalog/updateActiveFilterData';
+import { updateUrlCatalogPage } from '../utils/catalog/updateUrlCatalogPage';
 
 // components
 import { ErrorMessage } from '../components/ErrorMessage/';
@@ -93,12 +92,10 @@ export function CatalogPage() {
   const [activeFilterDataUrl, setActiveFilterDataUrl] =
     useState(dataUrlDefault);
 
-  console.log('activeFilterDataUrl', activeFilterDataUrl);
-
   const [statusFilter, setStatusFilter] = useState(false);
 
   // get products for catalog
-  const { result, error, loading } = getCatalogProducts(
+  const { result, error, loading } = useCatalogProducts(
     String(searchValueDefault),
     String(catalogSortSelect),
 

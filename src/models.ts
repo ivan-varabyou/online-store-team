@@ -129,7 +129,7 @@ export interface ICatalogFilter {
 
 export interface ICatalogFilterRange {
   data: TypeFilterRange;
-  updateInputRange: (data: TypeFilterRange, name: string) => void;
+  updateInputRange: (data: TypeFilterRange) => void;
   name: string;
 }
 

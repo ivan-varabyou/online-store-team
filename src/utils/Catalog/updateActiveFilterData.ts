@@ -1,9 +1,9 @@
-import { includes } from 'lodash';
 import {
   IResultProduct,
   IFilterData,
   TypeFilterMap,
   TypeFilterRangeOrNull,
+  TypeFilterRange,
 } from '../../models';
 
 export function updateActiveFilterData(
@@ -12,7 +12,6 @@ export function updateActiveFilterData(
   endFilterData: IFilterData,
   setEndFilterData: (data: IFilterData) => void,
 ): void {
-  console.log('Доделать фильрацию');
   const newActiveFilterData: IFilterData = JSON.parse(
     JSON.stringify(
       (endFilterData.categories && endFilterData) || startFilterData,
@@ -36,23 +35,48 @@ export function updateActiveFilterData(
     );
 
   newActiveFilterData.price = updateInputRange(
+    products,
+    'price',
     endFilterData.price,
     startFilterData.price,
   );
 
   newActiveFilterData.stock = updateInputRange(
+    products,
+    'stock',
     endFilterData.stock,
     startFilterData.stock,
   );
+
+  console.log('newActiveFilterData', newActiveFilterData);
 
   setEndFilterData(newActiveFilterData);
 }
 
 const updateInputRange = (
+  products: IResultProduct[],
+  productProperty: string,
   dataEnd: TypeFilterRangeOrNull,
   dataStart: TypeFilterRangeOrNull,
 ) => {
-  return dataEnd ? dataEnd : dataStart;
+  const dataCopy: TypeFilterRangeOrNull = JSON.parse(
+    JSON.stringify(dataEnd ? dataEnd : dataStart),
+  );
+
+  if (dataCopy) {
+    // dataCopy.min = -1;
+    // dataCopy.max = -1;
+    products.forEach((product) => {
+      const productNum = Number(
+        product[productProperty as keyof IResultProduct],
+      );
+
+      if (dataCopy.valueMin >= productNum || dataCopy.min < 0)
+        dataCopy.valueMin = productNum;
+      if (dataCopy.max <= productNum) dataCopy.valueMax = productNum;
+    });
+  }
+  return dataCopy;
 };
 
 function updateInputCheckout(

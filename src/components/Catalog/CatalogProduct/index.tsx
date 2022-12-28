@@ -2,6 +2,9 @@ import React, { useState, useContext } from 'react';
 import { Link } from 'react-router-dom';
 import { IResultProduct } from '../../../models';
 
+import { getProductOldPrice } from '../../../utils/product/getProductOldPrice';
+import { getShortText } from '../../../utils/product/getShortText';
+
 import { CartContext } from '../../../App';
 
 import styles from './CatalogProduct.module.scss';
@@ -24,7 +27,9 @@ export const CatalogProduct = ({ product }: IProductProp) => {
     dafaultStatusAddToCart,
   );
 
-  const buttonAddToCartText = statusAddToCart ? 'Remove' : 'Add to cart';
+  const buttonAddToCartText = statusAddToCart
+    ? 'Drop from cart'
+    : 'Add to cart';
 
   const handleButtonCart = (): void => {
     if (statusAddToCart) {
@@ -36,6 +41,11 @@ export const CatalogProduct = ({ product }: IProductProp) => {
     }
     updateCartCountAndSumm && updateCartCountAndSumm();
   };
+
+  const oldPrice = getProductOldPrice(
+    product.price,
+    product.discountPercentage,
+  );
 
   return (
     <>
@@ -58,20 +68,14 @@ export const CatalogProduct = ({ product }: IProductProp) => {
           <div className={styles.product__detail + ' product__detail'}>
             <div className={styles.product__price}>
               {product.discountPercentage && (
-                <del className={styles.product__priceold}>
-                  $
-                  {Math.ceil(
-                    product.price +
-                      (product.price / 100) * product.discountPercentage,
-                  )}
-                </del>
+                <del className={styles.product__priceold}>${oldPrice}</del>
               )}
               <strong>${product.price}</strong>
             </div>
             <Link
               to={'/product/' + product.id}
               className={styles.product__title + ' product__title'}>
-              {String(product.title).slice(0, 30)}
+              {getShortText(product.title)}
             </Link>
 
             <p className={styles.product__stock + ' product__stock'}>
@@ -84,7 +88,9 @@ export const CatalogProduct = ({ product }: IProductProp) => {
             </p>
 
             <div className={styles.product__button}>
-              <button className='btn btn-primary' onClick={handleButtonCart}>
+              <button
+                className='btn btn-primary btn-lg'
+                onClick={handleButtonCart}>
                 {buttonAddToCartText}
               </button>
               <Link

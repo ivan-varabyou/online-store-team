@@ -1,0 +1,10 @@
+.wrapper {
+  flex: 1 1 auto;
+  display: flex;
+  height: 100px;
+}
+
+.image {
+  width: 100%;
+  object-fit: contain;
+}

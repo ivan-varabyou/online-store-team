@@ -10,11 +10,14 @@
   height: 100vh;
 
   &__wrapperImage {
+    position: relative;
+    height: 400px;
     display: flex;
   }
 
   &__image {
     width: 100%;
+    object-fit: contain;
   }
 
   &__imgContainer {
@@ -29,14 +32,6 @@
     display: flex;
     flex-direction: row;
     gap: 8px;
-  }
-
-  &__imageItem {
-    flex: 1 1 auto;
-  }
-
-  &__imageItemImg {
-    width: 100%;
   }
 
   &__title {
@@ -68,6 +63,37 @@
 
   &__buttons {
     margin-right: 10px;
+  }
+  &__price {
+    display: flex;
+    font-size: 1.5em;
+    gap: 8px;
+  }
+
+  &__priceRegual {
+    color: #ce3333;
+  }
+
+  &__label {
+    position: absolute;
+    padding: 2px 6px;
+  }
+
+  &__sales {
+    background-color: #ce3333;
+    color: #fff;
+    top: 0;
+  }
+
+  &__brand {
+    background-color: #000000;
+    color: #ffffff;
+    bottom: 0;
+  }
+
+  &__stars {
+    color: #ebb401;
+    font-size: 1.3em;
   }
 }
 

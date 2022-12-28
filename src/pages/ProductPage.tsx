@@ -6,19 +6,17 @@ import { Link } from 'react-router-dom';
 import styles from './../scss/page/ProductPage.module.scss';
 import { CartContext } from '../App';
 
+import { getProductOldPrice } from '../utils/product/getProductOldPrice';
+import { getStarsRatting } from '../utils/product/getStarsRatting';
+import { ProductImages } from '../components/Product/ProductImages';
+
 export function ProductPage() {
   const { productId } = useParams();
-  const { result, error, loading } = useProduct(Number(productId));
-  console.log(result, error, loading);
-  if (result !== null) {
-    const title = result.title;
-  }
+  const result = useProduct(Number(productId));
+
   const addProductsCart = useContext(CartContext).addProductsCart;
   const removeProductCart = useContext(CartContext).removeProductCart;
   const isAddCart = useContext(CartContext).isAddCart;
-  const getCartCount = useContext(CartContext).getCartCount;
-  const getCartTotal = useContext(CartContext).getCartTotal;
-  const getLocalStorage = useContext(CartContext).getLocalStorage;
   const updateCartCountAndSumm = useContext(CartContext).updateCartCountAndSumm;
 
   const dafaultStatusAddToCart =
@@ -26,7 +24,9 @@ export function ProductPage() {
   const [statusAddToCart, setStatusAddToCart] = useState(
     dafaultStatusAddToCart,
   );
-  const buttonAddToCartText = statusAddToCart ? 'Remove' : 'Add to cart';
+  const buttonAddToCartText = statusAddToCart
+    ? 'Drop from cart'
+    : 'Add to cart';
   const handleButtonCart = (): void => {
     if (statusAddToCart) {
       removeProductCart && removeProductCart(Number(productId), 1);
@@ -37,6 +37,14 @@ export function ProductPage() {
     }
     updateCartCountAndSumm && updateCartCountAndSumm();
   };
+
+  let images: string[] = [];
+
+  if (result) {
+    images = result.images;
+  }
+
+  const [activeImage, setActiveImage] = useState(0);
 
   return (
     <>
@@ -62,71 +70,59 @@ export function ProductPage() {
           <div className='row mt-2 mb-8'>
             <div className='col-lg-6'>
               <div className='gallery-wrap gallery-vertical'>
-                <div className={styles.productPage__wrapperImage + ' mb-2'}>
+                <div className={styles.productPage__wrapperImage + ' mb-2 '}>
                   <img
-                    src={result.thumbnail}
+                    src={images[activeImage]}
                     className={styles.productPage__image}
                   />
+                  <div
+                    className={`${styles.productPage__label} ${styles.productPage__sales}`}>
+                    {result.discountPercentage}%
+                  </div>
+                  <div
+                    className={`${styles.productPage__label} ${styles.productPage__brand}`}>
+                    {result.brand}
+                  </div>
                 </div>
 
                 <div className={styles.productPage__imagesList + '  mb-3'}>
-                  <div className={styles.productPage__imageItem}>
-                    <img
-                      src={result.thumbnail}
-                      className={styles.productPage__imageItemImg}
+                  {images.map((image, index) => (
+                    <ProductImages
+                      image={image}
+                      index={index}
+                      setActiveImage={setActiveImage}
+                      key={index}
                     />
-                  </div>
-                  <div className={styles.productPage__imageItem}>
-                    <img
-                      src={result.thumbnail}
-                      className={styles.productPage__imageItemImg}
-                    />
-                  </div>
-                  <div className={styles.productPage__imageItem}>
-                    <img
-                      src={result.thumbnail}
-                      className={styles.productPage__imageItemImg}
-                    />
-                  </div>
-                  <div className={styles.productPage__imageItem}>
-                    <img
-                      src={result.thumbnail}
-                      className={styles.productPage__imageItemImg}
-                    />
-                  </div>
-                  <div className={styles.productPage__imageItem}>
-                    <img
-                      src={result.thumbnail}
-                      className={styles.productPage__imageItemImg}
-                    />
-                  </div>
+                  ))}
                 </div>
               </div>
             </div>
             <div className='col-lg-6'>
               <article className='ps-lg-3'>
                 <h1 className='title text-dark'>{result.title}</h1>
-
+                <div className='row'>
+                  <div className={styles.productPage__stars + ' mb-2'}>
+                    {getStarsRatting(result.rating).map((star) =>
+                      React.createElement('span', { className: star }, ''),
+                    )}
+                  </div>
+                </div>
                 <div className='mb-3'>
                   <div className={styles.productPage__infoBlock}>
-                    <div className={styles.productPage__infoItem}>
-                      <p className={styles.productPage__infoText}>
-                        Description:
-                        <span>{result.description}</span>
-                      </p>
-                    </div>
-                    <div className={styles.productPage__infoItem}>
-                      <p className={styles.productPage__infoText}>
-                        Discount Percentage:
-                        <span>{result.discountPercentage}</span>
-                      </p>
-                    </div>
                     <div className={styles.productPage__infoItem}>
                       <p className={styles.productPage__infoText}>
                         Rating:
                         <span>{result.rating}</span>
                       </p>
                     </div>
+
+                    <div className={styles.productPage__infoItem}>
+                      <p className={styles.productPage__infoText}>
+                        Discount Percentage:
+                        <span>{result.discountPercentage}</span>
+                      </p>
+                    </div>
+
                     <div className={styles.productPage__infoItem}>
                       <p className={styles.productPage__infoText}>
                         Stock:
@@ -145,27 +141,44 @@ export function ProductPage() {
                         <span>{result.category}</span>
                       </p>
                     </div>
+                    <div className={styles.productPage__infoItem}>
+                      <p className={styles.productPage__infoText}>
+                        Description:
+                        <span>{result.description}</span>
+                      </p>
+                    </div>
                   </div>
                 </div>
-                <div className='mb-4'>
-                  <div className='price h5'>${result.price}</div> <span> </span>
+                <div
+                  className={
+                    styles.productPage__price +
+                    ' mb-4 {styles.productPage__price}'
+                  }>
+                  <strong className={styles.productPage__priceRegual}>
+                    ${result.price}
+                  </strong>
+                  <del className={styles.productPage__priceOld}>
+                    {getProductOldPrice(
+                      result.price,
+                      result.discountPercentage,
+                    )}
+                  </del>
                 </div>
 
                 <div className='row gx-2 mb-4'>
-                  <div className='col-2'>
-                    <select className='form-select'>
-                      <option> 1 </option>
-                      <option> 2 </option>
-                      <option> 3 </option>
-                    </select>
-                  </div>
-
-                  <div className='col-auto'>
-                    <a
+                  <div className='col-lg-6'>
+                    <button
                       onClick={handleButtonCart}
-                      className='btn btn-primary w-100'>
+                      className='btn btn-primary w-100 btn-lg'>
                       {buttonAddToCartText}
-                    </a>
+                    </button>
+                  </div>
+                  <div className='col-lg-6'>
+                    <Link
+                      to='/cart?modal=buy'
+                      className='btn btn-success w-100 btn-lg'>
+                      Buy Now
+                    </Link>
                   </div>
                 </div>
               </article>

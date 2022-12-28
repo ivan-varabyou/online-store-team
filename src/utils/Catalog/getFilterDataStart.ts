@@ -56,11 +56,7 @@ function updateFilterCheckbox(type: string, list: Map<string, TypeFilterMap>) {
       category.available += 1;
     }
   } else {
-    const nameLowerCase = type.toLowerCase();
-    const name = `${nameLowerCase
-      .replace(/(-)/g, ' ')
-      .slice(0, 1)
-      .toUpperCase()}${nameLowerCase.slice(1)}`;
+    const name = `${type.slice(0, 1).toUpperCase()}${type.slice(1)}`;
 
     const key = type;
 

@@ -175,6 +175,9 @@ export function ProductPage() {
                   </div>
                   <div className='col-lg-6'>
                     <Link
+                      onClick={() =>
+                        addProductsCart && addProductsCart(result, 1)
+                      }
                       to='/cart?modal=buy'
                       className='btn btn-success w-100 btn-lg'>
                       Buy Now

@@ -88,9 +88,7 @@ export const CatalogProduct = ({ product }: IProductProp) => {
             </p>
 
             <div className={styles.product__button}>
-              <button
-                className='btn btn-primary btn-lg'
-                onClick={handleButtonCart}>
+              <button className='btn btn-primary' onClick={handleButtonCart}>
                 {buttonAddToCartText}
               </button>
               <Link

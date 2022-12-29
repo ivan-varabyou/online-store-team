@@ -4,7 +4,7 @@ export function getCartTotal(): number {
   if (getLocalStorage('cart').length > 0) {
     const products = getLocalStorage('cart');
     return products
-      .map((product) => product.price)
+      .map((product) => product.price * product.count)
       .reduce((acc, cur) => acc + cur);
   }
   return 0;

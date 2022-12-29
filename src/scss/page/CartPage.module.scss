@@ -18,4 +18,26 @@
     justify-content: space-between;
     margin-bottom: 10px;
   }
+
+  &__coupon {
+    display: flex;
+    flex-direction: row;
+    flex-wrap: nowrap;
+    gap: 12px;
+    margin: 8px 0;
+  }
+
+  &__summary {
+    display: flex;
+    gap: 8px;
+    flex-direction: column;
+  }
+
+  &__summaryRow {
+    display: flex;
+    justify-content: space-between;
+  }
+  &__summaryRowPromo {
+    color: #f90000;
+  }
 }

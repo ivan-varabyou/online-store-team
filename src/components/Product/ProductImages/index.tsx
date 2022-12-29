@@ -12,7 +12,10 @@ export const ProductImages = ({
 }) => {
   return (
     <>
-      <div className={styles.wrapper} onClick={() => setActiveImage(index)}>
+      <div
+        className={styles.wrapper}
+        onClick={() => setActiveImage(index)}
+        key={index}>
         <img src={image} className={styles.image} />
       </div>
     </>

@@ -3,25 +3,31 @@ import { IResultProduct, TypeCartItem } from '../../models';
 import { isAddCart } from './isAddCart';
 
 export function addProductsCart(
-  currentProductCart: IResultProduct,
+  product: IResultProduct | TypeCartItem,
   count: number,
 ): boolean {
   const cartItems: Array<TypeCartItem> = getLocalStorage('cart');
 
-  if (isAddCart(currentProductCart.id)) {
+  if (isAddCart(product.id)) {
     cartItems.map((item) => {
-      if (item.id === currentProductCart.id && item.count > 0) {
+      if (item.id === product.id && item.count > 0) {
         item.count += count;
       }
       return item;
     });
   } else {
     const cartItem: TypeCartItem = {
-      id: currentProductCart.id,
-      title: currentProductCart.title,
-      price: currentProductCart.price,
-      discountPercentage: currentProductCart.discountPercentage,
-      thumbnail: currentProductCart.thumbnail,
+      id: product.id,
+      title: product.title,
+      description: product.description,
+      price: product.price,
+      discountPercentage: product.discountPercentage,
+      rating: product.rating,
+      stock: product.stock,
+      brand: product.brand,
+      category: product.category,
+      thumbnail: product.thumbnail,
+      images: product.images,
       count: count,
     };
     cartItems.push(cartItem);

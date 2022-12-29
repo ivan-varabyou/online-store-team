@@ -1,3 +1,5 @@
+import { getCartCountProduct } from './utils/cart/getCartCountProduct';
+
 export interface IResult {
   products: IResultProduct[];
   total: number;
@@ -32,23 +34,21 @@ export interface ICartContext {
   getCartCount: () => number;
   addProductsCart: (data: IResultProduct, count: number) => boolean;
   removeProductCart: (id: number, count: number) => boolean;
+  updateProductCartCount: (id: number, count: number) => boolean;
   isAddCart: (id: number) => boolean;
+  getCartCountProduct: (id: number) => number | undefined;
+  getCartCountLimit: (count: number) => number;
   updateCartCountAndSumm: () => void;
   cartCount: number;
   cartTotal: number;
   handleModalStatus: () => void;
 }
 
-type TypeItem = Omit<
-  IResultProduct,
-  'brand' | 'stock' | 'rating' | 'description' | 'images' | 'category'
->;
-
 type TypeCount = {
   count: number;
 };
 
-export type TypeCartItem = TypeItem & TypeCount;
+export type TypeCartItem = IResultProduct & TypeCount;
 
 export type TypeReturnProducts<T> = {
   result: T;
@@ -147,4 +147,9 @@ export interface ICatalogFilterCheckbox {
 export interface IUpdateFilterCheckbox {
   type: string;
   list: Map<string, TypeFilterMap>;
+}
+
+export interface IPromocode {
+  name: string;
+  discount: number;
 }

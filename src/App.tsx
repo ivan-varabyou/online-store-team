@@ -16,8 +16,11 @@ import { getCartCount } from './utils/cart/getCartCount';
 import { getCartTotal } from './utils/cart/getCartTotal';
 import { addProductsCart } from './utils/cart/addProductsCart';
 import { removeProductCart } from './utils/cart/removeProductCart';
+import { updateProductCartCount } from './utils/cart/updateProductCartCount';
 import { isAddCart } from './utils/cart/isAddCart';
 import { getCartDiscountTotal } from './utils/cart/getCartDiscountTotal';
+import { getCartCountProduct } from './utils/cart/getCartCountProduct';
+import { getCartCountLimit } from './utils/cart/getCartCountLimit';
 
 import redirectingNonExistentPages from './utils/redirectingNonExistentPages';
 
@@ -66,7 +69,10 @@ function App() {
             getCartDiscountTotal,
             addProductsCart,
             removeProductCart,
+            updateProductCartCount,
             isAddCart,
+            getCartCountProduct,
+            getCartCountLimit,
             cartCount,
             cartTotal,
             updateCartCountAndSumm,

@@ -1,0 +1,20 @@
+.cart {
+  &__spinerButton {
+    border: 1px solid #dcdcdc;
+    font-size: 1.1em;
+    &:hover {
+      color: #0d6efd;
+      border-color: #6aa3ff;
+    }
+  }
+
+  &__productCount::-webkit-outer-spin-button,
+  &__productCount::-webkit-inner-spin-button {
+    -webkit-appearance: none;
+    margin: 0;
+  }
+
+  &__productCount[type='number'] {
+    -moz-appearance: textfield;
+  }
+}

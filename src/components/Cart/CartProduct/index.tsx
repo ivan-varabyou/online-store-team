@@ -1,16 +1,58 @@
-import React from 'react';
+import React, { useContext, useState, useRef, useCallback } from 'react';
 import { TypeCartItem } from '../../../models';
 import styles from './CartProduct.module.scss';
 import { Link } from 'react-router-dom';
+import { CartContext } from '../../../App';
+
+import { getProductOldPrice } from '../../../utils/product/getProductOldPrice';
 
 export const CartProduct = ({
   product,
+  setProductsCart,
 }: {
   product: TypeCartItem;
-}): JSX.Element => {
+  setProductsCart: (products: [] | TypeCartItem[]) => void;
+}) => {
+  const {
+    removeProductCart,
+    updateProductCartCount,
+    updateCartCountAndSumm,
+    addProductsCart,
+    getLocalStorage,
+    getCartCountLimit,
+  } = useContext(CartContext);
+
+  const productCatd = useRef<null | HTMLDivElement>(null);
+
+  const productOldPrice = getProductOldPrice(
+    product.price,
+    product.discountPercentage,
+  );
+
+  const hendleDropFromCart = (count: number) => {
+    removeProductCart && removeProductCart(product.id, count);
+    if (getLocalStorage) setProductsCart(getLocalStorage('cart'));
+    updateCartCountAndSumm && updateCartCountAndSumm();
+  };
+
+  const hendleAddToCart = (count: number) => {
+    addProductsCart && addProductsCart(product, count);
+    if (getLocalStorage) setProductsCart(getLocalStorage('cart'));
+    updateCartCountAndSumm && updateCartCountAndSumm();
+  };
+
+  const hendleChangeCart = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const count = getCartCountLimit && getCartCountLimit(+e.target.value);
+    count &&
+      updateProductCartCount &&
+      updateProductCartCount(product.id, count);
+    if (getLocalStorage) setProductsCart(getLocalStorage('cart'));
+    updateCartCountAndSumm && updateCartCountAndSumm();
+  };
+
   return (
     <>
-      <div className='card card-body mb-1' key={product.id}>
+      <div className='card card-body mb-1' ref={productCatd}>
         <div className='row gy-3'>
           <div className='row mt-4'>
             <div className='col-lg-1'>
@@ -19,25 +61,45 @@ export const CartProduct = ({
               </Link>
             </div>
 
-            <div className='col-lg-8'>
+            <div className='col-lg-7'>
               <Link to={'/product/' + product.id}>
                 <h6 className='title'>{product.title}</h6>
               </Link>
-              <strong>
-                ${product.price} x {product.count}
-              </strong>
+              <strong className='text-red'>${product.price} </strong>
+              <del>{productOldPrice}</del> x {product.count}
             </div>
 
-            <div className='col-lg-2'>
-              <input
-                type='text'
-                className='form-control'
-                value={product.count}
-              />
+            <div className='col-lg-3'>
+              <div className={styles.cart__spiner + ' input-group'}>
+                <button
+                  className={styles.cart__spinerButton + ' btn bg-light'}
+                  type='button'
+                  onClick={() => hendleDropFromCart(1)}>
+                  <i className='bi bi-dash'></i>
+                </button>
+                <input
+                  type='number'
+                  min='1'
+                  max='100'
+                  className={
+                    styles.cart__productCount + ' form-control text-center'
+                  }
+                  value={product.count}
+                  onChange={hendleChangeCart}
+                />
+                <button
+                  className={styles.cart__spinerButton + ' btn bg-light'}
+                  type='button'
+                  onClick={() => hendleAddToCart(1)}>
+                  <i className='bi bi-plus'></i>
+                </button>
+              </div>
             </div>
 
             <div className='col-lg-1'>
-              <button className='btn btn-icon btn-danger'>
+              <button
+                className='btn btn-icon btn-danger'
+                onClick={() => hendleDropFromCart(product.count)}>
                 <i className='bi bi-trash'></i>
               </button>
             </div>

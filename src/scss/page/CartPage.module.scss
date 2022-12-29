@@ -1,0 +1,21 @@
+.cart {
+  &__title {
+    font-size: 1.6rem;
+    color: #ffffff;
+  }
+
+  &__list {
+    display: flex;
+    flex-wrap: wrap;
+  }
+
+  &__items {
+    color: rgba(255, 255, 255, 0.702);
+  }
+
+  &__options {
+    display: flex;
+    justify-content: space-between;
+    margin-bottom: 10px;
+  }
+}

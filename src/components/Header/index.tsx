@@ -17,7 +17,7 @@ export const Header = (): JSX.Element => {
   const [search] = useSearchParams();
   const [value, setValue] = useState(search.get('search') || '');
 
-  const setSearchValue = useContext(SearchContext).setSerachValue;
+  const [searchUrl, setSearchValue] = useSearchParams();
 
   const inputRef = useRef<HTMLInputElement>(null);
 
@@ -40,6 +40,8 @@ export const Header = (): JSX.Element => {
     updateSearchValue(event.target.value);
   };
 
+  const isCatalog = window.location.pathname === '/';
+
   return (
     <>
       <header className='header section-header border-bottom'>
@@ -51,17 +53,19 @@ export const Header = (): JSX.Element => {
               </Link>
             </div>
 
-            <div className={styles.search}>
-              <input
-                ref={inputRef}
-                onClick={onClickClear}
-                onInput={onChangeInput}
-                type='search'
-                className='form-control'
-                placeholder='Search'
-                value={value}
-              />
-            </div>
+            {isCatalog && (
+              <div className={styles.search}>
+                <input
+                  ref={inputRef}
+                  onClick={onClickClear}
+                  onInput={onChangeInput}
+                  type='search'
+                  className='form-control'
+                  placeholder='Search'
+                  value={value}
+                />
+              </div>
+            )}
 
             <div className={styles.widget}>
               <div className={styles.widget_item}>

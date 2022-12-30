@@ -48,8 +48,6 @@ export function updateActiveFilterData(
     startFilterData.stock,
   );
 
-  console.log('newActiveFilterData', newActiveFilterData);
-
   setEndFilterData(newActiveFilterData);
 }
 

@@ -151,7 +151,7 @@ export function CatalogPage() {
       <main>
         <section className='bg-primary py-4'>
           <div className='container'>
-            <h1 className={styles.products__title}>Category name</h1>
+            <h1 className={styles.products__title}>Catalog</h1>
             <p className={styles.products__items}>
               {result && result.length} Products
             </p>

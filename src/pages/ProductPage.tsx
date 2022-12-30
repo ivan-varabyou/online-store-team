@@ -1,7 +1,6 @@
-import React, { useContext, useState, useEffect, useRef } from 'react';
-import { useHref, useParams } from 'react-router-dom';
+import React, { useContext, useState } from 'react';
+import { useParams } from 'react-router-dom';
 import { useProduct } from '../hooks/useProduct';
-import { IResultProduct } from '../models';
 import { Link } from 'react-router-dom';
 import styles from './../scss/page/ProductPage.module.scss';
 import { CartContext } from '../App';
@@ -17,6 +16,7 @@ export function ProductPage() {
   const addProductsCart = useContext(CartContext).addProductsCart;
   const removeProductCart = useContext(CartContext).removeProductCart;
   const isAddCart = useContext(CartContext).isAddCart;
+  const getCartCountProduct = useContext(CartContext).getCartCountProduct;
   const updateCartCountAndSumm = useContext(CartContext).updateCartCountAndSumm;
 
   const dafaultStatusAddToCart =
@@ -38,10 +38,20 @@ export function ProductPage() {
     updateCartCountAndSumm && updateCartCountAndSumm();
   };
 
+  const hendleButtonByNow = () => {
+    result &&
+      getCartCountProduct &&
+      !getCartCountProduct(result.id) &&
+      addProductsCart &&
+      addProductsCart(result, 1) &&
+      updateCartCountAndSumm &&
+      updateCartCountAndSumm();
+  };
+
   let images: string[] = [];
 
   if (result) {
-    images = result.images;
+    images = result.images.reverse();
   }
 
   const [activeImage, setActiveImage] = useState(0);
@@ -102,9 +112,9 @@ export function ProductPage() {
                 <h1 className='title text-dark'>{result.title}</h1>
                 <div className='row'>
                   <div className={styles.productPage__stars + ' mb-2'}>
-                    {getStarsRatting(result.rating).map((star) =>
-                      React.createElement('span', { className: star }, ''),
-                    )}
+                    {getStarsRatting(result.rating).map((star, index) => (
+                      <span className={star} key={index}></span>
+                    ))}
                   </div>
                 </div>
                 <div className='mb-3'>
@@ -175,11 +185,9 @@ export function ProductPage() {
                   </div>
                   <div className='col-lg-6'>
                     <Link
-                      onClick={() =>
-                        addProductsCart && addProductsCart(result, 1)
-                      }
+                      onClick={hendleButtonByNow}
                       to='/cart?modal=buy'
-                      className='btn btn-success w-100 btn-lg'>
+                      className='btn btn-warning w-100 btn-lg'>
                       Buy Now
                     </Link>
                   </div>

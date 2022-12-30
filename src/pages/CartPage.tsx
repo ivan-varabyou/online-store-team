@@ -29,7 +29,9 @@ export function CardPage() {
   );
 
   const handleChangelimitProduct = (e: ChangeEvent<HTMLInputElement>) => {
-    setlimitProduct(Number(e.target.value));
+    if (productsCart && productsCart.length >= Number(e.target.value)) {
+      setlimitProduct(Number(e.target.value));
+    }
   };
 
   const [productsCart, setProductsCart] = useState(
@@ -81,6 +83,9 @@ export function CardPage() {
         setPage(limitPage);
       }
       updateUrl();
+      if (productsCart.length < limitProduct) {
+        setlimitProduct(productsCart.length);
+      }
     }
   }, [page, productsCart, limitProduct]);
 
@@ -190,7 +195,7 @@ export function CardPage() {
                     className=' form-control text-center d-inline-block w-auto'></input>
                 </div>
                 <div>Page {page}</div>
-                <div>Items {cartCountTotal}</div>
+                <div>Items {productsCart && productsCart.length}</div>
               </div>
             </div>
           </section>

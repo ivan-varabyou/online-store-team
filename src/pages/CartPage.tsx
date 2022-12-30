@@ -86,8 +86,7 @@ export function CardPage() {
 
   const updateUrl = () => {
     if (productsCart) {
-      const limitPage = getMaxCountPage(productsCart.length, limitProduct);
-      setUrl({ page: String(limitPage), limit: String(limitProduct) });
+      setUrl({ page: String(page), limit: String(limitProduct) });
     }
   };
 

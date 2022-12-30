@@ -203,11 +203,14 @@ export function CardPage() {
           <div className='container  mb-4'>
             <div className='row mt-4'>
               <div className='col-md-8'>
-                {productsCartPage.map((product) => (
+                {productsCartPage.map((product, index) => (
                   <CartProduct
                     product={product}
-                    key={product.id}
                     setProductsCart={setProductsCart}
+                    index={index}
+                    page={page}
+                    limit={limitProduct}
+                    key={product.id}
                   />
                 ))}
                 <div className='row mt-2 input-group'>

@@ -17,6 +17,15 @@
   &__productCount[type='number'] {
     -moz-appearance: textfield;
   }
+
+  &__label {
+    position: absolute;
+    background-color: crimson;
+    color: aliceblue;
+    padding: 2px 9px;
+    border-radius: 50%;
+    transform: translate(-9px, -6px);
+  }
 }
 
 .productPage__stars {

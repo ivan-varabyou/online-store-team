@@ -2,7 +2,7 @@ import { getLocalStorage, setLocalStorage } from '../localStorage';
 import { TypeCartItem } from '../../models';
 
 export function removeProductCart(id: number, count: number): boolean {
-  const cartItems: Array<TypeCartItem> = getLocalStorage('cart');
+  const cartItems: Array<TypeCartItem> = getLocalStorage<TypeCartItem>('cart');
   const newItems: Array<TypeCartItem> = [];
   cartItems.forEach((item: TypeCartItem) => {
     if (item.count - count > 0) {

@@ -113,9 +113,9 @@ export function ProductPage() {
                 <h1 className='title text-dark'>{result.title}</h1>
                 <div className='row'>
                   <div className={styles.productPage__stars + ' mb-2'}>
-                    {getStarsRatting(result.rating).map((star) =>
-                      React.createElement('span', { className: star }, ''),
-                    )}
+                    {getStarsRatting(result.rating).map((star, index) => (
+                      <span className={star} key={index}></span>
+                    ))}
                   </div>
                 </div>
                 <div className='mb-3'>

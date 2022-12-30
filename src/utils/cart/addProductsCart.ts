@@ -6,11 +6,15 @@ export function addProductsCart(
   product: IResultProduct | TypeCartItem,
   count: number,
 ): boolean {
-  const cartItems: Array<TypeCartItem> = getLocalStorage('cart');
+  const cartItems: Array<TypeCartItem> = getLocalStorage<TypeCartItem>('cart');
 
   if (isAddCart(product.id)) {
     cartItems.map((item) => {
-      if (item.id === product.id && item.count > 0) {
+      if (
+        item.id === product.id &&
+        item.count > 0 &&
+        item.count + 1 <= item.stock
+      ) {
         item.count += count;
       }
       return item;

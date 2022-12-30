@@ -4,24 +4,38 @@ import styles from './CartPromocode.module.scss';
 
 export const CartPromocode = ({
   promocode,
+  getPromocodeActive,
+  setPromocodeStatus,
   index,
-  setPromo,
 }: {
   promocode: IPromocode;
-  index?: number;
-  setPromo: (promocode: IPromocode | null) => void;
+  getPromocodeActive: () => IPromocode[];
+  setPromocodeStatus: (promocodeIndex: number, status: boolean) => void;
+  index: number;
 }) => {
+  console.log('promocode', promocode);
   return (
     <>
       <span className={styles.couponExample}>
         <i className='bi bi-tags'></i>
-        <b>{promocode.name}</b>: -{promocode.discount}%
+        <b>{promocode.name}</b> -{promocode.discount}%
+        {promocode.input === true && !promocode.status && (
+          <button
+            data-status={promocode.status}
+            className='btn btn-success btn-sm'
+            onClick={() => setPromocodeStatus(index, !promocode.status)}>
+            add
+          </button>
+        )}
+        {promocode.status && (
+          <button
+            data-status={promocode.status}
+            className='btn btn-danger btn-sm'
+            onClick={() => setPromocodeStatus(index, !promocode.status)}>
+            remove
+          </button>
+        )}
       </span>
-      {!(index > -1) && (
-        <button className='btn btn-danger' onClick={() => setPromo(null)}>
-          remove code
-        </button>
-      )}
     </>
   );
 };

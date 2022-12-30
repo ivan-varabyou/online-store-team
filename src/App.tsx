@@ -49,8 +49,8 @@ function App() {
   }
 
   const [modalStatus, setModalStatus] = useState(false);
-  const handleModalStatus = () => {
-    setModalStatus(!modalStatus);
+  const handleModalStatus = (status = !modalStatus) => {
+    setModalStatus(status);
   };
 
   return (
@@ -77,6 +77,7 @@ function App() {
             cartTotal,
             updateCartCountAndSumm,
             handleModalStatus,
+            modalStatus,
           }}>
           <Header />
           <Routes>

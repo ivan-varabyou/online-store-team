@@ -24,6 +24,8 @@ export const CartProduct = ({
 
   const productCatd = useRef<null | HTMLDivElement>(null);
 
+  const addButton = useRef<HTMLButtonElement>(null);
+
   const productOldPrice = getProductOldPrice(
     product.price,
     product.discountPercentage,
@@ -66,7 +68,8 @@ export const CartProduct = ({
                 <h6 className='title'>{product.title}</h6>
               </Link>
               <strong className='text-red'>${product.price} </strong>
-              <del>{productOldPrice}</del> x {product.count}
+              <del>{productOldPrice}</del> (-{product.discountPercentage}%) x{' '}
+              {product.count}
             </div>
 
             <div className='col-lg-3'>
@@ -78,9 +81,10 @@ export const CartProduct = ({
                   <i className='bi bi-dash'></i>
                 </button>
                 <input
+                  disabled
                   type='number'
                   min='1'
-                  max='100'
+                  max={product.stock}
                   className={
                     styles.cart__productCount + ' form-control text-center'
                   }
@@ -88,11 +92,15 @@ export const CartProduct = ({
                   onChange={hendleChangeCart}
                 />
                 <button
+                  ref={addButton}
                   className={styles.cart__spinerButton + ' btn bg-light'}
                   type='button'
                   onClick={() => hendleAddToCart(1)}>
                   <i className='bi bi-plus'></i>
                 </button>
+              </div>
+              <div className='row mt-2'>
+                <div className='text-center'>In Stock: {product.stock}</div>
               </div>
             </div>
 

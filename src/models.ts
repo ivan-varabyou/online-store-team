@@ -27,7 +27,7 @@ export interface ISearchContext {
 }
 
 export interface ICartContext {
-  getLocalStorage: (value: string) => [] | TypeCartItem[];
+  getLocalStorage: <T>(value: string) => [] | T[];
   setLocalStorage: <T>(key: string, value: T) => void;
   getCartTotal: () => number;
   getCartDiscountTotal: () => number;
@@ -41,7 +41,8 @@ export interface ICartContext {
   updateCartCountAndSumm: () => void;
   cartCount: number;
   cartTotal: number;
-  handleModalStatus: () => void;
+  handleModalStatus: (status: boolean) => void;
+  modalStatus: boolean;
 }
 
 type TypeCount = {
@@ -152,4 +153,6 @@ export interface IUpdateFilterCheckbox {
 export interface IPromocode {
   name: string;
   discount: number;
+  status: boolean;
+  input: boolean;
 }

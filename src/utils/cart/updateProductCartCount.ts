@@ -2,7 +2,7 @@ import { getLocalStorage, setLocalStorage } from '../localStorage';
 import { TypeCartItem } from '../../models';
 
 export function updateProductCartCount(id: number, count: number): boolean {
-  const cartItems: Array<TypeCartItem> = getLocalStorage('cart');
+  const cartItems: Array<TypeCartItem> = getLocalStorage<TypeCartItem>('cart');
   let status = false;
 
   cartItems.map((product) => {

@@ -64,23 +64,25 @@ export function ProductPage() {
             <div className={styles.productPage__breadcrumb}>
               <ol className='breadcrumb mb-0'>
                 <li className='breadcrumb-item'>
-                  <Link to='/'>Catalog</Link>
+                  <Link to='/'>STORE</Link>
                 </li>
                 <li className='breadcrumb-item'>
-                  <span>{result.category}</span>
+                  <span>{result.category.toUpperCase()}</span>
                 </li>
                 <li className='breadcrumb-item'>
-                  <span>{result.title}</span>
+                  <span>{result.brand.toUpperCase()}</span>
                 </li>
-                <li className='breadcrumb-item active'>Items</li>
+                <li className='breadcrumb-item'>
+                  <span>{result.title.toUpperCase()}</span>
+                </li>
               </ol>
             </div>
           </div>
 
-          <div className='row mt-2 mb-8'>
+          <div className='row mt-4 mb-8'>
             <div className='col-lg-6'>
               <div className='gallery-wrap gallery-vertical'>
-                <div className={styles.productPage__wrapperImage + ' mb-2 '}>
+                <div className={styles.productPage__wrapperImage + ' mb-4 '}>
                   <img
                     src={images[activeImage]}
                     className={styles.productPage__image}

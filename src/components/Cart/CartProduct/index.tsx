@@ -10,9 +10,15 @@ import { getStarsRatting } from '../../../utils/product/getStarsRatting';
 export const CartProduct = ({
   product,
   setProductsCart,
+  index,
+  page,
+  limit,
 }: {
   product: TypeCartItem;
   setProductsCart: (products: [] | TypeCartItem[]) => void;
+  index: number;
+  page: number;
+  limit: number;
 }) => {
   const {
     removeProductCart,
@@ -53,6 +59,12 @@ export const CartProduct = ({
     if (getLocalStorage) setProductsCart(getLocalStorage('cart'));
     updateCartCountAndSumm && updateCartCountAndSumm();
   };
+  let startIndex;
+  if (page === 1) {
+    startIndex = 0;
+  } else {
+    startIndex = limit * page - limit;
+  }
 
   return (
     <>
@@ -60,6 +72,9 @@ export const CartProduct = ({
         <div className='row gy-3'>
           <div className='row mt-4'>
             <div className='col-lg-2'>
+              <div className={`${styles.cart__label}`}>
+                {index + 1 + startIndex}
+              </div>
               <Link to={'/product/' + product.id}>
                 <img src={product.thumbnail} className='img-thumbnail' />
               </Link>

@@ -10,7 +10,6 @@ import styles from '../scss/page/CartPage.module.scss';
 import { ChangeEvent } from 'react';
 
 export function CardPage() {
-  const PAGE_PRODUCT_LIMIT = 4;
   const getCartCount = useContext(CartContext).getCartCount;
   const getCartTotal = useContext(CartContext).getCartTotal;
   const getLocalStorage = useContext(CartContext).getLocalStorage;
@@ -24,6 +23,14 @@ export function CardPage() {
   const [page, setPage] = useState(
     url.get('page') ? Number(url.get('page')) : 1,
   );
+
+  const [limitProduct, setlimitProduct] = useState(
+    url.get('limit') ? Number(url.get('limit')) : 3,
+  );
+
+  const handleChangelimitProduct = (e: ChangeEvent<HTMLInputElement>) => {
+    setlimitProduct(Number(e.target.value));
+  };
 
   const [productsCart, setProductsCart] = useState(
     getLocalStorage && getLocalStorage<TypeCartItem>('cart'),
@@ -42,8 +49,8 @@ export function CardPage() {
   const updateCartProductsPage = () => {
     if (productsCart) {
       productsCartPage = [];
-      const startIndex = getStartPage(page, PAGE_PRODUCT_LIMIT);
-      const endIndex = startIndex + PAGE_PRODUCT_LIMIT;
+      const startIndex = getStartPage(page, limitProduct);
+      const endIndex = startIndex + limitProduct;
 
       for (let i = startIndex; i < endIndex; i++) {
         if (productsCart.length - 1 < i) break;
@@ -57,10 +64,7 @@ export function CardPage() {
   const updateCartPage = () => {
     listCartPage = [];
     if (productsCart) {
-      const limitPage = getMaxCountPage(
-        productsCart.length,
-        PAGE_PRODUCT_LIMIT,
-      );
+      const limitPage = getMaxCountPage(productsCart.length, limitProduct);
       for (let page = 1; page <= limitPage; page++) {
         listCartPage.push(page);
       }
@@ -72,16 +76,20 @@ export function CardPage() {
     updateCartProductsPage();
     updateCartPage();
     if (productsCart) {
-      const limitPage = getMaxCountPage(
-        productsCart.length,
-        PAGE_PRODUCT_LIMIT,
-      );
+      const limitPage = getMaxCountPage(productsCart.length, limitProduct);
       if (Number(url.get('page')) > limitPage) {
-        setUrl({ page: String(limitPage) });
         setPage(limitPage);
       }
+      updateUrl();
     }
-  }, [page, productsCart]);
+  }, [page, productsCart, limitProduct]);
+
+  const updateUrl = () => {
+    if (productsCart) {
+      const limitPage = getMaxCountPage(productsCart.length, limitProduct);
+      setUrl({ page: String(limitPage), limit: String(limitProduct) });
+    }
+  };
 
   // Modal
   const openModal = () => {
@@ -171,12 +179,23 @@ export function CardPage() {
           <section className='bg-primary py-4'>
             <div className='container'>
               <h1 className={styles.cart__title}>Products In Cart </h1>
-              <p className={styles.cart__items}>
-                Items {cartCountTotal}
-                <span className={styles.cart__page}> | Page {page}</span>
-              </p>
+              <div className={styles.cart__items}>
+                <div className={styles.cart__limit}>
+                  <span>Limit:</span>
+                  <input
+                    onChange={handleChangelimitProduct}
+                    value={limitProduct}
+                    type='number'
+                    min='1'
+                    max='100'
+                    className=' form-control text-center d-inline-block w-auto'></input>
+                </div>
+                <div>Page {page}</div>
+                <div>Items {cartCountTotal}</div>
+              </div>
             </div>
           </section>
+
           <div className='container  mb-4'>
             <div className='row mt-4'>
               <div className='col-md-8'>
@@ -187,8 +206,7 @@ export function CardPage() {
                     setProductsCart={setProductsCart}
                   />
                 ))}
-
-                <div className='row mt-2 '>
+                <div className='row mt-2 input-group'>
                   <ul className='pagination'>
                     {listCartPage.length > 1 &&
                       listCartPage.map((listPage) => (
@@ -200,7 +218,7 @@ export function CardPage() {
                           <Link
                             onClick={() => setPage(listPage)}
                             className='page-link'
-                            to={`/cart?page=${listPage}`}>
+                            to={`/cart?page=${listPage}&limit=${limitProduct}`}>
                             {listPage}
                           </Link>
                         </li>

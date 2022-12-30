@@ -7,7 +7,8 @@ export default function redirectingNonExistentPages(
     patch === '/cart' &&
     search !== '' &&
     !(searchUrl.get('modal') === 'buy') &&
-    !searchUrl.get('page')
+    !searchUrl.get('page') &&
+    !searchUrl.get('limit')
   )
     window.location.href = '/404';
 

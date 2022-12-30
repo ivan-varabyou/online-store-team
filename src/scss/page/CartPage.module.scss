@@ -11,6 +11,15 @@
 
   &__items {
     color: rgba(255, 255, 255, 0.702);
+    display: flex;
+    justify-content: space-between;
+    font-size: 1.2em;
+  }
+
+  &__limit {
+    display: flex;
+    gap: 8px;
+    align-items: center;
   }
 
   &__options {

@@ -2,9 +2,9 @@ import React, { useContext, useState, useEffect } from 'react';
 import { CartContext } from '../App';
 import { Link, useSearchParams } from 'react-router-dom';
 import { IPromocode, TypeCartItem } from '../models';
-import { CartEmpty } from '../components/Cart/CartEmpty';
-import { CartProduct } from '../components/Cart/CartProduct';
-import { CartPromocode } from '../components/Cart/CartPromocode';
+import { CartEmpty } from '../components/Cart/CartEmpty/index';
+import { CartProduct } from '../components/Cart/CartProduct/index';
+import { CartPromocode } from '../components/Cart/CartPromocode/index';
 
 import styles from '../scss/page/CartPage.module.scss';
 import { ChangeEvent } from 'react';

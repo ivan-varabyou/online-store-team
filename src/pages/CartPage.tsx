@@ -1,42 +1,92 @@
-import React, { useContext, useState, useEffect, useRef } from 'react';
+import React, { useContext, useState, useEffect } from 'react';
 import { CartContext } from '../App';
 import { Link, useSearchParams } from 'react-router-dom';
 import { IPromocode, TypeCartItem } from '../models';
-import { clear, log } from 'console';
 import { CartEmpty } from '../components/Cart/CartEmpty';
 import { CartProduct } from '../components/Cart/CartProduct';
 import { CartPromocode } from '../components/Cart/CartPromocode';
 
 import styles from '../scss/page/CartPage.module.scss';
 import { ChangeEvent } from 'react';
-import { filter } from 'lodash';
 
 export function CardPage() {
-  const addProductsCart = useContext(CartContext).addProductsCart;
-  const removeProductCart = useContext(CartContext).removeProductCart;
-  const isAddCart = useContext(CartContext).isAddCart;
-  const getCartCountProduct = useContext(CartContext).getCartCountProduct;
+  const PAGE_PRODUCT_LIMIT = 4;
   const getCartCount = useContext(CartContext).getCartCount;
   const getCartTotal = useContext(CartContext).getCartTotal;
   const getLocalStorage = useContext(CartContext).getLocalStorage;
-  const setLocalStorage = useContext(CartContext).setLocalStorage;
-  const updateCartCountAndSumm = useContext(CartContext).updateCartCountAndSumm;
   const getCartDiscountTotal = useContext(CartContext).getCartDiscountTotal;
   const handleModalStatus = useContext(CartContext).handleModalStatus;
-  const updateProductCartCount = useContext(CartContext).updateProductCartCount;
-  const getCartCountLimit = useContext(CartContext).getCartCountLimit;
+
   const modalStatus = useContext(CartContext).modalStatus;
+
+  const [url, setUrl] = useSearchParams();
+
+  const [page, setPage] = useState(
+    url.get('page') ? Number(url.get('page')) : 1,
+  );
 
   const [productsCart, setProductsCart] = useState(
     getLocalStorage && getLocalStorage<TypeCartItem>('cart'),
   );
 
+  let productsCartPage: TypeCartItem[] = [];
+
+  const getStartPage = (page: number, limit: number) => {
+    return page * limit - limit;
+  };
+
+  const getMaxCountPage = (arrayLength: number, limit: number) => {
+    return Math.ceil(arrayLength / limit);
+  };
+
+  const updateCartProductsPage = () => {
+    if (productsCart) {
+      productsCartPage = [];
+      const startIndex = getStartPage(page, PAGE_PRODUCT_LIMIT);
+      const endIndex = startIndex + PAGE_PRODUCT_LIMIT;
+
+      for (let i = startIndex; i < endIndex; i++) {
+        if (productsCart.length - 1 < i) break;
+        productsCartPage.push(productsCart[i]);
+      }
+    }
+  };
+  updateCartProductsPage();
+
+  let listCartPage: number[] = [];
+  const updateCartPage = () => {
+    listCartPage = [];
+    if (productsCart) {
+      const limitPage = getMaxCountPage(
+        productsCart.length,
+        PAGE_PRODUCT_LIMIT,
+      );
+      for (let page = 1; page <= limitPage; page++) {
+        listCartPage.push(page);
+      }
+    }
+  };
+  updateCartPage();
+
+  useEffect(() => {
+    updateCartProductsPage();
+    updateCartPage();
+    if (productsCart) {
+      const limitPage = getMaxCountPage(
+        productsCart.length,
+        PAGE_PRODUCT_LIMIT,
+      );
+      if (Number(url.get('page')) > limitPage) {
+        setUrl({ page: String(limitPage) });
+        setPage(limitPage);
+      }
+    }
+  }, [page, productsCart]);
+
   // Modal
   const openModal = () => {
     handleModalStatus && handleModalStatus(true);
   };
-
-  const [url, setUrl] = useSearchParams();
 
   useEffect(() => {
     if (url.get('modal') === 'buy' && !modalStatus) {
@@ -105,7 +155,7 @@ export function CardPage() {
 
   if (getPromocodeActiveSummDiscount() > 0 && cartTotal) {
     const discount = getPromocodeActiveSummDiscount();
-    cartTotal = (cartTotal / 100) * (100 - discount);
+    cartTotal = Math.round(cartTotal / 100) * (100 - discount);
   }
 
   if (productsCart?.length == 0) {
@@ -123,37 +173,38 @@ export function CardPage() {
               <h1 className={styles.cart__title}>Products In Cart </h1>
               <p className={styles.cart__items}>
                 Items {cartCountTotal}
-                <span className={styles.cart__page}> | Page 1</span>
+                <span className={styles.cart__page}> | Page {page}</span>
               </p>
             </div>
           </section>
           <div className='container  mb-4'>
             <div className='row mt-4'>
               <div className='col-md-8'>
-                {productsCart &&
-                  productsCart.map((product) => (
-                    <CartProduct
-                      product={product}
-                      key={product.id}
-                      setProductsCart={setProductsCart}
-                    />
-                  ))}
+                {productsCartPage.map((product) => (
+                  <CartProduct
+                    product={product}
+                    key={product.id}
+                    setProductsCart={setProductsCart}
+                  />
+                ))}
 
                 <div className='row mt-2 '>
                   <ul className='pagination'>
-                    <li className='page-item'>
-                      <a className='page-link' href='#'>
-                        1
-                      </a>
-                    </li>
-                    <li className='page-item active' aria-current='page'>
-                      <span className='page-link'>2</span>
-                    </li>
-                    <li className='page-item'>
-                      <a className='page-link' href='#'>
-                        3
-                      </a>
-                    </li>
+                    {listCartPage.length > 1 &&
+                      listCartPage.map((listPage) => (
+                        <li
+                          key={listPage}
+                          className={
+                            (page === listPage ? ' active' : '') + ' page-item'
+                          }>
+                          <Link
+                            onClick={() => setPage(listPage)}
+                            className='page-link'
+                            to={`/cart?page=${listPage}`}>
+                            {listPage}
+                          </Link>
+                        </li>
+                      ))}
                   </ul>
                 </div>
               </div>
@@ -218,7 +269,7 @@ export function CardPage() {
                     <div className='input-group mt-3'>
                       <input
                         onChange={handleChangePromocode}
-                        type='text'
+                        type='search'
                         className='form-control'
                         placeholder='Promo code'
                         name='promoCode'

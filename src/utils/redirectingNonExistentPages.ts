@@ -3,7 +3,12 @@ export default function redirectingNonExistentPages(
 ) {
   const patch = window.location.pathname;
   const search = window.location.search;
-  if (patch === '/cart' && search !== '' && !(searchUrl.get('modal') === 'buy'))
+  if (
+    patch === '/cart' &&
+    search !== '' &&
+    !(searchUrl.get('modal') === 'buy') &&
+    !searchUrl.get('page')
+  )
     window.location.href = '/404';
 
   if (patch === '/') {

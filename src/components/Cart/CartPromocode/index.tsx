@@ -13,7 +13,6 @@ export const CartPromocode = ({
   setPromocodeStatus: (promocodeIndex: number, status: boolean) => void;
   index: number;
 }) => {
-  console.log('promocode', promocode);
   return (
     <>
       <span className={styles.couponExample}>

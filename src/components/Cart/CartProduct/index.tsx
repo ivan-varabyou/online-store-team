@@ -1,10 +1,11 @@
-import React, { useContext, useState, useRef, useCallback } from 'react';
+import React, { useContext, useRef } from 'react';
 import { TypeCartItem } from '../../../models';
 import styles from './CartProduct.module.scss';
 import { Link } from 'react-router-dom';
 import { CartContext } from '../../../App';
 
 import { getProductOldPrice } from '../../../utils/product/getProductOldPrice';
+import { getStarsRatting } from '../../../utils/product/getStarsRatting';
 
 export const CartProduct = ({
   product,
@@ -58,19 +59,32 @@ export const CartProduct = ({
       <div className='card card-body mb-1' ref={productCatd}>
         <div className='row gy-3'>
           <div className='row mt-4'>
-            <div className='col-lg-1'>
+            <div className='col-lg-2'>
               <Link to={'/product/' + product.id}>
                 <img src={product.thumbnail} className='img-thumbnail' />
               </Link>
             </div>
 
-            <div className='col-lg-7'>
+            <div className='col-lg-6'>
               <Link to={'/product/' + product.id}>
-                <h6 className='title'>{product.title}</h6>
+                <h6 className='title'>
+                  {product.title} | {product.brand}
+                </h6>
               </Link>
-              <strong className='text-red'>${product.price} </strong>
-              <del>{productOldPrice}</del> (-{product.discountPercentage}%) x{' '}
-              {product.count}
+              <div>
+                <div>{product.category}</div>
+                <div>{product.description}</div>
+              </div>
+              <div className={styles.productPage__stars + ' mb-2'}>
+                {getStarsRatting(product.rating).map((star, index) => (
+                  <span className={star} key={index}></span>
+                ))}
+              </div>
+              <div>
+                <strong className='text-red'>${product.price} </strong>
+                <del>{productOldPrice}</del> (-{product.discountPercentage}%) x{' '}
+                {product.count}
+              </div>
             </div>
 
             <div className='col-lg-3'>

@@ -12,7 +12,6 @@ export function filterCatalogProducts(
   activeFilterData: IActiveFilterData,
   setActiveFilterDataUrl: (data: IActiveFilterData) => void,
 ) {
-  console.log('rafactor');
   activeFilterData.categories = [];
   activeFilterData.brands = [];
   activeFilterData.price = [];

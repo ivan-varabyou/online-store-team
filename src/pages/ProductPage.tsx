@@ -1,7 +1,6 @@
-import React, { useContext, useState, useEffect, useRef } from 'react';
-import { useHref, useParams } from 'react-router-dom';
+import React, { useContext, useState } from 'react';
+import { useParams } from 'react-router-dom';
 import { useProduct } from '../hooks/useProduct';
-import { IResultProduct } from '../models';
 import { Link } from 'react-router-dom';
 import styles from './../scss/page/ProductPage.module.scss';
 import { CartContext } from '../App';

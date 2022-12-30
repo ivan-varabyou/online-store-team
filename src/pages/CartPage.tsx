@@ -12,19 +12,26 @@ import { ChangeEvent } from 'react';
 import { filter } from 'lodash';
 
 export function CardPage() {
-  // const addProductsCart = useContext(CartContext).addProductsCart;
-  // const removeProductCart = useContext(CartContext).removeProductCart;
-  // const isAddCart = useContext(CartContext).isAddCart;
-  // const getCartCountProduct = useContext(CartContext).getCartCountProduct;
+  const addProductsCart = useContext(CartContext).addProductsCart;
+  const removeProductCart = useContext(CartContext).removeProductCart;
+  const isAddCart = useContext(CartContext).isAddCart;
+  const getCartCountProduct = useContext(CartContext).getCartCountProduct;
   const getCartCount = useContext(CartContext).getCartCount;
   const getCartTotal = useContext(CartContext).getCartTotal;
   const getLocalStorage = useContext(CartContext).getLocalStorage;
-  // const setLocalStorage = useContext(CartContext).setLocalStorage;
-  // const updateCartCountAndSumm = useContext(CartContext).updateCartCountAndSumm;
+  const setLocalStorage = useContext(CartContext).setLocalStorage;
+  const updateCartCountAndSumm = useContext(CartContext).updateCartCountAndSumm;
   const getCartDiscountTotal = useContext(CartContext).getCartDiscountTotal;
   const handleModalStatus = useContext(CartContext).handleModalStatus;
+  const updateProductCartCount = useContext(CartContext).updateProductCartCount;
+  const getCartCountLimit = useContext(CartContext).getCartCountLimit;
   const modalStatus = useContext(CartContext).modalStatus;
 
+  const [productsCart, setProductsCart] = useState(
+    getLocalStorage && getLocalStorage<TypeCartItem>('cart'),
+  );
+
+  // Modal
   const openModal = () => {
     handleModalStatus && handleModalStatus(true);
   };
@@ -38,10 +45,7 @@ export function CardPage() {
     }
   }, []);
 
-  const [productsCart, setProductsCart] = useState(
-    getLocalStorage && getLocalStorage<TypeCartItem>('cart'),
-  );
-
+  // Promocode
   const [listPromocode, setListPromocode] = useState<IPromocode[]>([
     { name: '2023', discount: 10, status: false, input: false },
     { name: 'rsshool', discount: 50, status: false, input: false },
@@ -75,6 +79,20 @@ export function CardPage() {
     setListPromocode(newListPromocode);
   };
 
+  const handleChangePromocode = (e: ChangeEvent<HTMLInputElement>) => {
+    const result = isPromocodeActive(e.target.value);
+    const newListPromocode = [...listPromocode];
+    for (let i = 0; i < newListPromocode.length; i++) {
+      if (newListPromocode[i].name === result) {
+        newListPromocode[i].input = true;
+      } else {
+        newListPromocode[i].input = false;
+      }
+    }
+    setListPromocode(newListPromocode);
+  };
+
+  // Summary
   let cartTotal, oldCartTotal, cartCountTotal, cartDiscount, cartSumm;
 
   if (getCartTotal) cartTotal = +getCartTotal().toString();
@@ -89,19 +107,6 @@ export function CardPage() {
     const discount = getPromocodeActiveSummDiscount();
     cartTotal = (cartTotal / 100) * (100 - discount);
   }
-
-  const handleChangePromocode = (e: ChangeEvent<HTMLInputElement>) => {
-    const result = isPromocodeActive(e.target.value);
-    const newListPromocode = [...listPromocode];
-    for (let i = 0; i < newListPromocode.length; i++) {
-      if (newListPromocode[i].name === result) {
-        newListPromocode[i].input = true;
-      } else {
-        newListPromocode[i].input = false;
-      }
-    }
-    setListPromocode(newListPromocode);
-  };
 
   if (productsCart?.length == 0) {
     return (
@@ -133,6 +138,24 @@ export function CardPage() {
                       setProductsCart={setProductsCart}
                     />
                   ))}
+
+                <div className='row mt-2 '>
+                  <ul className='pagination'>
+                    <li className='page-item'>
+                      <a className='page-link' href='#'>
+                        1
+                      </a>
+                    </li>
+                    <li className='page-item active' aria-current='page'>
+                      <span className='page-link'>2</span>
+                    </li>
+                    <li className='page-item'>
+                      <a className='page-link' href='#'>
+                        3
+                      </a>
+                    </li>
+                  </ul>
+                </div>
               </div>
 
               <div className='col-md-4'>

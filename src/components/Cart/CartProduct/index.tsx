@@ -33,6 +33,7 @@ export const CartProduct = ({
 
   const hendleDropFromCart = (count: number) => {
     removeProductCart && removeProductCart(product.id, count);
+
     if (getLocalStorage) setProductsCart(getLocalStorage('cart'));
     updateCartCountAndSumm && updateCartCountAndSumm();
   };

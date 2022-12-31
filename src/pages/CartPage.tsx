@@ -167,7 +167,7 @@ export function CardPage() {
 
   if (getPromocodeActiveSummDiscount() > 0 && cartTotal) {
     const discount = getPromocodeActiveSummDiscount();
-    cartTotal = Math.round(cartTotal / 100) * (100 - discount);
+    cartTotal = (cartTotal / 100) * (100 - discount);
   }
 
   if (productsCart?.length == 0) {
@@ -305,7 +305,6 @@ export function CardPage() {
                       {listPromocode.map((promocode, index) => (
                         <CartPromocode
                           promocode={promocode}
-                          getPromocodeActive={getPromocodeActive}
                           setPromocodeStatus={setPromocodeStatus}
                           index={index}
                           key={index}

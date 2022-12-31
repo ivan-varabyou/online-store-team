@@ -1,4 +1,3 @@
-import { useEffect } from 'react';
 import {
   IResultProduct,
   IFilterData,
@@ -12,10 +11,14 @@ export function filterCatalogProducts(
   activeFilterData: IActiveFilterData,
   setActiveFilterDataUrl: (data: IActiveFilterData) => void,
 ) {
+  console.log('activeFilterData => ', activeFilterData);
+
   activeFilterData.categories = [];
   activeFilterData.brands = [];
   activeFilterData.price = [];
   activeFilterData.stock = [];
+
+  console.log('filterCatalogProducts => endFilterData', endFilterData);
 
   if (
     endFilterData.price &&
@@ -90,6 +93,24 @@ export function filterCatalogProducts(
     );
   }
 
+  if (!activeFilterData.price[0] || !activeFilterData.price[1]) {
+    activeFilterData.price = [];
+  }
+
+  if (!activeFilterData.stock[0] || !activeFilterData.stock[1]) {
+    activeFilterData.stock = [];
+  }
+
+  if (
+    (Number(activeFilterData.price[0]) === Number(endFilterData.price?.min) &&
+      Number(activeFilterData.price[1]) === Number(endFilterData.price?.max)) ||
+    (Number(activeFilterData.stock[0]) === Number(endFilterData.stock?.min) &&
+      Number(activeFilterData.stock[1]) === Number(endFilterData.stock?.max))
+  ) {
+    activeFilterData.stock = [];
+    activeFilterData.price = [];
+  }
+
   if (activeFilterData.price && activeFilterData.price.length > 0) {
     const priceMin = activeFilterData.price[0];
     const priceMax = activeFilterData.price[1];
@@ -102,6 +123,8 @@ export function filterCatalogProducts(
   if (activeFilterData.stock && activeFilterData.stock.length > 0) {
     const stockMin = activeFilterData.stock[0];
     const stockMax = activeFilterData.stock[1];
+    console.log('stockMin', stockMin);
+    console.log('stockMax', stockMax);
     filterProducts = filterProducts.filter(
       (product) =>
         product.stock >= Number(stockMin) && product.stock <= Number(stockMax),

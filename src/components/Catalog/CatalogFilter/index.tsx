@@ -16,7 +16,6 @@ export const CatalogFilter: React.FC<ICatalogFilter> = ({
   setStatusFilter,
   setEndFilterData,
 }) => {
-  console.log('refactor');
   function updateInputCheckbox(
     data: TypeFilterMap,
     name: string,
@@ -24,14 +23,6 @@ export const CatalogFilter: React.FC<ICatalogFilter> = ({
   ) {
     const copyEndFilterData = JSON.parse(JSON.stringify(endFilterData));
     copyEndFilterData[name][index] = data;
-    // copyEndFilterData.price.min = -1;
-    // copyEndFilterData.price.max = -1;
-    copyEndFilterData.price.valueMin = -1;
-    copyEndFilterData.price.valueMax = -1;
-    // copyEndFilterData.stock.min = -1;
-    // copyEndFilterData.stock.max = -1;
-    // copyEndFilterData.stock.valueMin = -1;
-    // copyEndFilterData.stock.valueMax = -1;
     setEndFilterData(copyEndFilterData);
     setStatusFilter(!statusFilter);
   }
@@ -53,7 +44,7 @@ export const CatalogFilter: React.FC<ICatalogFilter> = ({
         Show filter
       </button>
 
-      <div className={styles.filter + ' collapse card d-lg-block mb-5 filter'}>
+      <div className={styles.filter + ' collapse card d-lg-block filter'}>
         <article className='filter-group'>
           <header className='card-header'>
             <div className='title'>

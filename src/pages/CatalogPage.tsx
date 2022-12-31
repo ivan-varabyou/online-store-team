@@ -161,7 +161,7 @@ export function CatalogPage() {
           <div className={styles.products}>
             <div className='row'>
               <aside className='col-lg-3'>
-                <div className='btn-group col-12'>
+                <div className='btn-group col-12 button-group'>
                   <button
                     className='btn btn-light btn-icon'
                     onClick={hendleCopyFilterUrlButton}>
@@ -182,6 +182,19 @@ export function CatalogPage() {
                     setEndFilterData={setEndFilterData}
                   />
                 }
+                <div className='btn-group col-12 button-group'>
+                  <button
+                    className='btn btn-light btn-icon'
+                    onClick={hendleCopyFilterUrlButton}>
+                    Copy
+                  </button>
+
+                  <button
+                    onClick={hendleResetFilterButton}
+                    className='btn btn-light btn-icon'>
+                    Reset
+                  </button>
+                </div>
               </aside>
               <div className='col-lg-9'>
                 <div className='row'>

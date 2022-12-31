@@ -1,7 +1,7 @@
 import React, { useState, useContext, useRef, useCallback } from 'react';
 
 import { Link } from 'react-router-dom';
-import { SearchContext } from '../../App';
+
 import debounce from 'lodash.debounce';
 
 import { CartContext } from '../../App';
@@ -18,6 +18,7 @@ export const Header = (): JSX.Element => {
   const [value, setValue] = useState(search.get('search') || '');
 
   const [searchUrl, setSearchValue] = useSearchParams();
+  searchUrl && searchUrl;
 
   const inputRef = useRef<HTMLInputElement>(null);
 

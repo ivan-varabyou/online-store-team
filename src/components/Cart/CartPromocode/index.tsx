@@ -4,12 +4,10 @@ import styles from './CartPromocode.module.scss';
 
 export const CartPromocode = ({
   promocode,
-  getPromocodeActive,
   setPromocodeStatus,
   index,
 }: {
   promocode: IPromocode;
-  getPromocodeActive: () => IPromocode[];
   setPromocodeStatus: (promocodeIndex: number, status: boolean) => void;
   index: number;
 }) => {

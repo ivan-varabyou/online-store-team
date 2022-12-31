@@ -31,7 +31,7 @@ export const CatalogFilterCheckbox = ({
           data-index={index}
           value={data.name}
           className={
-            checkboxStatus
+            data.status
               ? `${styles.checkboxActive} ${styles.checkboxHide} active`
               : `${styles.checkboxPasive} ${styles.checkboxHide} pasive`
           }
@@ -39,7 +39,7 @@ export const CatalogFilterCheckbox = ({
         />
         <span
           className={
-            checkboxStatus
+            data.status
               ? `${styles.checkboxActive}`
               : `${styles.checkboxPasive}`
           }>

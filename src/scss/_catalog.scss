@@ -92,3 +92,12 @@
     flex: 1 1 auto;
   }
 }
+
+.filter .button-group {
+  border: 1px solid #e0d9d9;
+  margin-bottom: 15px;
+}
+
+.filter .card-body .form-check {
+  padding-left: 0;
+}

@@ -22,7 +22,7 @@ export const updateUrlCatalogPage = (
   );
 
   if (copyActiveFilterDataUrl.categories)
-    copyActiveFilterDataUrl.categories.join(';');
+    query.categories = copyActiveFilterDataUrl.categories.join(';');
   if (query.categories?.length === 0) delete query.categories;
 
   if (copyActiveFilterDataUrl.brands)
@@ -33,8 +33,10 @@ export const updateUrlCatalogPage = (
     query.price = copyActiveFilterDataUrl.price.join(';');
   if (query.price?.length === 0) delete query.price;
 
-  if (copyActiveFilterDataUrl.stock)
+  if (copyActiveFilterDataUrl.stock) {
     query.stock = copyActiveFilterDataUrl.stock.join(';');
+  }
+
   if (query.stock?.length === 0) delete query.stock;
 
   if (value && value?.length > 0) query.search = String(value);

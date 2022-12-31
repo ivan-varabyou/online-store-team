@@ -3,7 +3,6 @@ import {
   IFilterData,
   TypeFilterMap,
   TypeFilterRangeOrNull,
-  TypeFilterRange,
 } from '../../models';
 
 export function updateActiveFilterData(
@@ -48,6 +47,8 @@ export function updateActiveFilterData(
     startFilterData.stock,
   );
 
+  console.log('newActiveFilterData', newActiveFilterData);
+
   setEndFilterData(newActiveFilterData);
 }
 
@@ -61,19 +62,28 @@ const updateInputRange = (
     JSON.stringify(dataEnd ? dataEnd : dataStart),
   );
 
-  if (dataCopy) {
-    // dataCopy.min = -1;
-    // dataCopy.max = -1;
-    products.forEach((product) => {
-      const productNum = Number(
-        product[productProperty as keyof IResultProduct],
-      );
+  const arrValue: number[] = [];
 
-      if (dataCopy.valueMin >= productNum || dataCopy.min < 0)
-        dataCopy.valueMin = productNum;
-      if (dataCopy.max <= productNum) dataCopy.valueMax = productNum;
-    });
+  products.forEach((product) => {
+    arrValue.push(Number(product[productProperty as keyof IResultProduct]));
+  });
+
+  if (dataCopy) {
+    dataCopy.valueMin = Math.min(...arrValue);
+    dataCopy.valueMax = Math.max(...arrValue);
+
+    if (
+      !Number.isFinite(dataCopy.valueMin) ||
+      dataCopy.valueMin === dataCopy.min
+    )
+      dataCopy.valueMin = -1;
+    if (
+      !Number.isFinite(dataCopy.valueMax) ||
+      dataCopy.valueMax === dataCopy.max
+    )
+      dataCopy.valueMax = -1;
   }
+  console.log('dataCopy', dataCopy);
   return dataCopy;
 };
 

@@ -9,7 +9,7 @@
   content: '';
   border-color: #adb5bd;
   background-color: #adb5bd;
-  position: absolute;
+  position: relative;
   display: inline-block;
   width: 1em;
   height: 1em;
@@ -21,7 +21,7 @@
   background-repeat: no-repeat;
   background-position: center center;
   background-size: 50% 50%;
-  transform: translate(-25px, 6px);
+  transform: translate(2px, 3px);
 }
 
 .checkboxActive::before {

@@ -1,5 +1,3 @@
-import { TypeCartItem } from '../models';
-
 export function getLocalStorage<T>(value: string): Array<T> | [] {
   let parse = [];
   const valueLocalStorage = localStorage.getItem(value);

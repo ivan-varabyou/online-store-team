@@ -7,5 +7,5 @@ interface IErrorMessageProps {
 }
 
 export function ErrorMessage({ error }: IErrorMessageProps) {
-  return <p className='{styles.message}'>{error}</p>;
+  return <p className={styles.message}>{error}</p>;
 }

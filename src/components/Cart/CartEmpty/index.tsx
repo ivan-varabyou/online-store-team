@@ -4,6 +4,7 @@ import cartEmptyImg from '../../../assets/img/empty-cart.png';
 import styles from './CartEmpty.module.scss';
 
 export function CartEmpty() {
+  React.useState();
   return (
     <div className='container'>
       <div className='row mt-4 mb-4'>

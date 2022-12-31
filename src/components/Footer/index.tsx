@@ -5,6 +5,7 @@ import { Link } from 'react-router-dom';
 import styles from './Footer.module.scss';
 
 export const Footer = () => {
+  React.useState();
   return (
     <>
       <footer className={styles.footer}>

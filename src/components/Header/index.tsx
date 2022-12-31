@@ -4,7 +4,7 @@ import { Link } from 'react-router-dom';
 
 import debounce from 'lodash.debounce';
 
-import { CartContext } from '../../App';
+import { CartContext, SearchContext } from '../../App';
 
 import { useSearchParams } from 'react-router-dom';
 
@@ -14,11 +14,21 @@ export const Header = (): JSX.Element => {
   const cartCount = Number(useContext(CartContext).cartCount);
   const cartTotal = Number(useContext(CartContext).cartTotal);
 
+  const setSearchValue = useContext(SearchContext).setSerachValue;
+
   const [search] = useSearchParams();
   const [value, setValue] = useState(search.get('search') || '');
 
-  const [searchUrl, setSearchValue] = useSearchParams();
-  searchUrl && searchUrl;
+  const updateSearchValue = useCallback(
+    debounce((value) => {
+      setSearchValue && setSearchValue(value);
+    }, 500),
+    [],
+  );
+
+  if (search.get('search')) {
+    updateSearchValue(value);
+  }
 
   const inputRef = useRef<HTMLInputElement>(null);
 
@@ -28,13 +38,6 @@ export const Header = (): JSX.Element => {
       inputRef.current.focus();
     }
   };
-
-  const updateSearchValue = useCallback(
-    debounce((value) => {
-      setSearchValue && setSearchValue(value);
-    }, 500),
-    [],
-  );
 
   const onChangeInput = (event: React.ChangeEvent<HTMLInputElement>): void => {
     setValue(event.target.value);

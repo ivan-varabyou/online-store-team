@@ -47,8 +47,6 @@ export function updateActiveFilterData(
     startFilterData.stock,
   );
 
-  console.log('newActiveFilterData', newActiveFilterData);
-
   setEndFilterData(newActiveFilterData);
 }
 
@@ -83,7 +81,6 @@ const updateInputRange = (
     )
       dataCopy.valueMax = -1;
   }
-  console.log('dataCopy', dataCopy);
   return dataCopy;
 };
 

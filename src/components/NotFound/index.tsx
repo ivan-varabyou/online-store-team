@@ -3,6 +3,7 @@ import React from 'react';
 import { Link } from 'react-router-dom';
 
 export const NotFound = () => {
+  React.useState();
   return (
     <>
       <div className='row align-items-center'>

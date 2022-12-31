@@ -11,14 +11,10 @@ export function filterCatalogProducts(
   activeFilterData: IActiveFilterData,
   setActiveFilterDataUrl: (data: IActiveFilterData) => void,
 ) {
-  console.log('activeFilterData => ', activeFilterData);
-
   activeFilterData.categories = [];
   activeFilterData.brands = [];
   activeFilterData.price = [];
   activeFilterData.stock = [];
-
-  console.log('filterCatalogProducts => endFilterData', endFilterData);
 
   if (
     endFilterData.price &&
@@ -123,8 +119,7 @@ export function filterCatalogProducts(
   if (activeFilterData.stock && activeFilterData.stock.length > 0) {
     const stockMin = activeFilterData.stock[0];
     const stockMax = activeFilterData.stock[1];
-    console.log('stockMin', stockMin);
-    console.log('stockMax', stockMax);
+
     filterProducts = filterProducts.filter(
       (product) =>
         product.stock >= Number(stockMin) && product.stock <= Number(stockMax),

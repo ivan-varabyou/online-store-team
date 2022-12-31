@@ -10,6 +10,7 @@ export const ProductImages = ({
   index: number;
   setActiveImage: (image: number) => void;
 }) => {
+  React.useState();
   return (
     <>
       <div

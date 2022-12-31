@@ -7,5 +7,6 @@ interface IErrorMessageProps {
 }
 
 export function ErrorMessage({ error }: IErrorMessageProps) {
+  React.useState();
   return <p className={styles.message}>{error}</p>;
 }

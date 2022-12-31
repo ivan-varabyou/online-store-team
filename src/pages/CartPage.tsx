@@ -34,7 +34,7 @@ export function CardPage() {
     }
   };
 
-  const [productsCart, setProductsCart] = useState(
+  const [productsCart, setProductsCart] = React.useState(
     getLocalStorage && getLocalStorage<TypeCartItem>('cart'),
   );
 

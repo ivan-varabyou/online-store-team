@@ -55,7 +55,7 @@ export function CatalogPage() {
     stock: null,
   };
 
-  const [startFilterData, setStartFilterData] = useState(
+  const [startFilterData, setStartFilterData] = React.useState(
     firstFilterDataDefault,
   );
   const [endFilterData, setEndFilterData] = useState(firstFilterDataDefault);

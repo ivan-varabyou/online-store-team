@@ -13,7 +13,7 @@ export function ProductPage() {
   const { productId } = useParams();
   const result = useProduct(Number(productId));
 
-  const addProductsCart = useContext(CartContext).addProductsCart;
+  const addProductsCart = React.useContext(CartContext).addProductsCart;
   const removeProductCart = useContext(CartContext).removeProductCart;
   const isAddCart = useContext(CartContext).isAddCart;
   const getCartCountProduct = useContext(CartContext).getCartCountProduct;

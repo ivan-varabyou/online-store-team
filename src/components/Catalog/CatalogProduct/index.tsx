@@ -23,7 +23,7 @@ export const CatalogProduct = ({ product }: IProductProp) => {
 
   const dafaultStatusAddToCart =
     isAddCart && product.id && isAddCart(product.id);
-  const [statusAddToCart, setStatusAddToCart] = useState(
+  const [statusAddToCart, setStatusAddToCart] = React.useState(
     dafaultStatusAddToCart,
   );
 

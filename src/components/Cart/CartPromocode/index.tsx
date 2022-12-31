@@ -11,6 +11,7 @@ export const CartPromocode = ({
   setPromocodeStatus: (promocodeIndex: number, status: boolean) => void;
   index: number;
 }) => {
+  React.useState();
   return (
     <>
       <span className={styles.couponExample}>

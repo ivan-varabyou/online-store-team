@@ -12,7 +12,7 @@ export const CatalogDisplay = ({
     catalogProductDisplay === 'list' && 'active';
   const catalogProductDisplayGrid =
     catalogProductDisplay === 'grid' && 'active';
-
+  React.useState();
   return (
     <>
       <div className={`${styles.display} btn-group`}>

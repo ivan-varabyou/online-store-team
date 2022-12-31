@@ -5,9 +5,6 @@ import axios, { AxiosError } from 'axios';
 export function useProduct(id: number): IResultProduct | null {
   const [result, setResult] = useState<IResultProduct | null>(null);
 
-  const [error, setError] = useState('');
-  const [loading, setLoading] = useState(true);
-
   async function fetchProduct() {
     try {
       const response = await axios.get(`https://dummyjson.com/products/${id}`);
@@ -15,14 +12,12 @@ export function useProduct(id: number): IResultProduct | null {
         setResult(response.data);
       }
     } catch (e: unknown) {
-      const error = e as AxiosError;
-      setError(error.message);
+      console.error(e as AxiosError);
     }
   }
 
-  useEffect(() => {
+  if (result === null) {
     fetchProduct();
-  }, []);
-
+  }
   return result;
 }

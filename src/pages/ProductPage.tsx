@@ -48,13 +48,36 @@ export function ProductPage() {
       updateCartCountAndSumm();
   };
 
-  let images: string[] = [];
-
-  if (result) {
-    images = result.images.reverse();
+  interface IProductImages {
+    img: unknown;
+    url: string;
+    name: string;
   }
 
-  const [activeImage, setActiveImage] = useState(0);
+  const [images, setImages] = useState<Array<IProductImages>>([]);
+
+  const [activeImage, setActiveImage] = useState<IProductImages | null>(null);
+
+  if (images.length === 0 && result && !activeImage) {
+    const newImages: Array<IProductImages> = [];
+    result.images.reverse().forEach((image) => {
+      const img = new Image();
+      img.src = image;
+      const arrImage = image.split('/');
+      const imageName = arrImage[arrImage.length - 1];
+
+      const newImage = {
+        img: img,
+        url: image,
+        name: imageName,
+      };
+
+      newImages.push(newImage);
+    });
+
+    setImages(newImages);
+    setActiveImage(newImages[0]);
+  }
 
   return (
     <>
@@ -83,10 +106,13 @@ export function ProductPage() {
             <div className='col-lg-6'>
               <div className='gallery-wrap gallery-vertical'>
                 <div className={styles.productPage__wrapperImage + ' mb-4 '}>
-                  <img
-                    src={images[activeImage]}
-                    className={styles.productPage__image}
-                  />
+                  {activeImage && (
+                    <img
+                      src={activeImage.url}
+                      className={styles.productPage__image}
+                    />
+                  )}
+
                   <div
                     className={`${styles.productPage__label} ${styles.productPage__sales}`}>
                     {result.discountPercentage}%
@@ -100,9 +126,9 @@ export function ProductPage() {
                 <div className={styles.productPage__imagesList + '  mb-3'}>
                   {images.map((image, index) => (
                     <ProductImages
-                      image={image}
+                      image={image.url}
                       index={index}
-                      setActiveImage={setActiveImage}
+                      setActiveImage={() => setActiveImage(image)}
                       key={index}
                     />
                   ))}

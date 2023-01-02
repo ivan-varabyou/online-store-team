@@ -5,16 +5,16 @@ import {
   TypeFilterRangeOrNull,
 } from '../../models';
 
+import { copyObject } from '../common/object/copyObject';
+
 export function updateActiveFilterData(
   products: IResultProduct[],
   startFilterData: IFilterData,
   endFilterData: IFilterData,
   setEndFilterData: (data: IFilterData) => void,
 ): void {
-  const newActiveFilterData: IFilterData = JSON.parse(
-    JSON.stringify(
-      (endFilterData.categories && endFilterData) || startFilterData,
-    ),
+  const newActiveFilterData: IFilterData = copyObject<IFilterData>(
+    (endFilterData.categories && endFilterData) || startFilterData,
   );
 
   if (startFilterData.categories && endFilterData.categories)
@@ -56,8 +56,8 @@ const updateInputRange = (
   dataEnd: TypeFilterRangeOrNull,
   dataStart: TypeFilterRangeOrNull,
 ) => {
-  const dataCopy: TypeFilterRangeOrNull = JSON.parse(
-    JSON.stringify(dataEnd ? dataEnd : dataStart),
+  const dataCopy: TypeFilterRangeOrNull = copyObject<TypeFilterRangeOrNull>(
+    dataEnd ? dataEnd : dataStart,
   );
 
   const arrValue: number[] = [];
@@ -92,7 +92,7 @@ function updateInputCheckout(
 ): TypeFilterMap[] {
   let countTrue = 0;
   let countAvailable = 0;
-  let dataCopy: TypeFilterMap[] = JSON.parse(JSON.stringify(dataEnd));
+  let dataCopy: TypeFilterMap[] = copyObject<TypeFilterMap[]>(dataEnd);
   dataCopy.forEach((item: TypeFilterMap) => {
     item.available = 0;
     item.available = products.filter((product) => {

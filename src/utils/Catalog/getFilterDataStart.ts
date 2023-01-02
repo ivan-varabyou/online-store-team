@@ -1,5 +1,7 @@
 import { IFilterData, TypeFilterMap, IResultProduct } from '../../models';
 
+import { capitalizedFirstLetter } from '../common/сapitalizedFirstLetter';
+
 export const getFilterDataStart = (result: IResultProduct[]): IFilterData => {
   const categoryList: Map<string, TypeFilterMap> = new Map();
   const brandList: Map<string, TypeFilterMap> = new Map();
@@ -56,7 +58,7 @@ function updateFilterCheckbox(type: string, list: Map<string, TypeFilterMap>) {
       category.available += 1;
     }
   } else {
-    const name = `${type.slice(0, 1).toUpperCase()}${type.slice(1)}`;
+    const name = capitalizedFirstLetter(type);
 
     const key = type;
 

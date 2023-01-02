@@ -5,6 +5,8 @@ import {
   TypeFilterRange,
 } from '../../models';
 
+import { copyObject } from '../common/object/copyObject';
+
 export const getFilterDataEnd = (
   filterDataStart: IFilterData,
   activeFilterDataUrl: IActiveFilterData,
@@ -55,7 +57,7 @@ function updateFilterDataEndRange(
   itemsData: TypeFilterRange,
   itemsUrl: string[] | null,
 ): TypeFilterRange {
-  const newItemsData: TypeFilterRange = JSON.parse(JSON.stringify(itemsData));
+  const newItemsData: TypeFilterRange = copyObject<TypeFilterRange>(itemsData);
   if (itemsUrl?.length) {
     newItemsData.valueMin = Number(itemsUrl[0]);
     newItemsData.valueMax = Number(itemsUrl[1]);
@@ -67,7 +69,7 @@ function updateFilterDataEndCheckbox(
   itemsData: TypeFilterMap[],
   itemsUrl: string[] | null,
 ): TypeFilterMap[] {
-  const newItemsData: TypeFilterMap[] = JSON.parse(JSON.stringify(itemsData));
+  const newItemsData: TypeFilterMap[] = copyObject<TypeFilterMap[]>(itemsData);
   newItemsData.forEach((item) => {
     item.status = false;
     if (itemsUrl?.length && itemsUrl.includes(String(item.key))) {

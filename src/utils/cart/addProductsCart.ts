@@ -2,6 +2,8 @@ import { getLocalStorage, setLocalStorage } from '../localStorage';
 import { IResultProduct, TypeCartItem } from '../../models';
 import { isAddCart } from './isAddCart';
 
+import { sum } from '../common/calc/sum';
+
 export function addProductsCart(
   product: IResultProduct | TypeCartItem,
   count: number,
@@ -13,9 +15,9 @@ export function addProductsCart(
       if (
         item.id === product.id &&
         item.count > 0 &&
-        item.count + 1 <= item.stock
+        sum(item.count, 1) <= item.stock
       ) {
-        item.count += count;
+        item.count = sum(item.count, count);
       }
       return item;
     });

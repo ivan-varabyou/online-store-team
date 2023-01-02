@@ -1,5 +1,7 @@
 import { IResultProduct } from '../../models';
 
+import { lowerCaseIncludes } from '../common/string/lowerCaseIncludes';
+
 export function searchCatalogProducts(
   result: IResultProduct[],
   search: string,
@@ -14,11 +16,11 @@ export function searchCatalogProducts(
       product.stock
     ) {
       if (
-        product.title.toLowerCase().includes(searchText) ||
-        product.description.toLowerCase().includes(searchText) ||
-        product.brand.toLowerCase().includes(searchText) ||
-        String(product.price).includes(searchText) ||
-        String(product.stock).includes(searchText)
+        lowerCaseIncludes(product.title, searchText) ||
+        lowerCaseIncludes(product.description, searchText) ||
+        lowerCaseIncludes(product.brand, searchText) ||
+        lowerCaseIncludes(String(product.price), searchText) ||
+        lowerCaseIncludes(String(product.stock), searchText)
       )
         return true;
     }

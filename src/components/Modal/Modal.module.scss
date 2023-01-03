@@ -35,3 +35,40 @@
     margin-top: 20px;
   }
 }
+.input__group {
+  width: 60%;
+  display: inline-block;
+  position: relative;
+
+
+  input {
+    width: 100%;
+    border-radius: 5px;
+    border: 1px solid gray;
+  }
+
+  label {
+    text-transform: uppercase;
+    font-weight: 400;
+    font-size: 14px;
+  }
+
+  svg {
+    position: absolute;
+    right: 10px;
+    bottom: 15%;
+  }
+}
+
+.multi__input {
+  margin-top: 20px;
+  width: 60%;
+  display: flex;
+  gap: 10px;
+}
+
+small {
+  color: red;
+  font-size: 10px;
+  display: block;
+}

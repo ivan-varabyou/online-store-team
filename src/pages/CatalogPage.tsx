@@ -6,7 +6,7 @@ import { useCatalogProducts } from '../hooks/useCatalogProducts';
 import { IFilterData, IActiveFilterData } from '../models';
 
 // utils
-import { updateUrlCatalogPage } from '../utils/catalog/updateUrlCatalogPage';
+import { updateUrlCatalogPage } from '../utils/Catalog/updateUrlCatalogPage';
 
 // components
 import { ErrorMessage } from '../components/ErrorMessage/';

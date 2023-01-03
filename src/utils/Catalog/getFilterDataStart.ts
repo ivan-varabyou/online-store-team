@@ -1,6 +1,6 @@
 import { IFilterData, TypeFilterMap, IResultProduct } from '../../models';
 
-import { capitalizedFirstLetter } from '../common/сapitalizedFirstLetter';
+import { capitalizedFirstLetter } from '../common/string/сapitalizedFirstLetter';
 
 export const getFilterDataStart = (result: IResultProduct[]): IFilterData => {
   const categoryList: Map<string, TypeFilterMap> = new Map();

@@ -6,6 +6,9 @@ import { CartEmpty } from '../components/Cart/CartEmpty/index';
 import { CartProduct } from '../components/Cart/CartProduct/index';
 import { CartPromocode } from '../components/Cart/CartPromocode/index';
 
+import { getStartIndex } from '../utils/page/getStartIndex';
+import { getMaxCountPage } from '../utils/page/getMaxCountPage';
+
 import styles from '../scss/page/CartPage.module.scss';
 import { ChangeEvent } from 'react';
 
@@ -40,18 +43,10 @@ export function CardPage() {
 
   let productsCartPage: TypeCartItem[] = [];
 
-  const getStartPage = (page: number, limit: number) => {
-    return page * limit - limit;
-  };
-
-  const getMaxCountPage = (arrayLength: number, limit: number) => {
-    return Math.ceil(arrayLength / limit);
-  };
-
   const updateCartProductsPage = () => {
     if (productsCart) {
       productsCartPage = [];
-      const startIndex = getStartPage(page, limitProduct);
+      const startIndex = getStartIndex(page, limitProduct);
       const endIndex = startIndex + limitProduct;
 
       for (let i = startIndex; i < endIndex; i++) {

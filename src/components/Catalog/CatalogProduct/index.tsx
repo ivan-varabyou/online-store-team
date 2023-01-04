@@ -75,7 +75,7 @@ export const CatalogProduct = ({ product }: IProductProp) => {
             <Link
               to={'/product/' + product.id}
               className={styles.product__title + ' product__title'}>
-              {getShortText(product.title)}
+              {getShortText(product.title, 30)}
             </Link>
 
             <p className={styles.product__stock + ' product__stock'}>

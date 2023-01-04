@@ -19,6 +19,10 @@ import { CatalogDisplay } from '../components/Catalog/CatalogDisplay';
 // context
 import { SearchContext } from '../App';
 
+//classes
+import { FilterData } from '../utils/FilterData';
+import { FilterDataActive } from '../utils/FilterDataActive';
+
 // style
 import styles from '../scss/page/CategoryPage.module.scss';
 
@@ -48,12 +52,7 @@ export function CatalogPage() {
   );
 
   // Filter data
-  const firstFilterDataDefault: IFilterData = {
-    categories: null,
-    brands: null,
-    price: null,
-    stock: null,
-  };
+  const firstFilterDataDefault: FilterData = new FilterData();
 
   const [startFilterData, setStartFilterData] = React.useState(
     firstFilterDataDefault,
@@ -78,12 +77,8 @@ export function CatalogPage() {
     };
   };
 
-  const activeFilterDataUrlDefaultNull: IActiveFilterData = {
-    brands: null,
-    categories: null,
-    price: null,
-    stock: null,
-  };
+  const activeFilterDataUrlDefaultNull: FilterDataActive =
+    new FilterDataActive();
 
   const dataUrlDefault = JSON.parse(
     JSON.stringify(activeFilterDataUrlDefault()),

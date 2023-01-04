@@ -7,12 +7,12 @@ import {
 } from '../models';
 import axios, { AxiosError } from 'axios';
 
-import { sortCatalogProducts } from '../utils/Catalog/sortCatalogProducts';
-import { searchCatalogProducts } from '../utils/Catalog/searchCatalogProducts';
-import { filterCatalogProducts } from '../utils/Catalog/filterCatalogProducts';
-import { updateActiveFilterData } from '../utils/Catalog/updateActiveFilterData';
-import { getFilterDataStart } from '../utils/Catalog/getFilterDataStart';
-import { getFilterDataEnd } from '../utils/Catalog/getFilterDataEnd';
+import { sortCatalogProducts } from '../utils/сatalog/sortCatalogProducts';
+import { searchCatalogProducts } from '../utils/сatalog/searchCatalogProducts';
+import { filterCatalogProducts } from '../utils/сatalog/filterCatalogProducts';
+import { updateActiveFilterData } from '../utils/сatalog/updateActiveFilterData';
+import { getFilterDataStart } from '../utils/сatalog/getFilterDataStart';
+import { getFilterDataEnd } from '../utils/сatalog/getFilterDataEnd';
 
 export function useCatalogProducts(
   search: string,

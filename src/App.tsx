@@ -5,7 +5,6 @@ import { CatalogPage } from './pages/CatalogPage';
 import { NotFoundPage } from './pages/NotFoundPage';
 import { CardPage } from './pages/CartPage';
 
-import { Modal } from './components/Modal';
 import { Header } from './components/Header';
 import { Footer } from './components/Footer';
 import { ISearchContext, ICartContext } from './models';
@@ -48,11 +47,6 @@ function App() {
     setCartCount(getCartCount());
   }
 
-  const [modalStatus, setModalStatus] = useState(false);
-  const handleModalStatus = (status = !modalStatus) => {
-    setModalStatus(status);
-  };
-
   return (
     <>
       <SearchContext.Provider
@@ -76,8 +70,6 @@ function App() {
             cartCount,
             cartTotal,
             updateCartCountAndSumm,
-            handleModalStatus,
-            modalStatus,
           }}>
           <Header />
           <Routes>
@@ -86,7 +78,7 @@ function App() {
             <Route path='/product/:productId' element={<ProductPage />}></Route>
             <Route path='*' element={<NotFoundPage />}></Route>
           </Routes>
-          <Modal status={{ modalStatus, setModalStatus }} />
+
           <Footer />
         </CartContext.Provider>
       </SearchContext.Provider>

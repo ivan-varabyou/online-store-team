@@ -18,31 +18,45 @@ form {
 
   &__body {
     font-size: 1rem;
-    padding: 15px;
+    padding: 35px;
     background: #fff;
     z-index: 9;
     box-shadow: 10px 10px 60px #555;
     border-radius: 5px;
   }
 
-  &__visa {
+  &__payments {
+    margin-top: 20px;
+  }
+  &__cvv::-webkit-inner-spin-button {
+    -webkit-appearance: none;
+  }
+
+  &__cardNumber {
+    font-size: 1.5rem;
+  }
+
+  &__cartLogo {
+    svg {
+      object-fit: cover;
+      width: 100%;
+      height: 40px;
+    }
     display: flex;
     gap: 5px;
     align-items: center;
     background: #0d6efd;
     padding: 0 15px;
     border-radius: 0 5px 5px;
-  }
-
-  &__payments {
-    margin-top: 20px;
+    position: relative;
+    overflow: hidden;
+    height: 50px;
   }
 }
 .input__group {
   width: 60%;
   display: inline-block;
   position: relative;
-
 
   input {
     width: 100%;

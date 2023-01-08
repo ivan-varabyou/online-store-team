@@ -1,22 +1,28 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
-import cartEmptyImg from '../../../assets/img/empty-cart.png';
+
 import styles from './CartEmpty.module.scss';
 
-export function CartEmpty() {
+export function CartEmpty({
+  title,
+  description,
+  image,
+}: {
+  title: string;
+  description: string;
+  image: string;
+}) {
   React.useState();
   return (
     <div className='container'>
       <div className='row mt-4 mb-4'>
         <div className={styles.cartEmpty}>
           <div>
-            <h2>
-              Корзина пустая <span>😕</span>
-            </h2>
-            <p>Вероятней всего, вы ничего не заказали</p>
+            <h2>{title}</h2>
+            <p>{description}</p>
             <img
               className={styles.cartEmptyImage}
-              src={cartEmptyImg}
+              src={image}
               alt='Empty cart'
             />
           </div>

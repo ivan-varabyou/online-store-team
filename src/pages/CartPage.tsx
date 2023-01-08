@@ -6,20 +6,21 @@ import { CartEmpty } from '../components/Cart/CartEmpty/index';
 import { CartProduct } from '../components/Cart/CartProduct/index';
 import { CartPromocode } from '../components/Cart/CartPromocode/index';
 
+import { Modal } from '../components/Modal';
 import { getStartIndex } from '../utils/page/getStartIndex';
 import { getMaxCountPage } from '../utils/page/getMaxCountPage';
 
 import styles from '../scss/page/CartPage.module.scss';
 import { ChangeEvent } from 'react';
 
+import cartEmptyImage from '../assets/img/empty-cart.png';
+import cartSuccessfullyImage from '../assets/img/successfully-cart.png';
+
 export function CardPage() {
   const getCartCount = useContext(CartContext).getCartCount;
   const getCartTotal = useContext(CartContext).getCartTotal;
   const getLocalStorage = useContext(CartContext).getLocalStorage;
   const getCartDiscountTotal = useContext(CartContext).getCartDiscountTotal;
-  const handleModalStatus = useContext(CartContext).handleModalStatus;
-
-  const modalStatus = useContext(CartContext).modalStatus;
 
   const [url, setUrl] = useSearchParams();
 
@@ -164,16 +165,47 @@ export function CardPage() {
     const discount = getPromocodeActiveSummDiscount();
     cartTotal = (cartTotal / 100) * (100 - discount);
   }
+  const cartEmptyTitle = 'Cart is empty 😕';
+  const cartEmptyDescription = "You probably didn't order anything.";
+  const cartSuccessTitle = 'Order successfully completed';
+  const cartSuccessDescription =
+    'We will ship your order as soon as possible. Thank you for your order';
 
-  if (productsCart?.length == 0) {
+  const [modalStatus, setModalStatus] = useState(false);
+  const handleModalStatus = (status = !modalStatus) => {
+    setModalStatus(status);
+  };
+
+  const [orderSuccess, setOrderSuccess] = useState(false);
+
+  if (orderSuccess) {
     return (
       <div>
-        <CartEmpty />
+        <CartEmpty
+          title={cartSuccessTitle}
+          description={cartSuccessDescription}
+          image={cartSuccessfullyImage}
+        />
+      </div>
+    );
+  } else if (productsCart?.length == 0) {
+    return (
+      <div>
+        <CartEmpty
+          title={cartEmptyTitle}
+          description={cartEmptyDescription}
+          image={cartEmptyImage}
+        />
       </div>
     );
   } else {
     return (
       <>
+        <Modal
+          modalStatus={modalStatus}
+          setModalStatus={setModalStatus}
+          setOrderSuccess={setOrderSuccess}
+        />
         <main className={styles.cart}>
           <section className='bg-primary py-4'>
             <div className='container'>

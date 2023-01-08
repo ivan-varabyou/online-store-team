@@ -156,3 +156,13 @@ export interface IPromocode {
   status: boolean;
   input: boolean;
 }
+
+export type UserSubmitForm = {
+  fullname: string;
+  phonenumber: string;
+  email: string;
+  address: string;
+  cardnumber: number;
+  carddate: number;
+  cvv: number;
+};

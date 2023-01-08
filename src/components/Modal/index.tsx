@@ -1,7 +1,7 @@
 import React, { useState, useContext } from 'react';
 import { useForm } from 'react-hook-form';
 import { setLocalStorage } from '../../utils/localStorage';
-import { SuccessfulPay } from '../SuccessfulPay';
+import { UserSubmitForm } from '../../models';
 
 import styles from './Modal.module.scss';
 
@@ -16,16 +16,6 @@ import { ReactComponent as Mastercard } from '../../assets/img/payments/masterca
 import { ReactComponent as Paypal } from '../../assets/img/payments/paypal.svg';
 import { ReactComponent as Visa } from '../../assets/img/payments/visa.svg';
 import { CartContext } from '../../App';
-
-type UserSubmitForm = {
-  fullname: string;
-  phonenumber: string;
-  email: string;
-  address: string;
-  cardnumber: number;
-  carddate: number;
-  cvv: number;
-};
 
 export function Modal({
   modalStatus,

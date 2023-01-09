@@ -27,7 +27,7 @@ export const CatalogFilter: React.FC<ICatalogFilter> = ({
     copyEndFilterData.price.valueMax = -1;
     copyEndFilterData.stock.valueMin = -1;
     copyEndFilterData.stock.valueMax = -1;
-    console.log('copyEndFilterData', copyEndFilterData);
+
     setEndFilterData(copyEndFilterData);
     setStatusFilter(!statusFilter);
   }

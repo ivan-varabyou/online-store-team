@@ -29,8 +29,10 @@ export const updateUrlCatalogPage = (
     query.brands = copyActiveFilterDataUrl.brands.join(';');
   if (query.brands?.length === 0) delete query.brands;
 
-  if (copyActiveFilterDataUrl.price)
+  if (copyActiveFilterDataUrl.price) {
     query.price = copyActiveFilterDataUrl.price.join(';');
+  }
+
   if (query.price?.length === 0) delete query.price;
 
   if (copyActiveFilterDataUrl.stock) {

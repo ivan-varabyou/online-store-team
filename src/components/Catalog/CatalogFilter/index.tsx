@@ -23,6 +23,11 @@ export const CatalogFilter: React.FC<ICatalogFilter> = ({
   ) {
     const copyEndFilterData = JSON.parse(JSON.stringify(endFilterData));
     copyEndFilterData[name][index] = data;
+    copyEndFilterData.price.valueMin = -1;
+    copyEndFilterData.price.valueMax = -1;
+    copyEndFilterData.stock.valueMin = -1;
+    copyEndFilterData.stock.valueMax = -1;
+    console.log('copyEndFilterData', copyEndFilterData);
     setEndFilterData(copyEndFilterData);
     setStatusFilter(!statusFilter);
   }

@@ -89,24 +89,24 @@ export function filterCatalogProducts(
     );
   }
 
-  if (!activeFilterData.price[0] || !activeFilterData.price[1]) {
-    activeFilterData.price = [];
-  }
+  // if (!activeFilterData.price[0] || !activeFilterData.price[1]) {
+  //   activeFilterData.price = [];
+  // }
 
-  if (!activeFilterData.stock[0] || !activeFilterData.stock[1]) {
-    activeFilterData.stock = [];
-  }
+  // if (!activeFilterData.stock[0] || !activeFilterData.stock[1]) {
+  //   activeFilterData.stock = [];
+  // }
 
-  if (
-    activeFilterData.categories.length === 0 ||
-    (Number(activeFilterData.price[0]) === Number(endFilterData.price?.min) &&
-      Number(activeFilterData.price[1]) === Number(endFilterData.price?.max)) ||
-    (Number(activeFilterData.stock[0]) === Number(endFilterData.stock?.min) &&
-      Number(activeFilterData.stock[1]) === Number(endFilterData.stock?.max))
-  ) {
-    activeFilterData.stock = [];
-    activeFilterData.price = [];
-  }
+  // if (
+  //   activeFilterData.categories.length === 0 ||
+  //   (Number(activeFilterData.price[0]) === Number(endFilterData.price?.min) &&
+  //     Number(activeFilterData.price[1]) === Number(endFilterData.price?.max)) ||
+  //   (Number(activeFilterData.stock[0]) === Number(endFilterData.stock?.min) &&
+  //     Number(activeFilterData.stock[1]) === Number(endFilterData.stock?.max))
+  // ) {
+  //   activeFilterData.stock = [];
+  //   activeFilterData.price = [];
+  // }
 
   if (activeFilterData.price && activeFilterData.price.length > 0) {
     const priceMin = activeFilterData.price[0];

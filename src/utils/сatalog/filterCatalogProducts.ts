@@ -98,6 +98,7 @@ export function filterCatalogProducts(
   }
 
   if (
+    activeFilterData.categories.length === 0 ||
     (Number(activeFilterData.price[0]) === Number(endFilterData.price?.min) &&
       Number(activeFilterData.price[1]) === Number(endFilterData.price?.max)) ||
     (Number(activeFilterData.stock[0]) === Number(endFilterData.stock?.min) &&

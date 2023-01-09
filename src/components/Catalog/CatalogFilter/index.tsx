@@ -30,7 +30,6 @@ export const CatalogFilter: React.FC<ICatalogFilter> = ({
   function updateInputRange(data: TypeFilterRange) {
     const copyEndFilterData = JSON.parse(JSON.stringify(endFilterData));
     copyEndFilterData[data.key] = data;
-    console.log('updateInputRange start', copyEndFilterData);
     setEndFilterData(copyEndFilterData);
     setStatusFilter(!statusFilter);
   }

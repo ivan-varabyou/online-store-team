@@ -1,0 +1,29 @@
+{
+  "files": {
+    "main.css": "/static/css/main.89df2c3b.css",
+    "main.js": "/static/js/main.47c08cc6.js",
+    "static/js/787.eeffce1a.chunk.js": "/static/js/787.eeffce1a.chunk.js",
+    "static/media/bootstrap-icons.woff?": "/static/media/bootstrap-icons.6959d0d983ee318f8880.woff",
+    "static/media/bootstrap-icons.woff2?": "/static/media/bootstrap-icons.b2e5aab643c6f0fd2da6.woff2",
+    "static/media/successfully-cart.png": "/static/media/successfully-cart.d5b38c8fb77b56b65672.png",
+    "static/media/empty-cart.png": "/static/media/empty-cart.db905d1f4b063162f25b.png",
+    "static/media/generic.svg": "/static/media/generic.dec898cd766e3e75698c991f733e82f4.svg",
+    "static/media/mastercard.svg": "/static/media/mastercard.dcf9dff3f212daed4942c1235374c0cb.svg",
+    "static/media/maestro.svg": "/static/media/maestro.d4541b7c4b81d7be8b52291b635c64e3.svg",
+    "static/media/paypal.svg": "/static/media/paypal.301cfa383bce51034b7cd507fea37bd8.svg",
+    "static/media/alipay.svg": "/static/media/alipay.b0652d0e201bfd61e95fdc1c4a7ebd63.svg",
+    "static/media/jcb.svg": "/static/media/jcb.daf263ec2e17bf5b93a0982a3f73f291.svg",
+    "static/media/discover.svg": "/static/media/discover.b41e978b42d7fa3eca7ea4c3850d474d.svg",
+    "static/media/elo.svg": "/static/media/elo.5950531578ca2aa94bfcd652505fda3b.svg",
+    "static/media/visa.svg": "/static/media/visa.1693116b9c7931846c7a173902cccacd.svg",
+    "static/media/hiper.svg": "/static/media/hiper.becc0dc044d4968dca6b26d15e426563.svg",
+    "index.html": "/index.html",
+    "main.89df2c3b.css.map": "/static/css/main.89df2c3b.css.map",
+    "main.47c08cc6.js.map": "/static/js/main.47c08cc6.js.map",
+    "787.eeffce1a.chunk.js.map": "/static/js/787.eeffce1a.chunk.js.map"
+  },
+  "entrypoints": [
+    "static/css/main.89df2c3b.css",
+    "static/js/main.47c08cc6.js"
+  ]
+}

@@ -13,6 +13,7 @@ import { filterCatalogProducts } from '../utils/сatalog/filterCatalogProducts';
 import { updateActiveFilterData } from '../utils/сatalog/updateActiveFilterData';
 import { getFilterDataStart } from '../utils/сatalog/getFilterDataStart';
 import { getFilterDataEnd } from '../utils/сatalog/getFilterDataEnd';
+import { data } from '../db/products';
 
 export function useCatalogProducts(
   search: string,
@@ -30,7 +31,9 @@ export function useCatalogProducts(
   activeFilterDataUrl: IActiveFilterData,
   setActiveFilterDataUrl: (data: IActiveFilterData) => void,
 ): TypeReturnProducts<IResultProduct[] | null> {
-  const [fetchResult, setFetchResult] = useState<IResultProduct[] | null>(null);
+  const [fetchResult, setFetchResult] = useState<IResultProduct[] | null>(
+    data.products,
+  );
 
   const [result, setResult] = useState<IResultProduct[] | null>(null);
 

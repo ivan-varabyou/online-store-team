@@ -1,9 +1,13 @@
 import { useEffect, useState } from 'react';
 import { IResultProduct, TypeReturnProducts } from '../models';
 import axios, { AxiosError } from 'axios';
+import { data } from '../db/products';
 
 export function useProduct(id: number): IResultProduct | null {
-  const [result, setResult] = useState<IResultProduct | null>(null);
+  const dataProducts: IResultProduct = data.products.filter(
+    (item) => item.id === id,
+  )[0];
+  const [result, setResult] = useState<IResultProduct | null>(dataProducts);
 
   async function fetchProduct() {
     try {

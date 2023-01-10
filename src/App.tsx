@@ -1,5 +1,5 @@
 import React, { createContext, useState, useEffect } from 'react';
-import { Route, Routes, useSearchParams } from 'react-router-dom';
+import { Route, Routes } from 'react-router-dom';
 import { ProductPage } from './pages/ProductPage';
 import { CatalogPage } from './pages/CatalogPage';
 import { NotFoundPage } from './pages/NotFoundPage';
@@ -21,15 +21,10 @@ import { getCartDiscountTotal } from './utils/cart/getCartDiscountTotal';
 import { getCartCountProduct } from './utils/cart/getCartCountProduct';
 import { getCartCountLimit } from './utils/cart/getCartCountLimit';
 
-import redirectingNonExistentPages from './utils/redirectingNonExistentPages';
-
 export const SearchContext = createContext<Partial<ISearchContext>>({});
 export const CartContext = createContext<Partial<ICartContext>>({});
 
 function App() {
-  const [searchUrl] = useSearchParams();
-  redirectingNonExistentPages(searchUrl);
-
   const [cartCount, setCartCount] = useState(getCartCount() || 0);
   const [cartTotal, setCartTotal] = useState(getCartTotal() || 0);
 

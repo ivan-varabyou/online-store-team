@@ -16,7 +16,7 @@ export const Header = (): JSX.Element => {
 
   const setSearchValue = useContext(SearchContext).setSerachValue;
 
-  const [search] = useSearchParams();
+  const [search, setSearchUrl] = useSearchParams();
   const [value, setValue] = useState(search.get('search') || '');
 
   const updateSearchValue = useCallback(
@@ -46,6 +46,10 @@ export const Header = (): JSX.Element => {
 
   const isCatalog = window.location.pathname === '/';
 
+  const clearSearch = () => {
+    setValue('');
+    updateSearchValue('');
+  };
   return (
     <>
       <header className='header section-header border-bottom'>
@@ -63,11 +67,16 @@ export const Header = (): JSX.Element => {
                   ref={inputRef}
                   onClick={onClickClear}
                   onInput={onChangeInput}
-                  type='search'
+                  type='text'
                   className='form-control'
                   placeholder='Search'
                   value={value}
                 />
+                {value && (
+                  <span onClick={clearSearch} className={styles.clear__search}>
+                    <i className='bi bi-x-circle-fill'></i>
+                  </span>
+                )}
               </div>
             )}
 

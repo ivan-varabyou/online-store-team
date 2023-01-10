@@ -74,6 +74,13 @@
 
 .search {
   grid-area: search;
+  position: relative;
+}
+
+.clear__search {
+  position: absolute;
+  right: 12px;
+  top: 7px;
 }
 
 .widget {

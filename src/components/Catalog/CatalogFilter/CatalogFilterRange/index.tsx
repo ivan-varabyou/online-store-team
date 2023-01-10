@@ -1,5 +1,5 @@
-import React, { useEffect, useRef, useState } from 'react';
-import { ICatalogFilterRange, TypeFilterRange } from '../../../../models';
+import React from 'react';
+import { ICatalogFilterRange } from '../../../../models';
 import styles from './CatalogFilterRange.module.scss';
 
 export const CatalogFilterRange: React.FC<ICatalogFilterRange> = ({

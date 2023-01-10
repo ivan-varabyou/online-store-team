@@ -24,6 +24,8 @@ export interface IResultProduct {
 export interface ISearchContext {
   searchValue: string;
   setSerachValue: React.Dispatch<string>;
+  searchValueInput: string;
+  setSearchValueInput: (value: string) => void;
 }
 
 export interface ICartContext {

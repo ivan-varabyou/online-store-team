@@ -1,4 +1,4 @@
-import React, { useState, useContext, useRef, useCallback } from 'react';
+import React, { useContext, useRef, useCallback } from 'react';
 
 import { Link } from 'react-router-dom';
 
@@ -16,8 +16,11 @@ export const Header = (): JSX.Element => {
 
   const setSearchValue = useContext(SearchContext).setSerachValue;
 
-  const [search, setSearchUrl] = useSearchParams();
-  const [value, setValue] = useState(search.get('search') || '');
+  const searchValueInput = useContext(SearchContext).searchValueInput;
+  const setSearchValueInput = useContext(SearchContext).setSearchValueInput;
+
+  const [search] = useSearchParams();
+
 
   const updateSearchValue = useCallback(
     debounce((value) => {
@@ -27,7 +30,7 @@ export const Header = (): JSX.Element => {
   );
 
   if (search.get('search')) {
-    updateSearchValue(value);
+    updateSearchValue(searchValueInput);
   }
 
   const inputRef = useRef<HTMLInputElement>(null);
@@ -40,14 +43,14 @@ export const Header = (): JSX.Element => {
   };
 
   const onChangeInput = (event: React.ChangeEvent<HTMLInputElement>): void => {
-    setValue(event.target.value);
+    setSearchValueInput && setSearchValueInput(event.target.value);
     updateSearchValue(event.target.value);
   };
 
   const isCatalog = window.location.pathname === '/';
 
   const clearSearch = () => {
-    setValue('');
+    setSearchValueInput && setSearchValueInput('');
     updateSearchValue('');
   };
   return (
@@ -70,9 +73,9 @@ export const Header = (): JSX.Element => {
                   type='text'
                   className='form-control'
                   placeholder='Search'
-                  value={value}
+                  value={searchValueInput}
                 />
-                {value && (
+                {searchValueInput && (
                   <span onClick={clearSearch} className={styles.clear__search}>
                     <i className='bi bi-x-circle-fill'></i>
                   </span>

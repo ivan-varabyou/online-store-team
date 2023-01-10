@@ -1,5 +1,5 @@
-import { useEffect, useState } from 'react';
-import { IResultProduct, TypeReturnProducts } from '../models';
+import { useState } from 'react';
+import { IResultProduct } from '../models';
 import axios, { AxiosError } from 'axios';
 import { data } from '../db/products';
 

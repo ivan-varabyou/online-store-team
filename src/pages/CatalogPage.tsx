@@ -3,7 +3,6 @@ import React, { useState, useEffect, useContext } from 'react';
 import copy from 'copy-to-clipboard';
 import { useSearchParams } from 'react-router-dom';
 import { useCatalogProducts } from '../hooks/useCatalogProducts';
-import { IFilterData, IActiveFilterData } from '../models';
 
 // utils
 import { updateUrlCatalogPage } from '../utils/сatalog/updateUrlCatalogPage';
@@ -11,7 +10,6 @@ import { updateUrlCatalogPage } from '../utils/сatalog/updateUrlCatalogPage';
 // components
 import { ErrorMessage } from '../components/ErrorMessage/';
 import { CatalogProduct } from '../components/Catalog/CatalogProduct';
-import { CatalogProductScaleton } from '../components/Catalog/CatalogProduct/CatalogProductScaleton';
 import { CatalogFilter } from '../components/Catalog/CatalogFilter';
 import { CatalogSort } from '../components/Catalog/CatalogSort';
 import { CatalogDisplay } from '../components/Catalog/CatalogDisplay';
@@ -29,12 +27,15 @@ import styles from '../scss/page/CategoryPage.module.scss';
 export function CatalogPage() {
   const searchValue = String(useContext(SearchContext).searchValue);
   const setSearchValue = useContext(SearchContext).setSerachValue;
+  const setSearchValueInput = useContext(SearchContext).setSearchValueInput;
 
   // searchUrl
   const [searchUrl, setSearchUrl] = useSearchParams();
   const defaultSelect = searchUrl.get('sort')
     ? String(searchUrl.get('sort'))
     : 'default';
+
+
 
   // catalogSortSelect
   const [catalogSortSelect, setCatalogSortSelect] = useState(defaultSelect);
@@ -128,6 +129,7 @@ export function CatalogPage() {
 
   // Reset data button
   const hendleResetFilterButton = () => {
+    setSearchValueInput && setSearchValueInput('')
     setSearchUrl({});
     setCatalogSortSelect('default');
     if (setSearchValue) setSearchValue('');
@@ -206,7 +208,7 @@ export function CatalogPage() {
                   </div>
                 </div>
                 <div className={'product-' + catalogProductDisplay}>
-                  {loading && <CatalogProductScaleton />}
+                  {loading && 'Loading ...'}
                   {error && <ErrorMessage error={error} />}
                   {result &&
                     !loading &&

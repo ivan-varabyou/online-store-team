@@ -1,5 +1,5 @@
 import React, { createContext, useState, useEffect } from 'react';
-import { Route, Routes } from 'react-router-dom';
+import { Route, Routes, useSearchParams } from 'react-router-dom';
 import { ProductPage } from './pages/ProductPage';
 import { CatalogPage } from './pages/CatalogPage';
 import { NotFoundPage } from './pages/NotFoundPage';
@@ -25,6 +25,10 @@ export const SearchContext = createContext<Partial<ISearchContext>>({});
 export const CartContext = createContext<Partial<ICartContext>>({});
 
 function App() {
+
+  const [search] = useSearchParams();
+  const [searchValueInput, setSearchValueInput] = useState(search.get('search') || '');
+
   const [cartCount, setCartCount] = useState(getCartCount() || 0);
   const [cartTotal, setCartTotal] = useState(getCartTotal() || 0);
 
@@ -35,12 +39,12 @@ function App() {
   }, []);
 
   const [searchValue, setSerachValue] = useState('');
-  // const [currentProductCart, addProductsCart] = useState(null);
 
   function updateCartCountAndSumm() {
     setCartTotal(getCartTotal());
     setCartCount(getCartCount());
   }
+
 
   return (
     <>
@@ -48,9 +52,12 @@ function App() {
         value={{
           searchValue,
           setSerachValue,
+          searchValueInput,
+          setSearchValueInput,
         }}>
         <CartContext.Provider
           value={{
+
             getLocalStorage,
             setLocalStorage,
             getCartTotal,

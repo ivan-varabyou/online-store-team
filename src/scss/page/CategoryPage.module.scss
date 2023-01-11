@@ -20,4 +20,15 @@
     justify-content: space-between;
     margin-bottom: 10px;
   }
+
+  &__search {
+    grid-area: search;
+    position: relative;
+  }
+
+  &__clearSearch {
+    position: absolute;
+    right: 12px;
+    top: 7px;
+  }
 }

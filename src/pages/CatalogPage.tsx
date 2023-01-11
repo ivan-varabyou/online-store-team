@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useContext } from 'react';
+import React, { useState, useEffect, useContext, useCallback } from 'react';
 
 import copy from 'copy-to-clipboard';
 import { useSearchParams } from 'react-router-dom';
@@ -17,6 +17,8 @@ import { CatalogDisplay } from '../components/Catalog/CatalogDisplay';
 // context
 import { SearchContext } from '../App';
 
+import debounce from 'lodash.debounce';
+
 //classes
 import { FilterData } from '../utils/FilterData';
 import { FilterDataActive } from '../utils/FilterDataActive';
@@ -27,15 +29,12 @@ import styles from '../scss/page/CategoryPage.module.scss';
 export function CatalogPage() {
   const searchValue = String(useContext(SearchContext).searchValue);
   const setSearchValue = useContext(SearchContext).setSerachValue;
-  const setSearchValueInput = useContext(SearchContext).setSearchValueInput;
 
   // searchUrl
   const [searchUrl, setSearchUrl] = useSearchParams();
   const defaultSelect = searchUrl.get('sort')
     ? String(searchUrl.get('sort'))
     : 'default';
-
-
 
   // catalogSortSelect
   const [catalogSortSelect, setCatalogSortSelect] = useState(defaultSelect);
@@ -129,10 +128,9 @@ export function CatalogPage() {
 
   // Reset data button
   const hendleResetFilterButton = () => {
-    setSearchValueInput && setSearchValueInput('')
+    setSearchValue && setSearchValue('');
     setSearchUrl({});
     setCatalogSortSelect('default');
-    if (setSearchValue) setSearchValue('');
     setEndFilterData(startFilterData);
     setActiveFilterDataUrl(activeFilterDataUrlDefaultNull);
     setStatusFilter(!statusFilter);
@@ -141,6 +139,37 @@ export function CatalogPage() {
   // Copy URL button
   const hendleCopyFilterUrlButton = () => {
     copy(window.location.href);
+  };
+
+  const [search] = useSearchParams();
+
+  const updateSearchValue = useCallback(
+    debounce((value) => {
+      setSearchValue && setSearchValue(value);
+    }, 500),
+    [],
+  );
+
+  useEffect(() => {
+    if (search.get('search') && !searchValue) {
+      setSearchValue && setSearchValue(String(search.get('search')));
+    }
+  }, []);
+
+  const onChangeInput = (event: React.ChangeEvent<HTMLInputElement>): void => {
+    const copyEndFilterData = JSON.parse(JSON.stringify(endFilterData));
+    copyEndFilterData.price.valueMin = -1;
+    copyEndFilterData.price.valueMax = -1;
+    copyEndFilterData.stock.valueMin = -1;
+    copyEndFilterData.stock.valueMax = -1;
+    setEndFilterData(copyEndFilterData);
+    setSearchValue && setSearchValue(event.target.value);
+    updateSearchValue(event.target.value);
+  };
+
+  const clearSearch = () => {
+    setSearchValue && setSearchValue('');
+    updateSearchValue('');
   };
 
   return (
@@ -158,6 +187,23 @@ export function CatalogPage() {
           <div className={styles.products}>
             <div className='row'>
               <aside className='col-lg-3'>
+                <div className={styles.products__search + ' mb-1'}>
+                  <input
+                    onInput={onChangeInput}
+                    type='text'
+                    className='form-control'
+                    placeholder='Search'
+                    value={searchValue}
+                  />
+                  {searchValue && (
+                    <span
+                      onClick={clearSearch}
+                      className={styles.products__clearSearch}>
+                      <i className='bi bi-x-circle-fill'></i>
+                    </span>
+                  )}
+                </div>
+
                 <div className='btn-group col-12 button-group'>
                   <button
                     className='btn btn-light btn-icon'

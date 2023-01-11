@@ -25,9 +25,10 @@ export const SearchContext = createContext<Partial<ISearchContext>>({});
 export const CartContext = createContext<Partial<ICartContext>>({});
 
 function App() {
-
   const [search] = useSearchParams();
-  const [searchValueInput, setSearchValueInput] = useState(search.get('search') || '');
+  const [searchValueInput, setSearchValueInput] = useState(
+    search.get('search') || '',
+  );
 
   const [cartCount, setCartCount] = useState(getCartCount() || 0);
   const [cartTotal, setCartTotal] = useState(getCartTotal() || 0);
@@ -45,7 +46,6 @@ function App() {
     setCartCount(getCartCount());
   }
 
-
   return (
     <>
       <SearchContext.Provider
@@ -57,7 +57,6 @@ function App() {
         }}>
         <CartContext.Provider
           value={{
-
             getLocalStorage,
             setLocalStorage,
             getCartTotal,

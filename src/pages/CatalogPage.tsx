@@ -175,6 +175,7 @@ export function CatalogPage() {
   const clearSearch = () => {
     setSearchValue && setSearchValue('');
     updateSearchValue('');
+    hendleResetFilterButton();
   };
 
   return (

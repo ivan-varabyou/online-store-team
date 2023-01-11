@@ -163,7 +163,7 @@ export function CardPage() {
 
   if (getPromocodeActiveSummDiscount() > 0 && cartTotal) {
     const discount = getPromocodeActiveSummDiscount();
-    cartTotal = (cartTotal / 100) * (100 - discount);
+    cartTotal = ((cartTotal / 100) * (100 - discount)).toFixed(2);
   }
   const cartEmptyTitle = 'Cart is empty 😕';
   const cartEmptyDescription = "You probably didn't order anything.";

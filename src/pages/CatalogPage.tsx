@@ -137,8 +137,13 @@ export function CatalogPage() {
   };
 
   // Copy URL button
+  const [copyText, setCopyText] = useState('Copy');
   const hendleCopyFilterUrlButton = () => {
     copy(window.location.href);
+    setCopyText('Copied!');
+    setTimeout(() => {
+      setCopyText('Copy');
+    }, 500);
   };
 
   const [search] = useSearchParams();
@@ -208,7 +213,7 @@ export function CatalogPage() {
                   <button
                     className='btn btn-light btn-icon'
                     onClick={hendleCopyFilterUrlButton}>
-                    Copy
+                    {copyText}
                   </button>
 
                   <button
@@ -229,7 +234,7 @@ export function CatalogPage() {
                   <button
                     className='btn btn-light btn-icon'
                     onClick={hendleCopyFilterUrlButton}>
-                    Copy
+                    {copyText}
                   </button>
 
                   <button

@@ -1,4 +1,4 @@
-![rolling-scopes-school github io_ivan-varabyou-JSFE2022Q3_songbird_](https://user-images.githubusercontent.com/85835188/202149608-c51d93bc-703b-4d99-9dec-626b00f324f4.png)
+![211325109-7055ff0d-3434-4bfd-b3b3-3b9ffb5dc080](https://github.com/ivan-varabyou/online-store-team/assets/85835188/14b4f525-92bd-4828-80af-e3aa2fc00603)
 
 # SongBird
 

@@ -1,6 +1,6 @@
 ![211325109-7055ff0d-3434-4bfd-b3b3-3b9ffb5dc080](https://github.com/ivan-varabyou/online-store-team/assets/85835188/14b4f525-92bd-4828-80af-e3aa2fc00603)
 
-# SongBird
+# RSSHOP
 
 Frontend application of online store based on React framework. Released features: home page, product catalog, product page, product filtering, similar products, shopping cart, credit card data entry.
 
